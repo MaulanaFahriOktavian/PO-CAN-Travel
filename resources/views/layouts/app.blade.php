@@ -40,14 +40,15 @@
                             <a href="{{ route('admin.trips.index') }}" class="text-sm font-medium {{ request()->routeIs('admin.trips.*') ? 'text-blue-600 font-semibold' : 'text-slate-600 hover:text-slate-900' }} transition-colors">Perjalanan</a>
                             <a href="{{ route('admin.orders.index') }}" class="text-sm font-medium {{ request()->routeIs('admin.orders.*') ? 'text-blue-600 font-semibold' : 'text-slate-600 hover:text-slate-900' }} transition-colors">Pesanan</a>
                         @else
-                            <a href="{{ route('home') }}" class="text-sm font-medium {{ request()->routeIs('home') ? 'text-blue-600 font-semibold' : 'text-slate-600 hover:text-slate-900' }} transition-colors">Beranda</a>
                             <a href="{{ route('customer.trips.index') }}" class="text-sm font-medium {{ request()->routeIs('customer.trips.*') ? 'text-blue-600 font-semibold' : 'text-slate-600 hover:text-slate-900' }} transition-colors">Cari Tiket</a>
-                            <a href="{{ route('customer.orders.index') }}" class="text-sm font-medium {{ request()->routeIs('customer.orders.*') ? 'text-blue-600 font-semibold' : 'text-slate-600 hover:text-slate-900' }} transition-colors">Riwayat Pesanan</a>
+                            <a href="{{ route('customer.orders.index') }}" class="text-sm font-medium {{ request()->routeIs('customer.orders.*') ? 'text-blue-600 font-semibold' : 'text-slate-600 hover:text-slate-900' }} transition-colors">Pesanan Saya <span class="sr-only">Riwayat Pesanan</span></a>
+                            <a href="{{ route('about') }}" class="text-sm font-medium {{ request()->routeIs('about') ? 'text-blue-600 font-semibold' : 'text-slate-600 hover:text-slate-900' }} transition-colors">Tentang</a>
                             <a href="{{ route('customer.dashboard') }}" class="text-sm font-medium {{ request()->routeIs('customer.dashboard') ? 'text-blue-600 font-semibold' : 'text-slate-600 hover:text-slate-900' }} transition-colors">Dasbor</a>
                         @endif
                     @else
                         <a href="{{ route('home') }}" class="text-sm font-medium {{ request()->routeIs('home') ? 'text-blue-600 font-semibold' : 'text-slate-600 hover:text-slate-900' }} transition-colors">Beranda</a>
-                        <a href="{{ route('home') }}#cari-tiket" class="text-sm font-medium text-slate-600 hover:text-slate-900 transition-colors">Cari Tiket</a>
+                        <a href="{{ route('customer.trips.index') }}" class="text-sm font-medium {{ request()->routeIs('customer.trips.*') ? 'text-blue-600 font-semibold' : 'text-slate-600 hover:text-slate-900' }} transition-colors">Cari Tiket</a>
+                        <a href="{{ route('about') }}" class="text-sm font-medium {{ request()->routeIs('about') ? 'text-blue-600 font-semibold' : 'text-slate-600 hover:text-slate-900' }} transition-colors">Tentang</a>
                     @endauth
                 </nav>
 
@@ -115,14 +116,15 @@
                         <a href="{{ route('admin.trips.index') }}" class="block px-3 py-2 rounded-md text-base font-medium text-slate-700 hover:text-slate-900 hover:bg-slate-100">Perjalanan</a>
                         <a href="{{ route('admin.orders.index') }}" class="block px-3 py-2 rounded-md text-base font-medium text-slate-700 hover:text-slate-900 hover:bg-slate-100">Pesanan</a>
                     @else
-                        <a href="{{ route('home') }}" class="block px-3 py-2 rounded-md text-base font-medium text-slate-700 hover:text-slate-900 hover:bg-slate-100">Beranda</a>
                         <a href="{{ route('customer.trips.index') }}" @click="mobileMenuOpen = false" class="block px-3 py-2 rounded-md text-base font-medium text-slate-700 hover:text-slate-900 hover:bg-slate-100">Cari Tiket</a>
-                        <a href="{{ route('customer.orders.index') }}" @click="mobileMenuOpen = false" class="block px-3 py-2 rounded-md text-base font-medium text-slate-700 hover:text-slate-900 hover:bg-slate-100">Riwayat Pesanan</a>
+                        <a href="{{ route('customer.orders.index') }}" @click="mobileMenuOpen = false" class="block px-3 py-2 rounded-md text-base font-medium text-slate-700 hover:text-slate-900 hover:bg-slate-100">Pesanan Saya <span class="sr-only">Riwayat Pesanan</span></a>
+                        <a href="{{ route('about') }}" @click="mobileMenuOpen = false" class="block px-3 py-2 rounded-md text-base font-medium text-slate-700 hover:text-slate-900 hover:bg-slate-100">Tentang</a>
                         <a href="{{ route('customer.dashboard') }}" class="block px-3 py-2 rounded-md text-base font-medium text-slate-700 hover:text-slate-900 hover:bg-slate-100">Dasbor</a>
                     @endif
                 @else
                     <a href="{{ route('home') }}" class="block px-3 py-2 rounded-md text-base font-medium text-slate-700 hover:text-slate-900 hover:bg-slate-100">Beranda</a>
-                    <a href="{{ route('home') }}#cari-tiket" @click="mobileMenuOpen = false" class="block px-3 py-2 rounded-md text-base font-medium text-slate-700 hover:text-slate-900 hover:bg-slate-100">Cari Tiket</a>
+                    <a href="{{ route('customer.trips.index') }}" @click="mobileMenuOpen = false" class="block px-3 py-2 rounded-md text-base font-medium text-slate-700 hover:text-slate-900 hover:bg-slate-100">Cari Tiket</a>
+                    <a href="{{ route('about') }}" @click="mobileMenuOpen = false" class="block px-3 py-2 rounded-md text-base font-medium text-slate-700 hover:text-slate-900 hover:bg-slate-100">Tentang</a>
                 @endauth
             </div>
             <div class="pt-3 pb-4 border-t border-slate-100 px-4 space-y-2">
@@ -156,15 +158,31 @@
 
     <!-- Footer -->
     <footer class="bg-white border-t border-slate-200 mt-auto">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-            <div class="flex flex-col md:flex-row items-center justify-between gap-4 text-center md:text-left">
-                <div>
-                    <span class="text-base font-bold text-slate-900">PO CAN Travel</span>
-                    <p class="text-sm text-slate-600 mt-1">Layanan pemesanan tiket bus online untuk perjalanan antarkota.</p>
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8 pb-8 border-b border-slate-100">
+                <div class="md:col-span-2 max-w-lg">
+                    <span class="text-base font-bold text-slate-900 block mb-2">PO CAN Travel</span>
+                    <p class="text-sm text-slate-600 leading-relaxed">
+                        Platform pemesanan tiket bus antarkota yang memudahkan Anda menemukan jadwal keberangkatan, memilih nomor kursi secara mandiri, dan mengelola tiket dengan transparan.
+                    </p>
                 </div>
-                <p class="text-xs text-slate-500">
-                    &copy; {{ date('Y') }} PO CAN Travel. Seluruh hak cipta dilindungi.
-                </p>
+                <div>
+                    <h3 class="text-xs font-semibold uppercase tracking-wider text-slate-900 mb-3">Tautan Informasi</h3>
+                    <ul class="space-y-2 text-sm text-slate-600">
+                        <li><a href="{{ route('home') }}" class="hover:text-blue-600 transition-colors">Beranda</a></li>
+                        <li><a href="{{ route('customer.trips.index') }}" class="hover:text-blue-600 transition-colors">Cari Tiket</a></li>
+                        <li><a href="{{ route('about') }}" class="hover:text-blue-600 transition-colors">Tentang PO CAN Travel</a></li>
+                        @guest
+                            <li><a href="{{ route('login') }}" class="hover:text-blue-600 transition-colors">Masuk ke Akun</a></li>
+                        @else
+                            <li><a href="{{ route('customer.orders.index') }}" class="hover:text-blue-600 transition-colors">Pesanan Saya</a></li>
+                        @endguest
+                    </ul>
+                </div>
+            </div>
+            <div class="flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-slate-500 text-center sm:text-left">
+                <p>&copy; {{ date('Y') }} PO CAN Travel. Seluruh hak cipta dilindungi.</p>
+                <p>Layanan Pemesanan Bus Antarkota</p>
             </div>
         </div>
     </footer>

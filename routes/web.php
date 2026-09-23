@@ -20,8 +20,29 @@ use Illuminate\Support\Facades\Route;
 
 // Halaman Beranda (Publik)
 Route::get('/', function () {
-    return view('home');
+    $origins = \App\Models\Route::select('origin')->distinct()->orderBy('origin')->pluck('origin');
+    $destinations = \App\Models\Route::select('destination')->distinct()->orderBy('destination')->pluck('destination');
+    $routes = \App\Models\Route::withCount(['trips' => function ($q) {
+        $q->where('status', 'scheduled');
+    }])->orderBy('origin')->get();
+    $availableTrips = \App\Models\Trip::with(['bus', 'route'])
+        ->where('status', 'scheduled')
+        ->where('departure_at', '>=', now())
+        ->orderBy('departure_at', 'asc')
+        ->take(4)
+        ->get();
+
+    return view('home', compact('origins', 'destinations', 'routes', 'availableTrips'));
 })->name('home');
+
+// Halaman Tentang (Publik)
+Route::get('/tentang', function () {
+    $routes = \App\Models\Route::withCount(['trips' => function ($q) {
+        $q->where('status', 'scheduled');
+    }])->orderBy('origin')->get();
+
+    return view('about', compact('routes'));
+})->name('about');
 
 // Autentikasi Pengguna (Khusus Tamu / Belum Login)
 Route::middleware('guest')->group(function () {

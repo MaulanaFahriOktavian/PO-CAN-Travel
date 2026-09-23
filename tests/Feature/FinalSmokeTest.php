@@ -90,6 +90,7 @@ class FinalSmokeTest extends TestCase
     public function test_guest_can_access_landing_and_auth_pages(): void
     {
         $this->get('/')->assertOk();
+        $this->get('/tentang')->assertOk();
         $this->get('/login')->assertOk();
         $this->get('/register')->assertOk();
     }
