@@ -31,15 +31,21 @@
                 </div>
 
                 <!-- Desktop Navigation Links -->
-                <nav class="hidden md:flex items-center space-x-8" aria-label="Navigasi Utama">
-                    <a href="{{ route('home') }}" class="text-sm font-medium {{ request()->routeIs('home') ? 'text-blue-600 font-semibold' : 'text-slate-600 hover:text-slate-900' }} transition-colors">Beranda</a>
-                    <a href="{{ route('home') }}#cari-tiket" class="text-sm font-medium text-slate-600 hover:text-slate-900 transition-colors">Cari Tiket</a>
+                <nav class="hidden md:flex items-center space-x-6 lg:space-x-8" aria-label="Navigasi Utama">
                     @auth
                         @if(auth()->user()->role === 'admin')
-                            <a href="{{ route('admin.dashboard') }}" class="text-sm font-medium {{ request()->routeIs('admin.dashboard') ? 'text-blue-600 font-semibold' : 'text-slate-600 hover:text-slate-900' }} transition-colors">Dasbor Admin</a>
+                            <a href="{{ route('admin.dashboard') }}" class="text-sm font-medium {{ request()->routeIs('admin.dashboard') ? 'text-blue-600 font-semibold' : 'text-slate-600 hover:text-slate-900' }} transition-colors">Dasbor</a>
+                            <a href="{{ route('admin.buses.index') }}" class="text-sm font-medium {{ request()->routeIs('admin.buses.*') ? 'text-blue-600 font-semibold' : 'text-slate-600 hover:text-slate-900' }} transition-colors">Armada</a>
+                            <a href="{{ route('admin.routes.index') }}" class="text-sm font-medium {{ request()->routeIs('admin.routes.*') ? 'text-blue-600 font-semibold' : 'text-slate-600 hover:text-slate-900' }} transition-colors">Rute</a>
+                            <a href="{{ route('admin.trips.index') }}" class="text-sm font-medium {{ request()->routeIs('admin.trips.*') ? 'text-blue-600 font-semibold' : 'text-slate-600 hover:text-slate-900' }} transition-colors">Perjalanan</a>
                         @else
+                            <a href="{{ route('home') }}" class="text-sm font-medium {{ request()->routeIs('home') ? 'text-blue-600 font-semibold' : 'text-slate-600 hover:text-slate-900' }} transition-colors">Beranda</a>
+                            <a href="{{ route('home') }}#cari-tiket" class="text-sm font-medium text-slate-600 hover:text-slate-900 transition-colors">Cari Tiket</a>
                             <a href="{{ route('customer.dashboard') }}" class="text-sm font-medium {{ request()->routeIs('customer.dashboard') ? 'text-blue-600 font-semibold' : 'text-slate-600 hover:text-slate-900' }} transition-colors">Dasbor Saya</a>
                         @endif
+                    @else
+                        <a href="{{ route('home') }}" class="text-sm font-medium {{ request()->routeIs('home') ? 'text-blue-600 font-semibold' : 'text-slate-600 hover:text-slate-900' }} transition-colors">Beranda</a>
+                        <a href="{{ route('home') }}#cari-tiket" class="text-sm font-medium text-slate-600 hover:text-slate-900 transition-colors">Cari Tiket</a>
                     @endauth
                 </nav>
 
@@ -99,14 +105,20 @@
             class="md:hidden border-t border-slate-200 bg-white"
         >
             <div class="px-4 pt-3 pb-4 space-y-1">
-                <a href="{{ route('home') }}" class="block px-3 py-2 rounded-md text-base font-medium text-slate-700 hover:text-slate-900 hover:bg-slate-100">Beranda</a>
-                <a href="{{ route('home') }}#cari-tiket" @click="mobileMenuOpen = false" class="block px-3 py-2 rounded-md text-base font-medium text-slate-700 hover:text-slate-900 hover:bg-slate-100">Cari Tiket</a>
                 @auth
                     @if(auth()->user()->role === 'admin')
-                        <a href="{{ route('admin.dashboard') }}" class="block px-3 py-2 rounded-md text-base font-medium text-slate-700 hover:text-slate-900 hover:bg-slate-100">Dasbor Admin</a>
+                        <a href="{{ route('admin.dashboard') }}" class="block px-3 py-2 rounded-md text-base font-medium text-slate-700 hover:text-slate-900 hover:bg-slate-100">Dasbor</a>
+                        <a href="{{ route('admin.buses.index') }}" class="block px-3 py-2 rounded-md text-base font-medium text-slate-700 hover:text-slate-900 hover:bg-slate-100">Armada</a>
+                        <a href="{{ route('admin.routes.index') }}" class="block px-3 py-2 rounded-md text-base font-medium text-slate-700 hover:text-slate-900 hover:bg-slate-100">Rute</a>
+                        <a href="{{ route('admin.trips.index') }}" class="block px-3 py-2 rounded-md text-base font-medium text-slate-700 hover:text-slate-900 hover:bg-slate-100">Perjalanan</a>
                     @else
+                        <a href="{{ route('home') }}" class="block px-3 py-2 rounded-md text-base font-medium text-slate-700 hover:text-slate-900 hover:bg-slate-100">Beranda</a>
+                        <a href="{{ route('home') }}#cari-tiket" @click="mobileMenuOpen = false" class="block px-3 py-2 rounded-md text-base font-medium text-slate-700 hover:text-slate-900 hover:bg-slate-100">Cari Tiket</a>
                         <a href="{{ route('customer.dashboard') }}" class="block px-3 py-2 rounded-md text-base font-medium text-slate-700 hover:text-slate-900 hover:bg-slate-100">Dasbor Saya</a>
                     @endif
+                @else
+                    <a href="{{ route('home') }}" class="block px-3 py-2 rounded-md text-base font-medium text-slate-700 hover:text-slate-900 hover:bg-slate-100">Beranda</a>
+                    <a href="{{ route('home') }}#cari-tiket" @click="mobileMenuOpen = false" class="block px-3 py-2 rounded-md text-base font-medium text-slate-700 hover:text-slate-900 hover:bg-slate-100">Cari Tiket</a>
                 @endauth
             </div>
             <div class="pt-3 pb-4 border-t border-slate-100 px-4 space-y-2">

@@ -43,24 +43,46 @@
                 <h2 class="text-lg font-semibold text-slate-900 mb-4">Modul Operasional</h2>
                 
                 <div class="space-y-4">
-                    <div class="p-4 rounded-lg border border-slate-200 bg-slate-50/50">
-                        <div class="font-medium text-slate-900">Kelola Armada Bus</div>
-                        <p class="text-sm text-slate-600 mt-0.5">
-                            Pengaturan master data bus, kode unit, dan kapasitas kursi penumpang. Modul ini akan tersedia pada tahap berikutnya.
-                        </p>
+                    <div class="p-5 rounded-lg border border-slate-200 bg-slate-50/50 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                        <div>
+                            <div class="font-semibold text-slate-900 text-base">Kelola Armada Bus</div>
+                            <p class="text-sm text-slate-600 mt-0.5">
+                                Pengaturan master data armada, kode bus, dan sinkronisasi kapasitas kursi.
+                            </p>
+                        </div>
+                        <a href="{{ route('admin.buses.index') }}" class="inline-flex items-center justify-center px-4 py-2 text-sm font-medium text-blue-600 bg-blue-50 hover:bg-blue-100 rounded-lg transition-colors whitespace-nowrap">
+                            Buka Armada &rarr;
+                        </a>
                     </div>
 
-                    <div class="p-4 rounded-lg border border-slate-200 bg-slate-50/50">
-                        <div class="font-medium text-slate-900">Kelola Jadwal Perjalanan</div>
-                        <p class="text-sm text-slate-600 mt-0.5">
-                            Pengaturan rute keberangkatan, waktu tempuh, jadwal trip, dan tarif tiket. Modul ini akan tersedia pada tahap berikutnya.
-                        </p>
+                    <div class="p-5 rounded-lg border border-slate-200 bg-slate-50/50 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                        <div>
+                            <div class="font-semibold text-slate-900 text-base">Kelola Rute Perjalanan</div>
+                            <p class="text-sm text-slate-600 mt-0.5">
+                                Pengaturan titik kota asal, kota tujuan, dan estimasi durasi tempuh perjalanan.
+                            </p>
+                        </div>
+                        <a href="{{ route('admin.routes.index') }}" class="inline-flex items-center justify-center px-4 py-2 text-sm font-medium text-blue-600 bg-blue-50 hover:bg-blue-100 rounded-lg transition-colors whitespace-nowrap">
+                            Buka Rute &rarr;
+                        </a>
                     </div>
 
-                    <div class="p-4 rounded-lg border border-slate-200 bg-slate-50/50">
-                        <div class="font-medium text-slate-900">Pesanan Tiket</div>
+                    <div class="p-5 rounded-lg border border-slate-200 bg-slate-50/50 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                        <div>
+                            <div class="font-semibold text-slate-900 text-base">Kelola Jadwal Perjalanan</div>
+                            <p class="text-sm text-slate-600 mt-0.5">
+                                Penjadwalan trip, pemilihan armada, penetapan tarif tiket, dan pembaruan status keberangkatan.
+                            </p>
+                        </div>
+                        <a href="{{ route('admin.trips.index') }}" class="inline-flex items-center justify-center px-4 py-2 text-sm font-medium text-blue-600 bg-blue-50 hover:bg-blue-100 rounded-lg transition-colors whitespace-nowrap">
+                            Buka Jadwal &rarr;
+                        </a>
+                    </div>
+
+                    <div class="p-5 rounded-lg border border-slate-200 bg-slate-50/50">
+                        <div class="font-semibold text-slate-900 text-base">Pesanan Tiket</div>
                         <p class="text-sm text-slate-600 mt-0.5">
-                            Pencatatan dan pemantauan transaksi tiket penumpang. Modul ini akan tersedia pada tahap berikutnya.
+                            Pencatatan dan pemantauan transaksi tiket penumpang. Modul ini akan tersedia pada tahap pengembangan berikutnya.
                         </p>
                     </div>
                 </div>

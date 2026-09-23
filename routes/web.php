@@ -1,6 +1,9 @@
 <?php
 
+use App\Http\Controllers\Admin\BusController;
 use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
+use App\Http\Controllers\Admin\RouteController;
+use App\Http\Controllers\Admin\TripController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\Customer\DashboardController as CustomerDashboardController;
 use Illuminate\Support\Facades\Route;
@@ -42,4 +45,8 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
         return redirect()->route('admin.dashboard');
     });
     Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('dashboard');
+
+    Route::resource('buses', BusController::class)->except(['show']);
+    Route::resource('routes', RouteController::class)->except(['show']);
+    Route::resource('trips', TripController::class)->except(['show']);
 });

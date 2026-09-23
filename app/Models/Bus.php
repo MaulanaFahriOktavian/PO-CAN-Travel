@@ -21,6 +21,33 @@ class Bus extends Model
     ];
 
     /**
+     * Menghasilkan urutan nomor kursi (1A, 1B, 1C, 1D, 2A, ...) sejumlah total kursi.
+     *
+     * @param int $totalSeats
+     * @return array<int, string>
+     */
+    public static function generateSeatNumbers(int $totalSeats): array
+    {
+        $seatLetters = ['A', 'B', 'C', 'D'];
+        $seats = [];
+        $seatCount = 0;
+        $row = 1;
+
+        while ($seatCount < $totalSeats) {
+            foreach ($seatLetters as $letter) {
+                if ($seatCount >= $totalSeats) {
+                    break;
+                }
+                $seats[] = "{$row}{$letter}";
+                $seatCount++;
+            }
+            $row++;
+        }
+
+        return $seats;
+    }
+
+    /**
      * Bus has many seats.
      */
     public function seats(): HasMany
