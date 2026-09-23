@@ -60,12 +60,15 @@ class SeatSelectionController extends Controller
         }
 
         $seatIds = $request->validated('seat_ids');
-        $selectedCount = count($seatIds);
-        $totalPrice = $selectedCount * $trip->price;
+
+        session([
+            'booking.trip_id' => $trip->id,
+            'booking.seat_ids' => $seatIds,
+            'selected_seats' => $seatIds,
+        ]);
 
         return redirect()
-            ->route('customer.trips.seats', $trip)
-            ->with('selected_seats', $seatIds)
-            ->with('success', 'Pilihan kursi berhasil divalidasi. Kursi akan dikonfirmasi saat pemesanan.');
+            ->route('customer.trips.booking', $trip)
+            ->with('success', 'Pilihan kursi berhasil divalidasi. Silakan lengkapi data penumpang.');
     }
 }

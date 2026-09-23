@@ -380,8 +380,10 @@ class SeatSelectionTest extends TestCase
             'seat_ids' => [$seat->id],
         ]);
 
-        $response->assertRedirect(route('customer.trips.seats', $this->tripScheduled));
+        $response->assertRedirect(route('customer.trips.booking', $this->tripScheduled));
         $response->assertSessionHas('success');
+        $response->assertSessionHas('booking.trip_id', $this->tripScheduled->id);
+        $response->assertSessionHas('booking.seat_ids', [$seat->id]);
         $response->assertSessionHas('selected_seats', [$seat->id]);
     }
 
@@ -396,8 +398,10 @@ class SeatSelectionTest extends TestCase
             'seat_ids' => $seats,
         ]);
 
-        $response->assertRedirect(route('customer.trips.seats', $this->tripScheduled));
+        $response->assertRedirect(route('customer.trips.booking', $this->tripScheduled));
         $response->assertSessionHas('success');
+        $response->assertSessionHas('booking.trip_id', $this->tripScheduled->id);
+        $response->assertSessionHas('booking.seat_ids', $seats);
         $response->assertSessionHas('selected_seats', $seats);
     }
 
@@ -510,7 +514,7 @@ class SeatSelectionTest extends TestCase
             'total_amount' => 1,
         ]);
 
-        $response->assertRedirect(route('customer.trips.seats', $this->tripScheduled));
+        $response->assertRedirect(route('customer.trips.booking', $this->tripScheduled));
         $response->assertSessionHasNoErrors();
 
         // Pastikan tidak ada data yang disimpan dengan harga palsu tersebut
@@ -528,7 +532,7 @@ class SeatSelectionTest extends TestCase
             'seat_ids' => $seats,
         ]);
 
-        $response->assertRedirect(route('customer.trips.seats', $this->tripScheduled));
+        $response->assertRedirect(route('customer.trips.booking', $this->tripScheduled));
         $response->assertSessionHas('success');
 
         // Total 2 x 250.000 = 500.000

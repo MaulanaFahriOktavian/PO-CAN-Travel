@@ -24,6 +24,20 @@ class Order extends Model
     ];
 
     /**
+     * Menghasilkan kode pesanan unik berformat PCT-YYYYMMDD-XXXXXX.
+     */
+    public static function generateOrderCode(): string
+    {
+        $date = \Carbon\Carbon::now('Asia/Jakarta')->format('Ymd');
+        do {
+            $random = strtoupper(\Illuminate\Support\Str::random(6));
+            $code = "PCT-{$date}-{$random}";
+        } while (static::where('order_code', $code)->exists());
+
+        return $code;
+    }
+
+    /**
      * Order belongs to a user.
      */
     public function user(): BelongsTo
