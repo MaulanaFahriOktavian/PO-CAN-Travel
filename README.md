@@ -230,9 +230,54 @@ PO_CAN_Travel/
 
 ---
 
-## Catatan Endpoint & API
+## Panduan Deployment ke Lingkungan Production
 
-Aplikasi **PO CAN Travel** menggunakan arsitektur server-side rendering (SSR) dengan Laravel Blade dan autentikasi berbasis sesi cookies. Seluruh interaksi form dan perpindahan halaman dilayani melalui web routes pada berkas `routes/web.php`. Sistem tidak mengekspos REST API publik untuk menjaga kesederhanaan, performa, dan keamanan arsitektur monolitik.
+Jika aplikasi hendak dideploy ke lingkungan server produksi, pastikan konfigurasi berikut diterapkan:
+
+1. **Konfigurasi Environment (.env)**:
+   ```env
+   APP_ENV=production
+   APP_DEBUG=false
+   APP_URL=https://nama-domain-anda.com
+   ```
+   > **PENTING**: Selalu pastikan `APP_DEBUG=false` pada production agar detail pengecualian, jejak stack trace, dan data konfigurasi server tidak terekspos kepada publik.
+
+2. **Optimasi Cache Framework**:
+   ```bash
+   php artisan config:cache
+   php artisan route:cache
+   php artisan view:cache
+   ```
+
+3. **Kompilasi Aset Frontend**:
+   ```bash
+   npm ci
+   npm run build
+   ```
+
+4. **Migrasi Database Production**:
+   ```bash
+   php artisan migrate --force
+   ```
+
+---
+
+## Batasan Sistem & Rencana Integrasi Mendatang (Limitations & Roadmap)
+
+Secara arsitektural dan fungsional, fondasi sistem transaksi pemesanan tiket, konkurensi kursi (*pessimistic locking*), hak akses (*RBAC*), dan antarmuka pengguna telah siap digunakan (*production-ready foundation*). Namun demikian, untuk implementasi komersial berskala penuh, beberapa modul eksternal berikut dirancang sebagai langkah integrasi selanjutnya:
+
+1. **Payment Gateway Otomatis**:
+   - *Status Saat Ini*: Siklus pembayaran tiket saat ini menggunakan verifikasi manual oleh administrator (`pending` &rarr; `confirmed`).
+   - *Rencana Mendatang*: Integrasi payment gateway (seperti Midtrans, Xendit, atau DOKU) menggunakan webhook callback untuk konfirmasi otomatis instan (Virtual Account, QRIS, E-Wallet).
+2. **Notifikasi Otomatis (Omnichannel)**:
+   - *Status Saat Ini*: Konfirmasi tiket dan kode pesanan dapat dipantau langsung pada dasbor dan riwayat pesanan akun pelanggan.
+   - *Rencana Mendatang*: Pengiriman tiket elektronik berbentuk PDF via Email (Laravel Mailables) dan notifikasi status pemesanan via WhatsApp Business API.
+3. **Pembaruan Kursi Realtime (WebSockets)**:
+   - *Status Saat Ini*: Ketersediaan kursi diperiksa secara atomik di server saat halaman diakses dan dikunci dengan `lockForUpdate()` saat pemesanan disubmit.
+   - *Rencana Mendatang*: Integrasi Laravel Echo dan Pusher/Reverb untuk memutakhirkan denah kursi secara langsung (*real-time*) di browser tanpa memuat ulang halaman.
+4. **Verifikasi Tiket di Terminal Keberangkatan**:
+   - *Status Saat Ini*: Pemeriksaan manifes penumpang dilakukan oleh administrator melalui menu Kelola Pesanan.
+   - *Rencana Mendatang*: Penerbitan kode QR pada detail pesanan dan aplikasi pemindai (*scanner*) untuk staf loket/kondektur di terminal.
 
 ---
 
