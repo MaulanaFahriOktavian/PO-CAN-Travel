@@ -33,3 +33,18 @@
     }
 }
 
+@media print {
+    header, footer, .no-print {
+        display: none !important;
+    }
+
+    body {
+        background-color: white !important;
+        color: black !important;
+    }
+
+    .print-only {
+        display: block !important;
+    }
+}
+

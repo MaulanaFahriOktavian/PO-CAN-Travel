@@ -25,7 +25,14 @@ Route::get('/', function () {
     $routes = \App\Models\Route::withCount(['trips' => function ($q) {
         $q->where('status', 'scheduled');
     }])->orderBy('origin')->get();
+    $bookedSeatsCountSubquery = \App\Models\OrderItem::selectRaw('count(*)')
+        ->join('orders', 'orders.id', '=', 'order_items.order_id')
+        ->whereColumn('orders.trip_id', 'trips.id')
+        ->whereIn('orders.status', ['pending', 'confirmed', 'completed']);
+
     $availableTrips = \App\Models\Trip::with(['bus', 'route'])
+        ->select('trips.*')
+        ->selectSub($bookedSeatsCountSubquery, 'booked_seats_count')
         ->where('status', 'scheduled')
         ->where('departure_at', '>=', now())
         ->orderBy('departure_at', 'asc')

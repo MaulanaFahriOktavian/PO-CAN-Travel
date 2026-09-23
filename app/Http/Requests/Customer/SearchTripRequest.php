@@ -25,6 +25,7 @@ class SearchTripRequest extends FormRequest
             'origin' => ['nullable', 'string', 'max:100'],
             'destination' => ['nullable', 'string', 'max:100'],
             'departure_date' => ['nullable', 'date'],
+            'sort' => ['nullable', 'string', 'in:departure_asc,departure_desc,price_asc,price_desc'],
         ];
     }
 

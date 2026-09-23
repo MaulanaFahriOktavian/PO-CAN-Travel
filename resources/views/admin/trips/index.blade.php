@@ -49,6 +49,7 @@
                                 <th scope="col" class="py-3.5 px-4">Armada Bus</th>
                                 <th scope="col" class="py-3.5 px-4">Keberangkatan</th>
                                 <th scope="col" class="py-3.5 px-4">Kedatangan</th>
+                                <th scope="col" class="py-3.5 px-4">Okupansi Kursi</th>
                                 <th scope="col" class="py-3.5 px-4">Tarif</th>
                                 <th scope="col" class="py-3.5 px-4">Status</th>
                                 <th scope="col" class="py-3.5 px-4 sm:px-6 text-right">Aksi</th>
@@ -56,6 +57,11 @@
                         </thead>
                         <tbody class="divide-y divide-slate-100">
                             @foreach ($trips as $trip)
+                                @php
+                                    $booked = $trip->booked_seats_count ?? 0;
+                                    $totalSeats = $trip->bus->total_seats ?? 0;
+                                    $occupancyRate = $totalSeats > 0 ? round(($booked / $totalSeats) * 100) : 0;
+                                @endphp
                                 <tr class="hover:bg-slate-50/50 transition-colors">
                                     <td class="py-4 px-4 sm:px-6 font-medium text-slate-900">
                                         {{ $trip->route->origin }} &rarr; {{ $trip->route->destination }}
@@ -72,7 +78,15 @@
                                         <div>{{ $trip->arrival_at->translatedFormat('d M Y') }}</div>
                                         <div class="text-xs text-slate-500 font-medium">{{ $trip->arrival_at->format('H.i') }} WIB</div>
                                     </td>
-                                    <td class="py-4 px-4 font-medium text-slate-900">
+                                    <td class="py-4 px-4 text-slate-700">
+                                        <div class="text-xs font-medium text-slate-900 tabular-nums">
+                                            {{ $booked }} / {{ $totalSeats }} Kursi ({{ $occupancyRate }}%)
+                                        </div>
+                                        <div class="w-24 bg-slate-200 rounded-full h-1.5 mt-1.5 overflow-hidden">
+                                            <div class="bg-blue-600 h-1.5 rounded-full" style="width: {{ min(100, $occupancyRate) }}%"></div>
+                                        </div>
+                                    </td>
+                                    <td class="py-4 px-4 font-medium text-slate-900 tabular-nums">
                                         Rp{{ number_format($trip->price, 0, ',', '.') }}
                                     </td>
                                     <td class="py-4 px-4">

@@ -5,6 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>@yield('title', 'PO CAN Travel - Pemesanan Tiket Bus Online')</title>
+    <meta name="description" content="@yield('meta_description', 'Pesan tiket bus antarkota resmi PO CAN Travel. Pilih nomor kursi sendiri, cek jadwal rute real-time, dan kelola pesanan Anda dengan mudah.')">
+    <link rel="canonical" href="{{ url()->current() }}">
+    <meta property="og:title" content="@yield('title', 'PO CAN Travel - Pemesanan Tiket Bus Online')">
+    <meta property="og:description" content="@yield('meta_description', 'Pesan tiket bus antarkota resmi PO CAN Travel. Pilih nomor kursi sendiri, cek jadwal rute real-time, dan kelola pesanan Anda dengan mudah.')">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="{{ url()->current() }}">
 
     <!-- Google Fonts: Plus Jakarta Sans -->
     <link rel="preconnect" href="https://fonts.googleapis.com">

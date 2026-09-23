@@ -24,6 +24,7 @@ class OrderController extends Controller
     {
         $allowedStatuses = ['pending', 'confirmed', 'cancelled', 'completed'];
         $selectedStatus = $request->query('status');
+        $search = trim($request->query('search', ''));
 
         $query = Order::where('user_id', Auth::id());
 
@@ -34,13 +35,18 @@ class OrderController extends Controller
             $selectedStatus = null;
         }
 
+        // Filter pencarian kode pesanan
+        if ($search !== '') {
+            $query->where('order_code', 'like', "%{$search}%");
+        }
+
         $orders = $query->with(['trip.route', 'trip.bus'])
             ->withCount('orderItems')
             ->orderBy('created_at', 'desc')
             ->paginate(10)
             ->withQueryString();
 
-        return view('customer.orders.index', compact('orders', 'selectedStatus'));
+        return view('customer.orders.index', compact('orders', 'selectedStatus', 'search'));
     }
 
     /**

@@ -18,7 +18,17 @@ class TripController extends Controller
      */
     public function index(): View
     {
-        $trips = Trip::with(['bus', 'route'])->withCount('orders')->orderBy('departure_at', 'desc')->get();
+        $bookedSeatsCountSubquery = \App\Models\OrderItem::selectRaw('count(*)')
+            ->join('orders', 'orders.id', '=', 'order_items.order_id')
+            ->whereColumn('orders.trip_id', 'trips.id')
+            ->whereIn('orders.status', ['pending', 'confirmed', 'completed']);
+
+        $trips = Trip::with(['bus', 'route'])
+            ->select('trips.*')
+            ->selectSub($bookedSeatsCountSubquery, 'booked_seats_count')
+            ->withCount('orders')
+            ->orderBy('departure_at', 'desc')
+            ->get();
 
         return view('admin.trips.index', compact('trips'));
     }

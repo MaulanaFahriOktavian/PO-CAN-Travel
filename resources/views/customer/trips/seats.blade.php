@@ -56,6 +56,29 @@
             </a>
         </div>
 
+        <!-- Step Indicator -->
+        <nav aria-label="Tahapan Pemesanan" class="mb-8">
+            <div class="flex items-center justify-between max-w-xl mx-auto">
+                <!-- Step 1: Active -->
+                <div class="flex items-center gap-2">
+                    <span class="w-7 h-7 rounded-full bg-blue-600 text-white font-bold text-xs flex items-center justify-center shadow-sm">01</span>
+                    <span class="text-xs font-semibold text-blue-600">Pilih Kursi</span>
+                </div>
+                <div class="flex-1 h-0.5 bg-slate-200 mx-3"></div>
+                <!-- Step 2: Next -->
+                <div class="flex items-center gap-2">
+                    <span class="w-7 h-7 rounded-full bg-slate-100 text-slate-500 font-bold text-xs flex items-center justify-center border border-slate-200">02</span>
+                    <span class="text-xs font-medium text-slate-500">Data Penumpang</span>
+                </div>
+                <div class="flex-1 h-0.5 bg-slate-200 mx-3"></div>
+                <!-- Step 3: Next -->
+                <div class="flex items-center gap-2">
+                    <span class="w-7 h-7 rounded-full bg-slate-100 text-slate-500 font-bold text-xs flex items-center justify-center border border-slate-200">03</span>
+                    <span class="text-xs font-medium text-slate-500">Konfirmasi</span>
+                </div>
+            </div>
+        </nav>
+
         <!-- Page Header -->
         <div class="border-b border-slate-200 pb-6 mb-8">
             <h1 class="text-2xl sm:text-3xl font-bold text-slate-900 tracking-tight">
