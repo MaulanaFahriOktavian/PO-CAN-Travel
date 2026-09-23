@@ -56,7 +56,7 @@
                 </p>
 
                 <a
-                    href="{{ route('home') }}#cari-tiket"
+                    href="{{ route('customer.trips.index') }}"
                     class="inline-flex items-center justify-center px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-medium text-sm rounded-lg shadow-sm transition-colors"
                 >
                     Cari Jadwal Perjalanan

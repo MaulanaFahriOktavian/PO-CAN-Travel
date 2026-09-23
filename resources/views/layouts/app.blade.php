@@ -40,7 +40,7 @@
                             <a href="{{ route('admin.trips.index') }}" class="text-sm font-medium {{ request()->routeIs('admin.trips.*') ? 'text-blue-600 font-semibold' : 'text-slate-600 hover:text-slate-900' }} transition-colors">Perjalanan</a>
                         @else
                             <a href="{{ route('home') }}" class="text-sm font-medium {{ request()->routeIs('home') ? 'text-blue-600 font-semibold' : 'text-slate-600 hover:text-slate-900' }} transition-colors">Beranda</a>
-                            <a href="{{ route('home') }}#cari-tiket" class="text-sm font-medium text-slate-600 hover:text-slate-900 transition-colors">Cari Tiket</a>
+                            <a href="{{ route('customer.trips.index') }}" class="text-sm font-medium {{ request()->routeIs('customer.trips.*') ? 'text-blue-600 font-semibold' : 'text-slate-600 hover:text-slate-900' }} transition-colors">Cari Perjalanan</a>
                             <a href="{{ route('customer.dashboard') }}" class="text-sm font-medium {{ request()->routeIs('customer.dashboard') ? 'text-blue-600 font-semibold' : 'text-slate-600 hover:text-slate-900' }} transition-colors">Dasbor Saya</a>
                         @endif
                     @else
@@ -113,7 +113,7 @@
                         <a href="{{ route('admin.trips.index') }}" class="block px-3 py-2 rounded-md text-base font-medium text-slate-700 hover:text-slate-900 hover:bg-slate-100">Perjalanan</a>
                     @else
                         <a href="{{ route('home') }}" class="block px-3 py-2 rounded-md text-base font-medium text-slate-700 hover:text-slate-900 hover:bg-slate-100">Beranda</a>
-                        <a href="{{ route('home') }}#cari-tiket" @click="mobileMenuOpen = false" class="block px-3 py-2 rounded-md text-base font-medium text-slate-700 hover:text-slate-900 hover:bg-slate-100">Cari Tiket</a>
+                        <a href="{{ route('customer.trips.index') }}" @click="mobileMenuOpen = false" class="block px-3 py-2 rounded-md text-base font-medium text-slate-700 hover:text-slate-900 hover:bg-slate-100">Cari Perjalanan</a>
                         <a href="{{ route('customer.dashboard') }}" class="block px-3 py-2 rounded-md text-base font-medium text-slate-700 hover:text-slate-900 hover:bg-slate-100">Dasbor Saya</a>
                     @endif
                 @else
