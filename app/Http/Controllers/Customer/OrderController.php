@@ -12,10 +12,37 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
 
 class OrderController extends Controller
 {
+    /**
+     * Menampilkan daftar riwayat pesanan milik customer yang sedang login.
+     */
+    public function index(Request $request): View
+    {
+        $allowedStatuses = ['pending', 'confirmed', 'cancelled', 'completed'];
+        $selectedStatus = $request->query('status');
+
+        $query = Order::where('user_id', Auth::id());
+
+        // Whitelist filter status
+        if ($selectedStatus && in_array($selectedStatus, $allowedStatuses, true)) {
+            $query->where('status', $selectedStatus);
+        } else {
+            $selectedStatus = null;
+        }
+
+        $orders = $query->with(['trip.route', 'trip.bus'])
+            ->withCount('orderItems')
+            ->orderBy('created_at', 'desc')
+            ->paginate(10)
+            ->withQueryString();
+
+        return view('customer.orders.index', compact('orders', 'selectedStatus'));
+    }
+
     /**
      * Menampilkan formulir data penumpang untuk kursi yang dipilih.
      */

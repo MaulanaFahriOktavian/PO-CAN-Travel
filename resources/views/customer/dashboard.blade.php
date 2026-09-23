@@ -62,6 +62,21 @@
                     Cari Jadwal Perjalanan
                 </a>
             </div>
+
+            <!-- Riwayat Pesanan -->
+            <div class="bg-white border border-slate-200 rounded-xl p-6 sm:p-8">
+                <h2 class="text-lg font-semibold text-slate-900 mb-2">Riwayat Pesanan</h2>
+                <p class="text-sm text-slate-600 mb-5">
+                    Lihat seluruh riwayat pesanan tiket perjalanan Anda beserta status dan detailnya.
+                </p>
+
+                <a
+                    href="{{ route('customer.orders.index') }}"
+                    class="inline-flex items-center justify-center px-5 py-2.5 bg-slate-900 hover:bg-slate-800 text-white font-medium text-sm rounded-lg shadow-sm transition-colors"
+                >
+                    Lihat Riwayat Pesanan
+                </a>
+            </div>
         </div>
     </div>
 </div>

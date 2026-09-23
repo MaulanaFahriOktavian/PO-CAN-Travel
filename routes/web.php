@@ -46,6 +46,7 @@ Route::middleware(['auth', 'role:customer'])->prefix('customer')->name('customer
     Route::post('/trips/{trip}/seats', [SeatSelectionController::class, 'store'])->name('trips.seats.store');
     Route::get('/trips/{trip}/booking', [OrderController::class, 'create'])->name('trips.booking');
     Route::post('/trips/{trip}/booking', [OrderController::class, 'store'])->name('trips.booking.store');
+    Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
     Route::get('/orders/{order}', [OrderController::class, 'show'])->name('orders.show');
 });
 

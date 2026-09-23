@@ -5,6 +5,16 @@
 @section('content')
 <div class="py-10 sm:py-12">
     <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        <!-- Back Navigation -->
+        <div class="mb-6">
+            <a
+                href="{{ route('customer.orders.index') }}"
+                class="inline-flex items-center text-sm font-medium text-slate-600 hover:text-slate-900 transition-colors"
+            >
+                <span class="mr-1.5">&larr;</span> Kembali ke Riwayat Pesanan
+            </a>
+        </div>
+
         <!-- Flash Messages -->
         @if (session('success'))
             <div class="mb-6 p-4 rounded-lg bg-emerald-50 border border-emerald-200 text-sm text-emerald-800">
@@ -16,7 +26,7 @@
         <div class="border-b border-slate-200 pb-6 mb-8 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
             <div>
                 <span class="text-xs font-mono font-medium text-slate-500 uppercase tracking-wider block mb-1">
-                    Pesanan Tiket Bus
+                    Pesanan Tiket Bus &bull; Dibuat pada {{ $order->created_at->translatedFormat('d M Y, H.i') }} WIB
                 </span>
                 <h1 class="text-2xl sm:text-3xl font-bold text-slate-900 tracking-tight font-mono">
                     {{ $order->order_code }}
@@ -24,9 +34,27 @@
             </div>
 
             <div>
-                <span class="inline-block text-xs font-medium text-amber-800 bg-amber-50 px-3 py-1.5 rounded border border-amber-200">
-                    Menunggu Pembayaran (Pending)
-                </span>
+                @if ($order->status === 'pending')
+                    <span class="inline-block text-xs font-medium text-amber-800 bg-amber-50 px-3 py-1.5 rounded border border-amber-200">
+                        Menunggu Pembayaran
+                    </span>
+                @elseif ($order->status === 'confirmed')
+                    <span class="inline-block text-xs font-medium text-blue-800 bg-blue-50 px-3 py-1.5 rounded border border-blue-200">
+                        Dikonfirmasi
+                    </span>
+                @elseif ($order->status === 'completed')
+                    <span class="inline-block text-xs font-medium text-emerald-800 bg-emerald-50 px-3 py-1.5 rounded border border-emerald-200">
+                        Selesai
+                    </span>
+                @elseif ($order->status === 'cancelled')
+                    <span class="inline-block text-xs font-medium text-rose-800 bg-rose-50 px-3 py-1.5 rounded border border-rose-200">
+                        Dibatalkan
+                    </span>
+                @else
+                    <span class="inline-block text-xs font-medium text-slate-800 bg-slate-100 px-3 py-1.5 rounded border border-slate-200 capitalize">
+                        {{ $order->status }}
+                    </span>
+                @endif
             </div>
         </div>
 
@@ -115,14 +143,30 @@
                 <div>
                     <h3 class="text-sm font-semibold text-slate-900">Status Pembayaran</h3>
                     <p class="mt-1 text-sm text-slate-600">
-                        Pesanan Anda telah tercatat dengan status menunggu pembayaran. Fitur pembayaran tiket dan penerbitan tiket final akan tersedia pada tahap berikutnya.
+                        @if ($order->status === 'pending')
+                            Pesanan Anda telah tercatat dengan status menunggu pembayaran. Fitur pembayaran tiket dan penerbitan tiket final akan tersedia pada tahap berikutnya.
+                        @elseif ($order->status === 'confirmed')
+                            Pesanan Anda telah dikonfirmasi dan kursi Anda telah diamankan.
+                        @elseif ($order->status === 'completed')
+                            Perjalanan ini telah selesai dilaksanakan. Terima kasih telah bepergian bersama PO CAN Travel.
+                        @elseif ($order->status === 'cancelled')
+                            Pesanan ini telah dibatalkan dan alokasi kursi telah dilepaskan.
+                        @else
+                            Status pesanan saat ini: {{ $order->status }}.
+                        @endif
                     </p>
                 </div>
 
                 <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 pt-2">
                     <a
-                        href="{{ route('customer.dashboard') }}"
+                        href="{{ route('customer.orders.index') }}"
                         class="px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-medium text-sm rounded-lg shadow-sm transition-colors text-center"
+                    >
+                        Lihat Riwayat Pesanan
+                    </a>
+                    <a
+                        href="{{ route('customer.dashboard') }}"
+                        class="px-4 py-2.5 bg-white hover:bg-slate-50 text-slate-700 font-medium text-sm border border-slate-300 rounded-lg text-center transition-colors"
                     >
                         Kembali ke Dasbor Saya
                     </a>
