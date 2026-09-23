@@ -109,99 +109,104 @@
                     </div>
                 </div>
 
-                <!-- Bus Cabin Front Indicator -->
-                <div class="mb-6 pb-2 text-center border-b border-dashed border-slate-200">
-                    <span class="text-xs uppercase tracking-wider font-semibold text-slate-400">Bagian Depan / Sopir</span>
-                </div>
-
-                <!-- Seat Grid (2-2 Configuration) -->
-                <div class="space-y-3">
-                    @foreach ($rows as $rowNum => $rowSeats)
-                        <div class="flex items-center justify-center gap-6 sm:gap-8">
-                            <!-- Left Side: A & B -->
-                            <div class="flex items-center gap-2">
-                                @foreach (['A', 'B'] as $letter)
-                                    @if (isset($rowSeats[$letter]))
-                                        @php
-                                            $seat = $rowSeats[$letter];
-                                            $isBooked = in_array($seat->id, $bookedSeatIds);
-                                        @endphp
-
-                                        @if ($isBooked)
-                                            <!-- Booked Seat -->
-                                            <button
-                                                type="button"
-                                                disabled
-                                                class="w-12 h-12 rounded-lg border border-slate-200 bg-slate-100 text-slate-400 font-mono text-xs font-medium cursor-not-allowed flex items-center justify-center select-none"
-                                                title="Kursi {{ $seat->seat_number }} sudah dipesan"
-                                            >
-                                                {{ $seat->seat_number }}
-                                            </button>
-                                        @else
-                                            <!-- Available / Selectable Seat -->
-                                            <button
-                                                type="button"
-                                                @click="toggleSeat({{ $seat->id }})"
-                                                :class="isSelected({{ $seat->id }})
-                                                    ? 'bg-blue-600 text-white border-blue-600 font-semibold shadow-sm'
-                                                    : 'bg-white text-slate-800 border-slate-300 hover:border-blue-500 hover:bg-blue-50/50'"
-                                                class="w-12 h-12 rounded-lg border font-mono text-xs transition-colors flex items-center justify-center focus:outline-none focus:ring-2 focus:ring-blue-600"
-                                            >
-                                                {{ $seat->seat_number }}
-                                            </button>
-                                        @endif
-                                    @else
-                                        <!-- Spacer if seat not present -->
-                                        <div class="w-12 h-12"></div>
-                                    @endif
-                                @endforeach
-                            </div>
-
-                            <!-- Corridor / Gang -->
-                            <div class="w-5 text-center text-xs font-mono text-slate-300 select-none">
-                                {{ $rowNum }}
-                            </div>
-
-                            <!-- Right Side: C & D -->
-                            <div class="flex items-center gap-2">
-                                @foreach (['C', 'D'] as $letter)
-                                    @if (isset($rowSeats[$letter]))
-                                        @php
-                                            $seat = $rowSeats[$letter];
-                                            $isBooked = in_array($seat->id, $bookedSeatIds);
-                                        @endphp
-
-                                        @if ($isBooked)
-                                            <!-- Booked Seat -->
-                                            <button
-                                                type="button"
-                                                disabled
-                                                class="w-12 h-12 rounded-lg border border-slate-200 bg-slate-100 text-slate-400 font-mono text-xs font-medium cursor-not-allowed flex items-center justify-center select-none"
-                                                title="Kursi {{ $seat->seat_number }} sudah dipesan"
-                                            >
-                                                {{ $seat->seat_number }}
-                                            </button>
-                                        @else
-                                            <!-- Available / Selectable Seat -->
-                                            <button
-                                                type="button"
-                                                @click="toggleSeat({{ $seat->id }})"
-                                                :class="isSelected({{ $seat->id }})
-                                                    ? 'bg-blue-600 text-white border-blue-600 font-semibold shadow-sm'
-                                                    : 'bg-white text-slate-800 border-slate-300 hover:border-blue-500 hover:bg-blue-50/50'"
-                                                class="w-12 h-12 rounded-lg border font-mono text-xs transition-colors flex items-center justify-center focus:outline-none focus:ring-2 focus:ring-blue-600"
-                                            >
-                                                {{ $seat->seat_number }}
-                                            </button>
-                                        @endif
-                                    @else
-                                        <!-- Spacer if seat not present -->
-                                        <div class="w-12 h-12"></div>
-                                    @endif
-                                @endforeach
-                            </div>
+                <!-- Bus Cabin Container (Responsive scrollable if needed) -->
+                <div class="overflow-x-auto pb-2">
+                    <div class="min-w-[280px]">
+                        <!-- Bus Cabin Front Indicator -->
+                        <div class="mb-6 pb-2 text-center border-b border-dashed border-slate-200">
+                            <span class="text-xs uppercase tracking-wider font-semibold text-slate-400">Bagian Depan / Sopir</span>
                         </div>
-                    @endforeach
+
+                        <!-- Seat Grid (2-2 Configuration) -->
+                        <div class="space-y-3">
+                            @foreach ($rows as $rowNum => $rowSeats)
+                                <div class="flex items-center justify-center gap-6 sm:gap-8">
+                                    <!-- Left Side: A & B -->
+                                    <div class="flex items-center gap-2">
+                                        @foreach (['A', 'B'] as $letter)
+                                            @if (isset($rowSeats[$letter]))
+                                                @php
+                                                    $seat = $rowSeats[$letter];
+                                                    $isBooked = in_array($seat->id, $bookedSeatIds);
+                                                @endphp
+
+                                                @if ($isBooked)
+                                                    <!-- Booked Seat -->
+                                                    <button
+                                                        type="button"
+                                                        disabled
+                                                        class="w-12 h-12 rounded-lg border border-slate-200 bg-slate-100 text-slate-400 font-mono text-xs font-medium cursor-not-allowed flex items-center justify-center select-none"
+                                                        title="Kursi {{ $seat->seat_number }} sudah dipesan"
+                                                    >
+                                                        {{ $seat->seat_number }}
+                                                    </button>
+                                                @else
+                                                    <!-- Available / Selectable Seat -->
+                                                    <button
+                                                        type="button"
+                                                        @click="toggleSeat({{ $seat->id }})"
+                                                        :class="isSelected({{ $seat->id }})
+                                                            ? 'bg-blue-600 text-white border-blue-600 font-semibold shadow-sm'
+                                                            : 'bg-white text-slate-800 border-slate-300 hover:border-blue-500 hover:bg-blue-50/50'"
+                                                        class="w-12 h-12 rounded-lg border font-mono text-xs transition-colors flex items-center justify-center focus:outline-none focus:ring-2 focus:ring-blue-600"
+                                                    >
+                                                        {{ $seat->seat_number }}
+                                                    </button>
+                                                @endif
+                                            @else
+                                                <!-- Spacer if seat not present -->
+                                                <div class="w-12 h-12"></div>
+                                            @endif
+                                        @endforeach
+                                    </div>
+
+                                    <!-- Corridor / Gang -->
+                                    <div class="w-5 text-center text-xs font-mono text-slate-300 select-none">
+                                        {{ $rowNum }}
+                                    </div>
+
+                                    <!-- Right Side: C & D -->
+                                    <div class="flex items-center gap-2">
+                                        @foreach (['C', 'D'] as $letter)
+                                            @if (isset($rowSeats[$letter]))
+                                                @php
+                                                    $seat = $rowSeats[$letter];
+                                                    $isBooked = in_array($seat->id, $bookedSeatIds);
+                                                @endphp
+
+                                                @if ($isBooked)
+                                                    <!-- Booked Seat -->
+                                                    <button
+                                                        type="button"
+                                                        disabled
+                                                        class="w-12 h-12 rounded-lg border border-slate-200 bg-slate-100 text-slate-400 font-mono text-xs font-medium cursor-not-allowed flex items-center justify-center select-none"
+                                                        title="Kursi {{ $seat->seat_number }} sudah dipesan"
+                                                    >
+                                                        {{ $seat->seat_number }}
+                                                    </button>
+                                                @else
+                                                    <!-- Available / Selectable Seat -->
+                                                    <button
+                                                        type="button"
+                                                        @click="toggleSeat({{ $seat->id }})"
+                                                        :class="isSelected({{ $seat->id }})
+                                                            ? 'bg-blue-600 text-white border-blue-600 font-semibold shadow-sm'
+                                                            : 'bg-white text-slate-800 border-slate-300 hover:border-blue-500 hover:bg-blue-50/50'"
+                                                        class="w-12 h-12 rounded-lg border font-mono text-xs transition-colors flex items-center justify-center focus:outline-none focus:ring-2 focus:ring-blue-600"
+                                                    >
+                                                        {{ $seat->seat_number }}
+                                                    </button>
+                                                @endif
+                                            @else
+                                                <!-- Spacer if seat not present -->
+                                                <div class="w-12 h-12"></div>
+                                            @endif
+                                        @endforeach
+                                    </div>
+                                </div>
+                            @endforeach
+                        </div>
+                    </div>
                 </div>
             </div>
 

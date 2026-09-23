@@ -75,16 +75,33 @@
     </div>
 </section>
 
-<!-- Placeholder Area Pencarian Tiket -->
+<!-- Area Pencarian Tiket -->
 <section id="cari-tiket" class="py-16 sm:py-20 bg-white">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="rounded-2xl border border-dashed border-slate-300 p-8 sm:p-12 text-center bg-slate-50/50">
+        <div class="rounded-2xl border border-slate-200 p-8 sm:p-12 text-center bg-slate-50">
             <h2 class="text-xl font-semibold text-slate-900">
                 Pencarian Tiket Perjalanan
             </h2>
             <p class="mt-2 text-sm text-slate-600 max-w-xl mx-auto">
-                Form pencarian rute dan jadwal bus akan dihubungkan dengan data perjalanan pada tahap berikutnya.
+                Cari jadwal perjalanan bus antarkota kami dan pesan tiket perjalanan Anda dengan mudah.
             </p>
+            <div class="mt-6">
+                @auth
+                    @if (auth()->user()->role === 'customer')
+                        <a href="{{ route('customer.trips.index') }}" class="inline-flex items-center justify-center px-6 py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-lg shadow-sm transition-colors">
+                            Buka Pencarian Perjalanan &rarr;
+                        </a>
+                    @else
+                        <a href="{{ route('admin.dashboard') }}" class="inline-flex items-center justify-center px-6 py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-lg shadow-sm transition-colors">
+                            Menuju Dasbor Admin &rarr;
+                        </a>
+                    @endif
+                @else
+                    <a href="{{ route('login') }}" class="inline-flex items-center justify-center px-6 py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-lg shadow-sm transition-colors">
+                        Masuk untuk Memesan Tiket &rarr;
+                    </a>
+                @endauth
+            </div>
         </div>
     </div>
 </section>

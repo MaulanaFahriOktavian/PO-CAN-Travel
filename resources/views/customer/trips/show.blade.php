@@ -100,9 +100,9 @@
         <!-- Next Step Notice & Action -->
         <div class="bg-slate-100 border border-slate-200 rounded-xl p-6 sm:p-8 space-y-4">
             <div>
-                <h3 class="text-sm font-semibold text-slate-900">Tahap Pemesanan Berikutnya</h3>
+                <h3 class="text-sm font-semibold text-slate-900">Pemesanan Tiket</h3>
                 <p class="mt-1 text-sm text-slate-600">
-                    Pemilihan nomor kursi dan konfirmasi pemesanan tiket akan dilakukan pada tahap berikutnya.
+                    Silakan lanjutkan ke pemilihan nomor kursi bus untuk memulai proses pemesanan tiket perjalanan ini.
                 </p>
             </div>
 

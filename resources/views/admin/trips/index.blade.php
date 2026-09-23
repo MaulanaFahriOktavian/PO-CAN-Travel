@@ -66,14 +66,14 @@
                                     </td>
                                     <td class="py-4 px-4 text-slate-700">
                                         <div>{{ $trip->departure_at->translatedFormat('d M Y') }}</div>
-                                        <div class="text-xs text-slate-500 font-medium">{{ $trip->departure_at->format('H:i') }} WIB</div>
+                                        <div class="text-xs text-slate-500 font-medium">{{ $trip->departure_at->format('H.i') }} WIB</div>
                                     </td>
                                     <td class="py-4 px-4 text-slate-700">
                                         <div>{{ $trip->arrival_at->translatedFormat('d M Y') }}</div>
-                                        <div class="text-xs text-slate-500 font-medium">{{ $trip->arrival_at->format('H:i') }} WIB</div>
+                                        <div class="text-xs text-slate-500 font-medium">{{ $trip->arrival_at->format('H.i') }} WIB</div>
                                     </td>
                                     <td class="py-4 px-4 font-medium text-slate-900">
-                                        Rp {{ number_format($trip->price, 0, ',', '.') }}
+                                        Rp{{ number_format($trip->price, 0, ',', '.') }}
                                     </td>
                                     <td class="py-4 px-4">
                                         @if ($trip->status === 'scheduled')
