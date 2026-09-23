@@ -107,15 +107,12 @@
             </div>
 
             <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 pt-2">
-                <button
-                    type="button"
-                    disabled
-                    aria-disabled="true"
-                    class="px-5 py-2.5 bg-slate-300 text-slate-600 font-medium text-sm rounded-lg cursor-not-allowed text-center transition-colors"
-                    title="Fitur pemilihan kursi akan tersedia pada tahap selanjutnya"
+                <a
+                    href="{{ route('customer.trips.seats', $trip) }}"
+                    class="inline-flex items-center justify-center px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-medium text-sm rounded-lg shadow-sm transition-colors text-center"
                 >
                     Lanjut Pilih Kursi
-                </button>
+                </a>
                 <a
                     href="{{ route('customer.trips.index') }}"
                     class="px-4 py-2.5 bg-white hover:bg-slate-50 text-slate-700 font-medium text-sm border border-slate-300 rounded-lg text-center transition-colors"

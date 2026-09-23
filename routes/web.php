@@ -6,6 +6,7 @@ use App\Http\Controllers\Admin\RouteController;
 use App\Http\Controllers\Admin\TripController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\Customer\DashboardController as CustomerDashboardController;
+use App\Http\Controllers\Customer\SeatSelectionController;
 use App\Http\Controllers\Customer\TripController as CustomerTripController;
 use Illuminate\Support\Facades\Route;
 
@@ -40,6 +41,8 @@ Route::middleware(['auth', 'role:customer'])->prefix('customer')->name('customer
     Route::get('/dashboard', [CustomerDashboardController::class, 'index'])->name('dashboard');
     Route::get('/trips', [CustomerTripController::class, 'index'])->name('trips.index');
     Route::get('/trips/{trip}', [CustomerTripController::class, 'show'])->name('trips.show');
+    Route::get('/trips/{trip}/seats', [SeatSelectionController::class, 'show'])->name('trips.seats');
+    Route::post('/trips/{trip}/seats', [SeatSelectionController::class, 'store'])->name('trips.seats.store');
 });
 
 // Area Administrator (Admin Area)
