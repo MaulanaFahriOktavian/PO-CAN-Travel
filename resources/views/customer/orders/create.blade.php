@@ -163,12 +163,12 @@
 
                     <div class="flex justify-between">
                         <dt class="text-slate-500">Tarif per Kursi</dt>
-                        <dd class="font-medium text-slate-900">Rp{{ number_format($trip->price, 0, ',', '.') }}</dd>
+                        <dd class="font-medium text-slate-900 tabular-nums">Rp{{ number_format($trip->price, 0, ',', '.') }}</dd>
                     </div>
 
                     <div class="pt-3 border-t border-slate-100 flex justify-between items-baseline">
                         <dt class="text-base font-bold text-slate-900">Total Pesanan</dt>
-                        <dd class="text-xl font-bold text-slate-900">
+                        <dd class="text-xl font-bold text-slate-900 tabular-nums">
                             Rp{{ number_format($seats->count() * $trip->price, 0, ',', '.') }}
                         </dd>
                     </div>

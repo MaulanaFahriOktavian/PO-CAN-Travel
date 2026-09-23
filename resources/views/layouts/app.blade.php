@@ -41,9 +41,9 @@
                             <a href="{{ route('admin.orders.index') }}" class="text-sm font-medium {{ request()->routeIs('admin.orders.*') ? 'text-blue-600 font-semibold' : 'text-slate-600 hover:text-slate-900' }} transition-colors">Pesanan</a>
                         @else
                             <a href="{{ route('home') }}" class="text-sm font-medium {{ request()->routeIs('home') ? 'text-blue-600 font-semibold' : 'text-slate-600 hover:text-slate-900' }} transition-colors">Beranda</a>
-                            <a href="{{ route('customer.trips.index') }}" class="text-sm font-medium {{ request()->routeIs('customer.trips.*') ? 'text-blue-600 font-semibold' : 'text-slate-600 hover:text-slate-900' }} transition-colors">Cari Perjalanan</a>
+                            <a href="{{ route('customer.trips.index') }}" class="text-sm font-medium {{ request()->routeIs('customer.trips.*') ? 'text-blue-600 font-semibold' : 'text-slate-600 hover:text-slate-900' }} transition-colors">Cari Tiket</a>
                             <a href="{{ route('customer.orders.index') }}" class="text-sm font-medium {{ request()->routeIs('customer.orders.*') ? 'text-blue-600 font-semibold' : 'text-slate-600 hover:text-slate-900' }} transition-colors">Riwayat Pesanan</a>
-                            <a href="{{ route('customer.dashboard') }}" class="text-sm font-medium {{ request()->routeIs('customer.dashboard') ? 'text-blue-600 font-semibold' : 'text-slate-600 hover:text-slate-900' }} transition-colors">Dasbor Saya</a>
+                            <a href="{{ route('customer.dashboard') }}" class="text-sm font-medium {{ request()->routeIs('customer.dashboard') ? 'text-blue-600 font-semibold' : 'text-slate-600 hover:text-slate-900' }} transition-colors">Dasbor</a>
                         @endif
                     @else
                         <a href="{{ route('home') }}" class="text-sm font-medium {{ request()->routeIs('home') ? 'text-blue-600 font-semibold' : 'text-slate-600 hover:text-slate-900' }} transition-colors">Beranda</a>
@@ -52,22 +52,22 @@
                 </nav>
 
                 <!-- Desktop Auth Actions -->
-                <div class="hidden md:flex items-center space-x-4">
+                <div class="hidden md:flex items-center space-x-3">
                     @guest
-                        <a href="{{ route('login') }}" class="px-4 py-2 text-sm font-medium text-slate-700 hover:text-slate-900 hover:bg-slate-100 rounded-lg transition-colors">
-                            Login
+                        <a href="{{ route('login') }}" class="px-3.5 py-2 text-sm font-medium text-slate-700 hover:text-slate-900 hover:bg-slate-100 rounded-lg transition-colors">
+                            Masuk
                         </a>
                         <a href="{{ route('register') }}" class="px-4 py-2 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 rounded-lg shadow-sm transition-colors">
-                            Register
+                            Daftar
                         </a>
                     @else
-                        <div class="text-right">
+                        <div class="text-right pr-2">
                             <div class="text-sm font-semibold text-slate-900 leading-tight">{{ auth()->user()->name }}</div>
-                            <div class="text-xs text-slate-500 capitalize">{{ auth()->user()->role === 'admin' ? 'Admin' : 'Customer' }}</div>
+                            <div class="text-xs text-slate-500 capitalize">{{ auth()->user()->role === 'admin' ? 'Admin' : 'Pelanggan' }}</div>
                         </div>
                         <form method="POST" action="{{ route('logout') }}" class="inline">
                             @csrf
-                            <button type="submit" class="px-3.5 py-2 text-sm font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-100 rounded-lg transition-colors">
+                            <button type="submit" class="px-3 py-2 text-sm font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-100 rounded-lg transition-colors">
                                 Keluar
                             </button>
                         </form>
@@ -116,9 +116,9 @@
                         <a href="{{ route('admin.orders.index') }}" class="block px-3 py-2 rounded-md text-base font-medium text-slate-700 hover:text-slate-900 hover:bg-slate-100">Pesanan</a>
                     @else
                         <a href="{{ route('home') }}" class="block px-3 py-2 rounded-md text-base font-medium text-slate-700 hover:text-slate-900 hover:bg-slate-100">Beranda</a>
-                        <a href="{{ route('customer.trips.index') }}" @click="mobileMenuOpen = false" class="block px-3 py-2 rounded-md text-base font-medium text-slate-700 hover:text-slate-900 hover:bg-slate-100">Cari Perjalanan</a>
+                        <a href="{{ route('customer.trips.index') }}" @click="mobileMenuOpen = false" class="block px-3 py-2 rounded-md text-base font-medium text-slate-700 hover:text-slate-900 hover:bg-slate-100">Cari Tiket</a>
                         <a href="{{ route('customer.orders.index') }}" @click="mobileMenuOpen = false" class="block px-3 py-2 rounded-md text-base font-medium text-slate-700 hover:text-slate-900 hover:bg-slate-100">Riwayat Pesanan</a>
-                        <a href="{{ route('customer.dashboard') }}" class="block px-3 py-2 rounded-md text-base font-medium text-slate-700 hover:text-slate-900 hover:bg-slate-100">Dasbor Saya</a>
+                        <a href="{{ route('customer.dashboard') }}" class="block px-3 py-2 rounded-md text-base font-medium text-slate-700 hover:text-slate-900 hover:bg-slate-100">Dasbor</a>
                     @endif
                 @else
                     <a href="{{ route('home') }}" class="block px-3 py-2 rounded-md text-base font-medium text-slate-700 hover:text-slate-900 hover:bg-slate-100">Beranda</a>
@@ -128,15 +128,15 @@
             <div class="pt-3 pb-4 border-t border-slate-100 px-4 space-y-2">
                 @guest
                     <a href="{{ route('login') }}" class="block text-center w-full px-4 py-2 text-sm font-medium text-slate-700 border border-slate-300 rounded-lg hover:bg-slate-50 transition-colors">
-                        Login
+                        Masuk
                     </a>
                     <a href="{{ route('register') }}" class="block text-center w-full px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 shadow-sm transition-colors">
-                        Register
+                        Daftar
                     </a>
                 @else
                     <div class="px-3 py-1">
                         <div class="text-sm font-semibold text-slate-900">{{ auth()->user()->name }}</div>
-                        <div class="text-xs text-slate-500 capitalize">{{ auth()->user()->role === 'admin' ? 'Admin' : 'Customer' }}</div>
+                        <div class="text-xs text-slate-500 capitalize">{{ auth()->user()->role === 'admin' ? 'Admin' : 'Pelanggan' }}</div>
                     </div>
                     <form method="POST" action="{{ route('logout') }}">
                         @csrf

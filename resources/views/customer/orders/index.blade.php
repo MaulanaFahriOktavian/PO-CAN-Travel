@@ -140,14 +140,14 @@
                                 <span class="font-medium text-slate-900 block">
                                     {{ $order->trip->departure_at->translatedFormat('d M Y') }}
                                 </span>
-                                <span class="text-xs text-slate-600 font-mono">
+                                <span class="text-xs text-slate-600 font-mono tabular-nums">
                                     {{ $order->trip->departure_at->format('H.i') }} WIB
                                 </span>
                             </div>
 
                             <div>
                                 <span class="text-xs text-slate-500 block mb-0.5">Penumpang</span>
-                                <span class="font-medium text-slate-900 block">
+                                <span class="font-medium text-slate-900 block tabular-nums">
                                     {{ $order->order_items_count }} Orang
                                 </span>
                             </div>
@@ -156,7 +156,7 @@
                         <div class="pt-4 border-t border-slate-100 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
                             <div>
                                 <span class="text-xs text-slate-500 block">Total Pesanan</span>
-                                <span class="text-lg font-bold font-mono text-slate-900">
+                                <span class="text-lg font-bold font-mono text-slate-900 tabular-nums">
                                     Rp{{ number_format($order->total_amount, 0, ',', '.') }}
                                 </span>
                             </div>

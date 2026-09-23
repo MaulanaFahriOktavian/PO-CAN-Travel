@@ -101,12 +101,25 @@
             </div>
 
             @if ($trips->isEmpty())
-                <div class="bg-white border border-slate-200 rounded-xl p-8 text-center">
-                    <p class="text-sm text-slate-600">Belum ada perjalanan yang sesuai dengan pencarian.</p>
+                <div class="bg-white border border-slate-200 rounded-xl p-8 sm:p-12 text-center">
+                    <div class="max-w-md mx-auto">
+                        <p class="text-base font-semibold text-slate-900">Belum ada perjalanan yang sesuai dengan pencarian.</p>
+                        <p class="text-sm text-slate-500 mt-1.5">Ubah tanggal atau rute untuk melihat pilihan lainnya.</p>
+                        @if (request()->hasAny(['origin', 'destination', 'departure_date']))
+                            <div class="mt-4">
+                                <a
+                                    href="{{ route('customer.trips.index') }}"
+                                    class="inline-flex items-center text-sm font-medium text-blue-600 hover:text-blue-800"
+                                >
+                                    &larr; Tampilkan Semua Jadwal
+                                </a>
+                            </div>
+                        @endif
+                    </div>
                 </div>
             @else
                 <!-- Desktop Table View -->
-                <div class="bg-white border border-slate-200 rounded-xl overflow-hidden hidden md:block">
+                <div class="bg-white border border-slate-200 rounded-xl overflow-hidden hidden md:block shadow-sm">
                     <div class="overflow-x-auto">
                         <table class="w-full text-left text-sm">
                             <thead class="bg-slate-50 border-b border-slate-200 text-slate-600 font-medium">

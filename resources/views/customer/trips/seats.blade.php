@@ -135,7 +135,7 @@
                                                     <button
                                                         type="button"
                                                         disabled
-                                                        class="w-12 h-12 rounded-lg border border-slate-200 bg-slate-100 text-slate-400 font-mono text-xs font-medium cursor-not-allowed flex items-center justify-center select-none"
+                                                        class="w-12 h-12 rounded-lg border-2 border-slate-200 bg-slate-100 text-slate-400 line-through decoration-slate-300 font-mono text-xs font-medium cursor-not-allowed flex items-center justify-center select-none"
                                                         title="Kursi {{ $seat->seat_number }} sudah dipesan"
                                                     >
                                                         {{ $seat->seat_number }}
@@ -147,8 +147,9 @@
                                                         @click="toggleSeat({{ $seat->id }})"
                                                         :class="isSelected({{ $seat->id }})
                                                             ? 'bg-blue-600 text-white border-blue-600 font-semibold shadow-sm'
-                                                            : 'bg-white text-slate-800 border-slate-300 hover:border-blue-500 hover:bg-blue-50/50'"
-                                                        class="w-12 h-12 rounded-lg border font-mono text-xs transition-colors flex items-center justify-center focus:outline-none focus:ring-2 focus:ring-blue-600"
+                                                            : 'bg-white text-slate-800 border-slate-300 hover:border-blue-600 hover:bg-blue-50/40'"
+                                                        class="w-12 h-12 rounded-lg border-2 font-mono text-xs transition-all flex items-center justify-center focus:outline-none focus:ring-2 focus:ring-blue-600 cursor-pointer"
+                                                        :title="'Kursi ' + '{{ $seat->seat_number }}' + (isSelected({{ $seat->id }}) ? ' (dipilih)' : ' (tersedia)')"
                                                     >
                                                         {{ $seat->seat_number }}
                                                     </button>
@@ -179,7 +180,7 @@
                                                     <button
                                                         type="button"
                                                         disabled
-                                                        class="w-12 h-12 rounded-lg border border-slate-200 bg-slate-100 text-slate-400 font-mono text-xs font-medium cursor-not-allowed flex items-center justify-center select-none"
+                                                        class="w-12 h-12 rounded-lg border-2 border-slate-200 bg-slate-100 text-slate-400 line-through decoration-slate-300 font-mono text-xs font-medium cursor-not-allowed flex items-center justify-center select-none"
                                                         title="Kursi {{ $seat->seat_number }} sudah dipesan"
                                                     >
                                                         {{ $seat->seat_number }}
@@ -191,8 +192,9 @@
                                                         @click="toggleSeat({{ $seat->id }})"
                                                         :class="isSelected({{ $seat->id }})
                                                             ? 'bg-blue-600 text-white border-blue-600 font-semibold shadow-sm'
-                                                            : 'bg-white text-slate-800 border-slate-300 hover:border-blue-500 hover:bg-blue-50/50'"
-                                                        class="w-12 h-12 rounded-lg border font-mono text-xs transition-colors flex items-center justify-center focus:outline-none focus:ring-2 focus:ring-blue-600"
+                                                            : 'bg-white text-slate-800 border-slate-300 hover:border-blue-600 hover:bg-blue-50/40'"
+                                                        class="w-12 h-12 rounded-lg border-2 font-mono text-xs transition-all flex items-center justify-center focus:outline-none focus:ring-2 focus:ring-blue-600 cursor-pointer"
+                                                        :title="'Kursi ' + '{{ $seat->seat_number }}' + (isSelected({{ $seat->id }}) ? ' (dipilih)' : ' (tersedia)')"
                                                     >
                                                         {{ $seat->seat_number }}
                                                     </button>

@@ -68,7 +68,7 @@
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 text-sm">
                     <div>
                         <span class="block text-slate-500 text-xs">Rute Perjalanan</span>
-                        <span class="font-medium text-slate-900">
+                        <span class="font-semibold text-slate-900">
                             {{ $order->trip->route->origin }} &rarr; {{ $order->trip->route->destination }}
                         </span>
                     </div>
@@ -76,14 +76,14 @@
                     <div>
                         <span class="block text-slate-500 text-xs">Waktu Berangkat</span>
                         <span class="font-medium text-slate-900">
-                            {{ $order->trip->departure_at->translatedFormat('d M Y') }}, {{ $order->trip->departure_at->format('H.i') }} WIB
+                            {{ $order->trip->departure_at->translatedFormat('d M Y') }}, <span class="tabular-nums">{{ $order->trip->departure_at->format('H.i') }} WIB</span>
                         </span>
                     </div>
 
                     <div>
                         <span class="block text-slate-500 text-xs">Estimasi Tiba</span>
                         <span class="font-medium text-slate-900">
-                            {{ $order->trip->arrival_at->translatedFormat('d M Y') }}, {{ $order->trip->arrival_at->format('H.i') }} WIB
+                            {{ $order->trip->arrival_at->translatedFormat('d M Y') }}, <span class="tabular-nums">{{ $order->trip->arrival_at->format('H.i') }} WIB</span>
                         </span>
                     </div>
 
@@ -116,11 +116,11 @@
                         <tbody class="divide-y divide-slate-200 text-slate-800">
                             @foreach ($order->orderItems as $item)
                                 <tr>
-                                    <td class="px-4 py-3.5 text-center text-slate-500 text-xs">{{ $loop->iteration }}</td>
+                                    <td class="px-4 py-3.5 text-center text-slate-500 text-xs tabular-nums">{{ $loop->iteration }}</td>
                                     <td class="px-4 py-3.5 font-mono font-semibold text-blue-700">{{ $item->seat->seat_number }}</td>
                                     <td class="px-4 py-3.5 font-medium text-slate-900">{{ $item->passenger_name }}</td>
-                                    <td class="px-4 py-3.5 text-slate-600 font-mono text-xs">{{ $item->passenger_identity }}</td>
-                                    <td class="px-4 py-3.5 text-right font-medium text-slate-900">
+                                    <td class="px-4 py-3.5 text-slate-600 font-mono text-xs tabular-nums">{{ $item->passenger_identity }}</td>
+                                    <td class="px-4 py-3.5 text-right font-medium text-slate-900 tabular-nums">
                                         Rp{{ number_format($item->price, 0, ',', '.') }}
                                     </td>
                                 </tr>
@@ -132,7 +132,7 @@
                 <!-- Total Pembayaran -->
                 <div class="pt-5 mt-5 border-t border-slate-100 flex justify-between items-baseline">
                     <span class="text-base font-bold text-slate-900">Total Pembayaran</span>
-                    <span class="text-2xl font-bold text-slate-900 font-mono">
+                    <span class="text-2xl font-bold text-slate-900 font-mono tabular-nums">
                         Rp{{ number_format($order->total_amount, 0, ',', '.') }}
                     </span>
                 </div>

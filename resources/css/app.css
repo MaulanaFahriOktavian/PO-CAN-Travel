@@ -5,3 +5,31 @@
 [x-cloak] {
     display: none !important;
 }
+
+@layer base {
+    html {
+        -webkit-tap-highlight-color: transparent;
+        scroll-behavior: smooth;
+    }
+
+    body {
+        @apply bg-slate-50 text-slate-900 antialiased;
+        font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+    }
+
+    /* Standardized accessible focus indicator */
+    a:focus-visible,
+    button:focus-visible,
+    input:focus-visible,
+    select:focus-visible,
+    textarea:focus-visible {
+        outline: 2px solid #2563eb;
+        outline-offset: 2px;
+    }
+
+    /* Tabular numbers for price and time alignment */
+    .tabular-nums {
+        font-variant-numeric: tabular-nums;
+    }
+}
+
