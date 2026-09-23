@@ -38,6 +38,28 @@ class Order extends Model
     }
 
     /**
+     * Definisi aturan transisi status pesanan yang diperbolehkan.
+     */
+    public static function statusTransitions(): array
+    {
+        return [
+            'pending' => ['confirmed', 'cancelled'],
+            'confirmed' => ['completed', 'cancelled'],
+            'completed' => [],
+            'cancelled' => [],
+        ];
+    }
+
+    /**
+     * Memeriksa apakah status saat ini dapat diubah ke status tujuan.
+     */
+    public function canChangeStatusTo(string $newStatus): bool
+    {
+        $allowed = static::statusTransitions()[$this->status] ?? [];
+        return in_array($newStatus, $allowed, true);
+    }
+
+    /**
      * Order belongs to a user.
      */
     public function user(): BelongsTo

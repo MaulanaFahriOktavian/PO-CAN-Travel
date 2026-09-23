@@ -79,11 +79,16 @@
                         </a>
                     </div>
 
-                    <div class="p-5 rounded-lg border border-slate-200 bg-slate-50/50">
-                        <div class="font-semibold text-slate-900 text-base">Pesanan Tiket</div>
-                        <p class="text-sm text-slate-600 mt-0.5">
-                            Pencatatan dan pemantauan transaksi tiket penumpang. Modul ini akan tersedia pada tahap pengembangan berikutnya.
-                        </p>
+                    <div class="p-5 rounded-lg border border-slate-200 bg-slate-50/50 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                        <div>
+                            <div class="font-semibold text-slate-900 text-base">Kelola Pesanan Pelanggan</div>
+                            <p class="text-sm text-slate-600 mt-0.5">
+                                Pemantauan transaksi tiket, verifikasi pembayaran, dan pembaruan status pesanan.
+                            </p>
+                        </div>
+                        <a href="{{ route('admin.orders.index') }}" class="inline-flex items-center justify-center px-4 py-2 text-sm font-medium text-blue-600 bg-blue-50 hover:bg-blue-100 rounded-lg transition-colors whitespace-nowrap">
+                            Buka Pesanan &rarr;
+                        </a>
                     </div>
                 </div>
             </div>

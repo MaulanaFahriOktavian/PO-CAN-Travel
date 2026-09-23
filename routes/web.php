@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\BusController;
 use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
+use App\Http\Controllers\Admin\OrderController as AdminOrderController;
 use App\Http\Controllers\Admin\RouteController;
 use App\Http\Controllers\Admin\TripController;
 use App\Http\Controllers\AuthController;
@@ -60,4 +61,8 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
     Route::resource('buses', BusController::class)->except(['show']);
     Route::resource('routes', RouteController::class)->except(['show']);
     Route::resource('trips', TripController::class)->except(['show']);
+
+    Route::get('/orders', [AdminOrderController::class, 'index'])->name('orders.index');
+    Route::get('/orders/{order}', [AdminOrderController::class, 'show'])->name('orders.show');
+    Route::patch('/orders/{order}/status', [AdminOrderController::class, 'updateStatus'])->name('orders.status');
 });
