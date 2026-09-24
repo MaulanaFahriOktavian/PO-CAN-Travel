@@ -3,69 +3,120 @@
 @section('title', 'Dasbor Operasional Admin - PO CAN Travel')
 
 @section('content')
-<div class="py-10 sm:py-12">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
-        <!-- Header -->
-        <div class="border-b border-slate-200 pb-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+<div class="py-10 sm:py-14 bg-[#FBFAF6]">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
+
+        {{-- Header Operasional --}}
+        <div class="border-b pb-6 flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-4 border-[#D9D5CA]">
             <div>
-                <span class="text-xs font-semibold uppercase tracking-wider text-blue-600 block mb-1">Operasional Bus Antarkota</span>
-                <h1 class="text-2xl sm:text-3xl font-bold text-slate-900 tracking-tight">Dasbor Administrator</h1>
-                <p class="mt-1 text-sm text-slate-600">Pusat pemantauan status pesanan, jadwal perjalanan aktif, dan armada PO CAN Travel.</p>
+                <span class="text-xs uppercase tracking-wider font-bold block mb-1 text-[#21483C]">
+                    Konsol Operasional &bull; PO CAN Travel
+                </span>
+                <h1 class="text-2xl sm:text-3xl font-black tracking-tight text-[#1C2522]">
+                    Dasbor Administrator
+                </h1>
+                <p class="mt-1 text-sm text-[#66716C]">
+                    Monitoring verifikasi pesanan, jadwal keberangkatan bus, dan alokasi armada antarkota.
+                </p>
             </div>
-            <div>
-                <span class="inline-flex items-center gap-1.5 text-xs font-medium text-blue-700 bg-blue-50 px-3.5 py-1.5 rounded-full border border-blue-200 shadow-xs">
-                    <span class="w-2 h-2 rounded-full bg-blue-600"></span>
+
+            <div class="flex items-center gap-2">
+                <span class="inline-flex items-center gap-1.5 text-xs font-bold px-3 py-1.5 rounded-full border bg-[#F5F1E8] text-[#357A62] border-[#357A62]/30">
+                    <span class="w-1.5 h-1.5 rounded-full bg-[#357A62]"></span>
                     Sistem Operasional Aktif
                 </span>
             </div>
         </div>
 
-        <!-- 1. Pesanan Membutuhkan Perhatian (Pending Orders) -->
-        <div class="bg-white border border-slate-200 rounded-xl p-6 sm:p-7 shadow-sm">
-            <div class="flex items-center justify-between pb-4 mb-4 border-b border-slate-100">
+        {{-- Pintasan Navigasi Operasional Utama --}}
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+            <a
+                href="{{ route('admin.orders.index') }}"
+                class="bg-white border border-[#D9D5CA] rounded-xl p-4 transition-colors hover:border-[#21483C] shadow-xs group"
+            >
+                <span class="text-xs uppercase tracking-wider font-bold block text-[#66716C]">Manajemen</span>
+                <div class="text-sm font-bold mt-1 text-[#1C2522] group-hover:text-[#21483C]">Kelola Pesanan</div>
+                <p class="text-[11px] mt-0.5 text-[#66716C]">Verifikasi tiket &amp; pembayaran</p>
+            </a>
+
+            <a
+                href="{{ route('admin.trips.index') }}"
+                class="bg-white border border-[#D9D5CA] rounded-xl p-4 transition-colors hover:border-[#21483C] shadow-xs group"
+            >
+                <span class="text-xs uppercase tracking-wider font-bold block text-[#66716C]">Jadwal</span>
+                <div class="text-sm font-bold mt-1 text-[#1C2522] group-hover:text-[#21483C]">Kelola Perjalanan</div>
+                <p class="text-[11px] mt-0.5 text-[#66716C]">Atur jam berangkat &amp; tarif</p>
+            </a>
+
+            <a
+                href="{{ route('admin.buses.index') }}"
+                class="bg-white border border-[#D9D5CA] rounded-xl p-4 transition-colors hover:border-[#21483C] shadow-xs group"
+            >
+                <span class="text-xs uppercase tracking-wider font-bold block text-[#66716C]">Armada</span>
+                <div class="text-sm font-bold mt-1 text-[#1C2522] group-hover:text-[#21483C]">Kelola Bus</div>
+                <p class="text-[11px] mt-0.5 text-[#66716C]">Data kendaraan &amp; nomor kursi</p>
+            </a>
+
+            <a
+                href="{{ route('admin.routes.index') }}"
+                class="bg-white border border-[#D9D5CA] rounded-xl p-4 transition-colors hover:border-[#21483C] shadow-xs group"
+            >
+                <span class="text-xs uppercase tracking-wider font-bold block text-[#66716C]">Trayek</span>
+                <div class="text-sm font-bold mt-1 text-[#1C2522] group-hover:text-[#21483C]">Kelola Rute</div>
+                <p class="text-[11px] mt-0.5 text-[#66716C]">Asal, tujuan, &amp; durasi</p>
+            </a>
+        </div>
+
+        {{-- 1. Pesanan Membutuhkan Perhatian (Pending Orders) --}}
+        <section aria-labelledby="pending-orders-heading" class="bg-white border border-[#D9D5CA] rounded-2xl p-6 sm:p-7 shadow-xs">
+            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between pb-4 mb-4 border-b border-[#D9D5CA] gap-2">
                 <div class="flex items-center gap-2.5">
-                    <span class="w-3 h-3 rounded-full bg-amber-500 animate-pulse"></span>
-                    <h2 class="text-base font-bold text-slate-900">Pesanan Membutuhkan Perhatian</h2>
-                    <span class="text-xs bg-amber-100 text-amber-800 font-semibold px-2 py-0.5 rounded-full">
-                        {{ $pendingOrders->count() }} Menunggu Konfirmasi
+                    <h2 id="pending-orders-heading" class="text-base font-bold text-[#1C2522]">
+                        Pesanan Membutuhkan Perhatian
+                    </h2>
+                    <span class="text-xs font-bold px-2.5 py-0.5 rounded-full border bg-[#F5F1E8] text-[#A87935] border-[#A87935]/30">
+                        {{ $pendingOrders->count() }} Menunggu
                     </span>
                 </div>
-                <a href="{{ route('admin.orders.index', ['status' => 'pending']) }}" class="text-xs font-semibold text-blue-600 hover:text-blue-800">
-                    Kelola Semua Pesanan Pending &rarr;
+                <a href="{{ route('admin.orders.index', ['status' => 'pending']) }}" class="text-xs font-bold text-[#21483C] hover:text-[#2F6252]">
+                    Buka Semua Pesanan Pending &rarr;
                 </a>
             </div>
 
             @if ($pendingOrders->isEmpty())
-                <div class="py-4 text-center text-sm text-slate-500">
-                    Tidak ada pesanan pending saat ini. Seluruh pesanan telah terproses.
+                <div class="py-6 text-center text-xs text-[#66716C]">
+                    Tidak ada pesanan pending saat ini. Seluruh transaksi telah terproses.
                 </div>
             @else
                 <div class="overflow-x-auto">
-                    <table class="w-full text-left text-sm">
-                        <thead class="bg-slate-50 text-slate-600 font-medium border-b border-slate-200">
+                    <table class="w-full text-left text-xs">
+                        <thead class="border-b bg-[#F5F1E8] border-[#D9D5CA] text-[#66716C]">
                             <tr>
-                                <th scope="col" class="px-4 py-3">Kode</th>
-                                <th scope="col" class="px-4 py-3">Pelanggan</th>
-                                <th scope="col" class="px-4 py-3">Rute & Armada</th>
-                                <th scope="col" class="px-4 py-3">Waktu Pemesanan</th>
-                                <th scope="col" class="px-4 py-3">Total</th>
-                                <th scope="col" class="px-4 py-3 text-right">Aksi</th>
+                                <th scope="col" class="px-4 py-3 font-bold">Kode Pesanan</th>
+                                <th scope="col" class="px-4 py-3 font-bold">Nama Pelanggan</th>
+                                <th scope="col" class="px-4 py-3 font-bold">Rute &amp; Bus</th>
+                                <th scope="col" class="px-4 py-3 font-bold">Waktu Pemesanan</th>
+                                <th scope="col" class="px-4 py-3 font-bold">Total Biaya</th>
+                                <th scope="col" class="px-4 py-3 text-right font-bold">Aksi</th>
                             </tr>
                         </thead>
-                        <tbody class="divide-y divide-slate-100 text-slate-800">
+                        <tbody class="divide-y divide-[#D9D5CA]/50">
                             @foreach ($pendingOrders as $order)
-                                <tr class="hover:bg-slate-50/75 transition-colors">
-                                    <td class="px-4 py-3 font-mono font-bold text-slate-900">{{ $order->order_code }}</td>
-                                    <td class="px-4 py-3 font-medium">{{ $order->user->name }}</td>
-                                    <td class="px-4 py-3 text-xs">
-                                        <div class="font-medium text-slate-900">{{ $order->trip->route->origin }} &rarr; {{ $order->trip->route->destination }}</div>
-                                        <div class="text-slate-500">{{ $order->trip->bus->name }} ({{ $order->trip->bus->code }})</div>
+                                <tr class="hover:bg-[#F5F1E8]/50 transition-colors">
+                                    <td class="px-4 py-3 font-mono font-bold text-[#1C2522]">{{ $order->order_code }}</td>
+                                    <td class="px-4 py-3 font-bold text-[#1C2522]">{{ $order->user->name }}</td>
+                                    <td class="px-4 py-3">
+                                        <div class="font-bold text-[#1C2522]">{{ $order->trip->route->origin }} &rarr; {{ $order->trip->route->destination }}</div>
+                                        <div class="text-[11px] text-[#66716C]">{{ $order->trip->bus->name }} ({{ $order->trip->bus->code }})</div>
                                     </td>
-                                    <td class="px-4 py-3 text-xs text-slate-500 tabular-nums">{{ $order->created_at->translatedFormat('d M Y, H.i') }} WIB</td>
-                                    <td class="px-4 py-3 font-medium tabular-nums">Rp{{ number_format($order->total_amount, 0, ',', '.') }}</td>
+                                    <td class="px-4 py-3 tabular-nums text-[#66716C]">{{ $order->created_at->translatedFormat('d M Y, H.i') }} WIB</td>
+                                    <td class="px-4 py-3 font-bold tabular-nums text-[#1C2522]">Rp{{ number_format($order->total_amount, 0, ',', '.') }}</td>
                                     <td class="px-4 py-3 text-right">
-                                        <a href="{{ route('admin.orders.show', $order) }}" class="inline-flex items-center px-2.5 py-1 text-xs font-semibold text-blue-700 bg-blue-50 hover:bg-blue-100 rounded border border-blue-200 transition-colors">
-                                            Periksa & Konfirmasi
+                                        <a
+                                            href="{{ route('admin.orders.show', $order) }}"
+                                            class="inline-flex items-center px-3 py-1 text-xs font-bold rounded-lg border bg-[#F5F1E8] text-[#21483C] border-[#D9D5CA] hover:bg-[#D9D5CA] transition-colors"
+                                        >
+                                            Verifikasi &rarr;
                                         </a>
                                     </td>
                                 </tr>
@@ -74,35 +125,41 @@
                     </table>
                 </div>
             @endif
-        </div>
+        </section>
 
-        <!-- 2. Perjalanan Hari Ini & 3. Perjalanan Mendatang -->
+        {{-- 2. Monitoring Perjalanan: Hari Ini & Mendatang --}}
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            <!-- Perjalanan Hari Ini -->
-            <div class="bg-white border border-slate-200 rounded-xl p-6 shadow-sm flex flex-col justify-between">
+
+            {{-- Perjalanan Hari Ini --}}
+            <div class="bg-white border border-[#D9D5CA] rounded-2xl p-6 shadow-xs flex flex-col justify-between">
                 <div>
-                    <div class="flex items-center justify-between pb-3 mb-4 border-b border-slate-100">
-                        <h2 class="text-base font-bold text-slate-900">Perjalanan Hari Ini</h2>
-                        <span class="text-xs font-medium text-slate-500">{{ today()->translatedFormat('l, d M Y') }}</span>
+                    <div class="flex items-baseline justify-between pb-3 mb-4 border-b border-[#D9D5CA]">
+                        <div>
+                            <h2 class="text-sm font-bold text-[#1C2522]">Jadwal Hari Ini</h2>
+                            <p class="text-xs text-[#66716C]">{{ today()->translatedFormat('l, d F Y') }}</p>
+                        </div>
+                        <a href="{{ route('admin.trips.index') }}" class="text-xs font-bold text-[#21483C] hover:text-[#2F6252]">
+                            Kelola Trip &rarr;
+                        </a>
                     </div>
 
                     @if ($todayTrips->isEmpty())
-                        <p class="py-6 text-center text-sm text-slate-500">Tidak ada jadwal keberangkatan untuk hari ini.</p>
+                        <p class="py-8 text-center text-xs text-[#66716C]">Tidak ada jadwal keberangkatan untuk hari ini.</p>
                     @else
-                        <div class="space-y-3">
+                        <div class="space-y-2.5">
                             @foreach ($todayTrips as $trip)
-                                <div class="p-3.5 bg-slate-50 rounded-lg border border-slate-100 flex items-center justify-between text-xs">
+                                <div class="p-3 rounded-xl border border-[#D9D5CA] flex items-center justify-between text-xs bg-[#FBFAF6]">
                                     <div>
-                                        <div class="font-semibold text-slate-900 text-sm">
+                                        <div class="font-bold text-sm text-[#1C2522]">
                                             {{ $trip->route->origin }} &rarr; {{ $trip->route->destination }}
                                         </div>
-                                        <div class="text-slate-500 mt-0.5">
-                                            {{ $trip->bus->name }} &bull; Jam <strong class="text-slate-800">{{ $trip->departure_at->format('H.i') }} WIB</strong>
+                                        <div class="text-[11px] mt-0.5 text-[#66716C]">
+                                            {{ $trip->bus->name }} &bull; Jam <strong class="text-[#1C2522]">{{ $trip->departure_at->format('H.i') }} WIB</strong>
                                         </div>
                                     </div>
                                     <div>
-                                        <span class="px-2 py-0.5 text-xs font-medium rounded border {{ $trip->status === 'scheduled' ? 'bg-emerald-50 text-emerald-800 border-emerald-200' : 'bg-slate-100 text-slate-700 border-slate-200' }}">
-                                            {{ ucfirst($trip->status) }}
+                                        <span class="px-2 py-0.5 text-[11px] font-bold rounded border uppercase bg-[#F5F1E8] text-[#21483C] border-[#D9D5CA]">
+                                            {{ $trip->status }}
                                         </span>
                                     </div>
                                 </div>
@@ -111,36 +168,41 @@
                     @endif
                 </div>
 
-                <div class="pt-4 mt-4 border-t border-slate-100 text-right">
-                    <a href="{{ route('admin.trips.index') }}" class="text-xs font-semibold text-blue-600 hover:text-blue-800">
-                        Buka Semua Jadwal Perjalanan &rarr;
+                <div class="pt-4 mt-4 border-t border-[#D9D5CA] text-right">
+                    <a href="{{ route('admin.trips.create') }}" class="text-xs font-bold text-[#21483C] hover:text-[#2F6252]">
+                        + Buat Jadwal Baru
                     </a>
                 </div>
             </div>
 
-            <!-- Perjalanan Mendatang -->
-            <div class="bg-white border border-slate-200 rounded-xl p-6 shadow-sm flex flex-col justify-between">
+            {{-- Perjalanan Mendatang --}}
+            <div class="bg-white border border-[#D9D5CA] rounded-2xl p-6 shadow-xs flex flex-col justify-between">
                 <div>
-                    <div class="flex items-center justify-between pb-3 mb-4 border-b border-slate-100">
-                        <h2 class="text-base font-bold text-slate-900">Perjalanan Mendatang</h2>
-                        <span class="text-xs font-medium text-slate-500">5 Jadwal Terdekat</span>
+                    <div class="flex items-baseline justify-between pb-3 mb-4 border-b border-[#D9D5CA]">
+                        <div>
+                            <h2 class="text-sm font-bold text-[#1C2522]">Keberangkatan Terdekat</h2>
+                            <p class="text-xs text-[#66716C]">5 jadwal aktif yang akan datang</p>
+                        </div>
+                        <a href="{{ route('admin.trips.index') }}" class="text-xs font-bold text-[#21483C] hover:text-[#2F6252]">
+                            Semua Jadwal &rarr;
+                        </a>
                     </div>
 
                     @if ($upcomingTrips->isEmpty())
-                        <p class="py-6 text-center text-sm text-slate-500">Belum ada perjalanan mendatang yang terjadwal.</p>
+                        <p class="py-8 text-center text-xs text-[#66716C]">Belum ada perjalanan mendatang yang terjadwal.</p>
                     @else
-                        <div class="space-y-3">
+                        <div class="space-y-2.5">
                             @foreach ($upcomingTrips as $trip)
-                                <div class="p-3.5 bg-slate-50 rounded-lg border border-slate-100 flex items-center justify-between text-xs">
+                                <div class="p-3 rounded-xl border border-[#D9D5CA] flex items-center justify-between text-xs bg-[#FBFAF6]">
                                     <div>
-                                        <div class="font-semibold text-slate-900 text-sm">
+                                        <div class="font-bold text-sm text-[#1C2522]">
                                             {{ $trip->route->origin }} &rarr; {{ $trip->route->destination }}
                                         </div>
-                                        <div class="text-slate-500 mt-0.5">
+                                        <div class="text-[11px] mt-0.5 text-[#66716C]">
                                             {{ $trip->departure_at->translatedFormat('d M Y, H.i') }} WIB &bull; {{ $trip->bus->name }}
                                         </div>
                                     </div>
-                                    <div class="font-mono font-medium text-slate-900">
+                                    <div class="font-mono font-bold text-[#1C2522]">
                                         Rp{{ number_format($trip->price, 0, ',', '.') }}
                                     </div>
                                 </div>
@@ -149,60 +211,66 @@
                     @endif
                 </div>
 
-                <div class="pt-4 mt-4 border-t border-slate-100 text-right">
-                    <a href="{{ route('admin.trips.create') }}" class="text-xs font-semibold text-blue-600 hover:text-blue-800">
-                        + Tambah Jadwal Baru
+                <div class="pt-4 mt-4 border-t border-[#D9D5CA] text-right">
+                    <a href="{{ route('admin.trips.index') }}" class="text-xs font-bold text-[#21483C] hover:text-[#2F6252]">
+                        Lihat Seluruh Daftar &rarr;
                     </a>
                 </div>
             </div>
+
         </div>
 
-        <!-- 4. Pesanan Terbaru -->
-        <div class="bg-white border border-slate-200 rounded-xl p-6 shadow-sm">
-            <div class="flex items-center justify-between pb-3 mb-4 border-b border-slate-100">
-                <h2 class="text-base font-bold text-slate-900">Transaksi Pesanan Terkini</h2>
-                <a href="{{ route('admin.orders.index') }}" class="text-xs font-semibold text-blue-600 hover:text-blue-800">
-                    Buka Kelola Seluruh Pesanan &rarr;
+        {{-- 3. Transaksi Pesanan Terkini --}}
+        <section aria-labelledby="recent-orders-heading" class="bg-white border border-[#D9D5CA] rounded-2xl p-6 sm:p-7 shadow-xs">
+            <div class="flex items-baseline justify-between pb-3 mb-4 border-b border-[#D9D5CA]">
+                <div>
+                    <h2 id="recent-orders-heading" class="text-base font-bold text-[#1C2522]">
+                        Transaksi Pesanan Terkini
+                    </h2>
+                    <p class="text-xs text-[#66716C]">Daftar 5 pesanan terbaru yang masuk ke sistem</p>
+                </div>
+                <a href="{{ route('admin.orders.index') }}" class="text-xs font-bold text-[#21483C] hover:text-[#2F6252]">
+                    Kelola Seluruh Pesanan &rarr;
                 </a>
             </div>
 
             @if ($recentOrders->isEmpty())
-                <p class="py-6 text-center text-sm text-slate-500">Belum ada transaksi pesanan di sistem.</p>
+                <p class="py-6 text-center text-xs text-[#66716C]">Belum ada transaksi pesanan di sistem.</p>
             @else
                 <div class="overflow-x-auto">
-                    <table class="w-full text-left text-sm">
-                        <thead class="bg-slate-50 text-slate-600 font-medium border-b border-slate-200">
+                    <table class="w-full text-left text-xs">
+                        <thead class="border-b bg-[#F5F1E8] border-[#D9D5CA] text-[#66716C]">
                             <tr>
-                                <th scope="col" class="px-4 py-2.5">Kode Pesanan</th>
-                                <th scope="col" class="px-4 py-2.5">Pelanggan</th>
-                                <th scope="col" class="px-4 py-2.5">Rute</th>
-                                <th scope="col" class="px-4 py-2.5">Jumlah Penumpang</th>
-                                <th scope="col" class="px-4 py-2.5">Total</th>
-                                <th scope="col" class="px-4 py-2.5">Status</th>
-                                <th scope="col" class="px-4 py-2.5 text-right">Aksi</th>
+                                <th scope="col" class="px-4 py-2.5 font-bold">Kode Pesanan</th>
+                                <th scope="col" class="px-4 py-2.5 font-bold">Pelanggan</th>
+                                <th scope="col" class="px-4 py-2.5 font-bold">Rute</th>
+                                <th scope="col" class="px-4 py-2.5 font-bold">Jumlah Penumpang</th>
+                                <th scope="col" class="px-4 py-2.5 font-bold">Total Biaya</th>
+                                <th scope="col" class="px-4 py-2.5 font-bold">Status</th>
+                                <th scope="col" class="px-4 py-2.5 text-right font-bold">Aksi</th>
                             </tr>
                         </thead>
-                        <tbody class="divide-y divide-slate-100 text-slate-800">
+                        <tbody class="divide-y divide-[#D9D5CA]/50">
                             @foreach ($recentOrders as $order)
-                                <tr class="hover:bg-slate-50/75 transition-colors">
-                                    <td class="px-4 py-3 font-mono font-bold text-slate-900">{{ $order->order_code }}</td>
-                                    <td class="px-4 py-3">{{ $order->user->name }}</td>
-                                    <td class="px-4 py-3">{{ $order->trip->route->origin }} &rarr; {{ $order->trip->route->destination }}</td>
-                                    <td class="px-4 py-3 tabular-nums">{{ $order->order_items_count }} orang</td>
-                                    <td class="px-4 py-3 font-medium tabular-nums">Rp{{ number_format($order->total_amount, 0, ',', '.') }}</td>
+                                <tr class="hover:bg-[#F5F1E8]/50 transition-colors">
+                                    <td class="px-4 py-3 font-mono font-bold text-[#1C2522]">{{ $order->order_code }}</td>
+                                    <td class="px-4 py-3 font-bold text-[#1C2522]">{{ $order->user->name }}</td>
+                                    <td class="px-4 py-3 text-[#1C2522]">{{ $order->trip->route->origin }} &rarr; {{ $order->trip->route->destination }}</td>
+                                    <td class="px-4 py-3 tabular-nums text-[#66716C]">{{ $order->order_items_count }} orang</td>
+                                    <td class="px-4 py-3 font-bold tabular-nums text-[#1C2522]">Rp{{ number_format($order->total_amount, 0, ',', '.') }}</td>
                                     <td class="px-4 py-3">
                                         @if ($order->status === 'pending')
-                                            <span class="text-xs font-medium text-amber-800 bg-amber-50 px-2 py-0.5 rounded border border-amber-200">Menunggu</span>
+                                            <span class="inline-flex text-[11px] font-bold px-2 py-0.5 rounded border bg-[#F5F1E8] text-[#A87935] border-[#A87935]/30">Menunggu</span>
                                         @elseif ($order->status === 'confirmed')
-                                            <span class="text-xs font-medium text-blue-800 bg-blue-50 px-2 py-0.5 rounded border border-blue-200">Dikonfirmasi</span>
+                                            <span class="inline-flex text-[11px] font-bold px-2 py-0.5 rounded border bg-[#F5F1E8] text-[#357A62] border-[#357A62]/30">Dikonfirmasi</span>
                                         @elseif ($order->status === 'completed')
-                                            <span class="text-xs font-medium text-emerald-800 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">Selesai</span>
+                                            <span class="inline-flex text-[11px] font-bold px-2 py-0.5 rounded border bg-[#F5F1E8] text-[#21483C] border-[#21483C]/30">Selesai</span>
                                         @elseif ($order->status === 'cancelled')
-                                            <span class="text-xs font-medium text-rose-800 bg-rose-50 px-2 py-0.5 rounded border border-rose-200">Dibatalkan</span>
+                                            <span class="inline-flex text-[11px] font-bold px-2 py-0.5 rounded border bg-[#F5F1E8] text-[#B94A48] border-[#B94A48]/30">Dibatalkan</span>
                                         @endif
                                     </td>
                                     <td class="px-4 py-3 text-right">
-                                        <a href="{{ route('admin.orders.show', $order) }}" class="text-xs font-semibold text-blue-600 hover:text-blue-800">
+                                        <a href="{{ route('admin.orders.show', $order) }}" class="font-bold text-[#21483C] hover:underline">
                                             Detail &rarr;
                                         </a>
                                     </td>
@@ -212,51 +280,8 @@
                     </table>
                 </div>
             @endif
-        </div>
+        </section>
 
-        <!-- Modul Operasional Grid & Informasi Akun -->
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            <div class="lg:col-span-2 bg-white border border-slate-200 rounded-xl p-6 shadow-sm">
-                <h2 class="text-base font-bold text-slate-900 pb-3 border-b border-slate-100 mb-4">Navigasi Modul Master Data</h2>
-                <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
-                    <a href="{{ route('admin.buses.index') }}" class="p-3 bg-slate-50 hover:bg-slate-100 rounded-lg border border-slate-200 text-center transition-colors">
-                        <span class="block text-xs font-semibold text-slate-900">Armada Bus</span>
-                        <span class="text-[11px] text-slate-500">Data Bus & Kursi</span>
-                    </a>
-                    <a href="{{ route('admin.routes.index') }}" class="p-3 bg-slate-50 hover:bg-slate-100 rounded-lg border border-slate-200 text-center transition-colors">
-                        <span class="block text-xs font-semibold text-slate-900">Rute Bus</span>
-                        <span class="text-[11px] text-slate-500">Asal & Tujuan</span>
-                    </a>
-                    <a href="{{ route('admin.trips.index') }}" class="p-3 bg-slate-50 hover:bg-slate-100 rounded-lg border border-slate-200 text-center transition-colors">
-                        <span class="block text-xs font-semibold text-slate-900">Jadwal Perjalanan</span>
-                        <span class="text-[11px] text-slate-500">Tarif & Trip</span>
-                    </a>
-                    <a href="{{ route('admin.orders.index') }}" class="p-3 bg-slate-50 hover:bg-slate-100 rounded-lg border border-slate-200 text-center transition-colors">
-                        <span class="block text-xs font-semibold text-slate-900">Pesanan</span>
-                        <span class="text-[11px] text-slate-500">Verifikasi Tiket</span>
-                    </a>
-                </div>
-            </div>
-
-            <!-- Akun Admin -->
-            <div class="bg-white border border-slate-200 rounded-xl p-6 shadow-sm">
-                <h2 class="text-base font-bold text-slate-900 pb-3 border-b border-slate-100 mb-4">Akun Administrator</h2>
-                <div class="space-y-2 text-xs">
-                    <div>
-                        <span class="text-slate-500 block">Nama:</span>
-                        <span class="font-semibold text-slate-900">{{ auth()->user()->name }}</span>
-                    </div>
-                    <div>
-                        <span class="text-slate-500 block">Email:</span>
-                        <span class="font-mono text-slate-900">{{ auth()->user()->email }}</span>
-                    </div>
-                    <div>
-                        <span class="text-slate-500 block">Role:</span>
-                        <span class="font-semibold text-blue-700">Administrator Operasional</span>
-                    </div>
-                </div>
-            </div>
-        </div>
     </div>
 </div>
 @endsection

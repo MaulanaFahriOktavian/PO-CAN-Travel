@@ -24,7 +24,9 @@ Route::get('/', function () {
     $destinations = \App\Models\Route::select('destination')->distinct()->orderBy('destination')->pluck('destination');
     $routes = \App\Models\Route::withCount(['trips' => function ($q) {
         $q->where('status', 'scheduled');
-    }])->orderBy('origin')->get();
+    }])->withMin(['trips' => function ($q) {
+        $q->where('status', 'scheduled');
+    }], 'price')->orderBy('origin')->get();
     $bookedSeatsCountSubquery = \App\Models\OrderItem::selectRaw('count(*)')
         ->join('orders', 'orders.id', '=', 'order_items.order_id')
         ->whereColumn('orders.trip_id', 'trips.id')
@@ -39,7 +41,10 @@ Route::get('/', function () {
         ->take(4)
         ->get();
 
-    return view('home', compact('origins', 'destinations', 'routes', 'availableTrips'));
+    $buses = \App\Models\Bus::with(['facilities', 'images'])->orderBy('name')->take(3)->get();
+    $facilities = \App\Models\Facility::take(6)->get();
+
+    return view('home', compact('origins', 'destinations', 'routes', 'availableTrips', 'buses', 'facilities'));
 })->name('home');
 
 // Halaman Tentang (Publik)
@@ -50,6 +55,44 @@ Route::get('/tentang', function () {
 
     return view('about', compact('routes'));
 })->name('about');
+
+use App\Http\Controllers\Admin\UserController as AdminUserController;
+use App\Http\Controllers\FleetController;
+use App\Http\Controllers\FacilityController;
+use App\Http\Controllers\PublicRouteController;
+use App\Http\Controllers\PublicTripController;
+
+// Halaman Rute — discovery page (Publik)
+Route::get('/rute', [PublicRouteController::class, 'index'])->name('routes.index');
+Route::get('/rute/{route}', [PublicRouteController::class, 'show'])->name('routes.show');
+
+// Halaman Armada — fleet discovery (Publik)
+Route::get('/armada', [FleetController::class, 'index'])->name('buses.index');
+Route::get('/armada/{bus}', [FleetController::class, 'show'])->name('buses.show');
+Route::get('/fleet', [FleetController::class, 'index'])->name('fleet.index');
+Route::get('/fleet/{bus}', [FleetController::class, 'show'])->name('fleet.show');
+
+// Halaman Fasilitas — fleet facilities (Publik)
+Route::get('/fasilitas', [FacilityController::class, 'index'])->name('facilities.index');
+
+// Halaman Perjalanan Publik — trip discovery (Publik)
+Route::get('/perjalanan', [PublicTripController::class, 'index'])->name('trips.index');
+Route::get('/perjalanan/{trip}', [PublicTripController::class, 'show'])->name('trips.show');
+
+// Halaman Cara Memesan (Publik)
+Route::get('/cara-pemesanan', function () {
+    return view('how-to-order');
+})->name('how-to-order');
+
+// Halaman Panduan Keberangkatan (Publik)
+Route::get('/informasi-keberangkatan', function () {
+    return view('departure-info');
+})->name('departure-info');
+
+// Halaman FAQ (Publik)
+Route::get('/faq', function () {
+    return view('faq');
+})->name('faq');
 
 // Autentikasi Pengguna (Khusus Tamu / Belum Login)
 Route::middleware('guest')->group(function () {
@@ -93,4 +136,6 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
     Route::get('/orders', [AdminOrderController::class, 'index'])->name('orders.index');
     Route::get('/orders/{order}', [AdminOrderController::class, 'show'])->name('orders.show');
     Route::patch('/orders/{order}/status', [AdminOrderController::class, 'updateStatus'])->name('orders.status');
+
+    Route::get('/users', [AdminUserController::class, 'index'])->name('users.index');
 });

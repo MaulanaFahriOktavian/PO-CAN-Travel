@@ -14,6 +14,8 @@ class Bus extends Model
         'name',
         'code',
         'total_seats',
+        'bus_type',
+        'description',
     ];
 
     protected $casts = [
@@ -61,5 +63,29 @@ class Bus extends Model
     public function trips(): HasMany
     {
         return $this->hasMany(Trip::class);
+    }
+
+    /**
+     * Fasilitas yang dimiliki oleh armada ini.
+     */
+    public function facilities(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
+    {
+        return $this->belongsToMany(Facility::class, 'bus_facilities');
+    }
+
+    /**
+     * Galeri foto resmi armada.
+     */
+    public function images(): HasMany
+    {
+        return $this->hasMany(BusImage::class)->orderBy('sort_order', 'asc');
+    }
+
+    /**
+     * Foto utama armada.
+     */
+    public function primaryImage(): \Illuminate\Database\Eloquent\Relations\HasOne
+    {
+        return $this->hasOne(BusImage::class)->where('is_primary', true);
     }
 }

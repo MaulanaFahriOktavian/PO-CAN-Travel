@@ -97,7 +97,53 @@ class AdvancedProductExperienceTest extends TestCase
         $response->assertSee('Semarang');
         $response->assertSee('Bandung');
         $response->assertSee('Cara Memesan Tiket');
-        $response->assertSee('Pertanyaan yang Sering Diajukan');
+        $response->assertSee('Pertanyaan Umum');
+    }
+
+    /**
+     * 9. Halaman /rute menampilkan rute dari database dikelompokkan per kota asal.
+     */
+    public function test_route_discovery_page_renders_with_database_routes(): void
+    {
+        $response = $this->get(route('routes.index'));
+
+        $response->assertStatus(200);
+        $response->assertSee('Rute Perjalanan');
+        $response->assertSee('Semarang');
+        $response->assertSee('Dari');
+    }
+
+    /**
+     * 10. Halaman /cara-pemesanan merender panduan lengkap pemesanan.
+     */
+    public function test_how_to_order_page_renders_step_by_step_guide(): void
+    {
+        $response = $this->get(route('how-to-order'));
+
+        $response->assertStatus(200);
+        $response->assertSee('Cara Memesan');
+        $response->assertSee('Cari Perjalanan');
+        $response->assertSee('Pilih Kursi');
+        $response->assertSee('Isi Data Penumpang');
+        $response->assertSee('Konfirmasi Pembayaran');
+        $response->assertSee('Sebelum Memesan, Periksa:');
+    }
+
+    /**
+     * 11. Halaman /faq merender pertanyaan umum berdasarkan kapabilitas sistem aktual.
+     */
+    public function test_faq_page_renders_categorized_honest_answers(): void
+    {
+        $response = $this->get(route('faq'));
+
+        $response->assertStatus(200);
+        $response->assertSee('Pertanyaan Umum');
+        $response->assertSee('Pemesanan');
+        $response->assertSee('Pembayaran');
+        $response->assertSee('Belum');
+        // Must not contain fake features
+        $response->assertDontSee('refund');
+        $response->assertDontSee('WhatsApp');
     }
 
     /**

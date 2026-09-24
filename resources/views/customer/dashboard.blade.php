@@ -4,175 +4,185 @@
 @section('meta_description', 'Kelola akun tiket bus PO CAN Travel, pantau pesanan aktif, dan akses riwayat pemesanan perjalanan Anda.')
 
 @section('content')
-<div class="py-10 sm:py-12">
-    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
+<div class="py-10 sm:py-14 bg-[#FBFAF6]">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
+
+        {{-- Flash Messages --}}
         @if (session('success'))
-            <div class="p-4 rounded-lg bg-emerald-50 border border-emerald-200 text-sm text-emerald-800">
+            <div class="p-4 rounded-xl border text-xs font-bold bg-[#F5F1E8] text-[#21483C] border-[#D9D5CA]">
                 {{ session('success') }}
             </div>
         @endif
 
-        <!-- Welcome Header -->
-        <div class="border-b border-slate-200 pb-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+        {{-- Welcome Header --}}
+        <div class="border-b pb-6 flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-4 border-[#D9D5CA]">
             <div>
-                <span class="text-xs font-semibold uppercase tracking-wider text-blue-600 block mb-1">Area Pelanggan</span>
-                <h1 class="text-2xl sm:text-3xl font-bold text-slate-900 tracking-tight">Dasbor Pelanggan</h1>
-                <p class="mt-1 text-sm text-slate-600">Selamat datang, <strong>{{ auth()->user()->name }}</strong>. Pantau tiket aktif dan kelola pesanan bus Anda.</p>
+                <span class="text-xs uppercase tracking-wider font-bold block mb-1 text-[#21483C]">Area Pelanggan</span>
+                <h1 class="text-2xl sm:text-3xl font-black tracking-tight text-[#1C2522]">
+                    Selamat datang, {{ auth()->user()->name }}
+                </h1>
+                <p class="mt-1 text-sm text-[#66716C]">
+                    Pantau tiket perjalanan aktif dan kelola pemesanan bus PO CAN Travel Anda.
+                </p>
             </div>
 
-            <div class="flex items-center gap-3">
+            <div>
                 <a
                     href="{{ route('customer.trips.index') }}"
-                    class="inline-flex items-center px-4 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-medium text-sm rounded-lg shadow-sm transition-colors text-center"
+                    class="inline-flex items-center px-5 py-2.5 text-xs font-bold text-white rounded-xl bg-[#21483C] hover:bg-[#2F6252] transition-colors"
                 >
-                    Cari Tiket Baru &rarr;
+                    Cari Tiket Perjalanan &rarr;
                 </a>
             </div>
         </div>
 
-        <!-- 1. Pesanan Aktif (Pending / Confirmed) -->
-        <div>
-            <div class="flex items-center justify-between mb-4">
-                <h2 class="text-lg font-bold text-slate-900">
-                    Pesanan Aktif
-                </h2>
-                <a
-                    href="{{ route('customer.orders.index') }}"
-                    class="text-xs font-semibold text-blue-600 hover:text-blue-800 transition-colors"
-                >
-                    Buka Riwayat Pesanan &rarr;
-                </a>
+        {{-- 1. Tiket Perjalanan Aktif --}}
+        <section aria-labelledby="active-orders-heading" class="space-y-4">
+            <div class="flex items-baseline justify-between">
+                <div>
+                    <h2 id="active-orders-heading" class="text-base font-bold text-[#1C2522]">
+                        Pesanan Aktif
+                    </h2>
+                    <p class="text-xs text-[#66716C]">Tiket yang sedang menunggu keberangkatan atau pembayaran</p>
+                </div>
+                @if ($activeOrders->isNotEmpty())
+                    <a href="{{ route('customer.orders.index') }}" class="text-xs font-bold text-[#21483C] hover:text-[#2F6252]">
+                        Semua Pesanan &rarr;
+                    </a>
+                @endif
             </div>
 
             @if ($activeOrders->isEmpty())
-                <div class="bg-white border border-slate-200 rounded-xl p-6 text-center text-sm text-slate-500">
-                    <p class="font-medium text-slate-700">Tidak ada tiket bus yang sedang aktif atau menunggu pembayaran.</p>
-                    <p class="text-xs text-slate-500 mt-1">Gunakan tombol di bawah untuk memesan tiket perjalanan bus antarkota Anda.</p>
-                    <div class="mt-4">
-                        <a
-                            href="{{ route('customer.trips.index') }}"
-                            class="inline-flex items-center px-4 py-2 bg-blue-50 text-blue-700 hover:bg-blue-100 font-medium text-xs rounded-lg transition-colors"
-                        >
-                            Cari Perjalanan &rarr;
-                        </a>
+                <div class="bg-white border border-[#D9D5CA] rounded-2xl p-8 text-center">
+                    <div class="max-w-md mx-auto space-y-3">
+                        <p class="text-sm font-bold text-[#1C2522]">Tidak ada tiket perjalanan aktif</p>
+                        <p class="text-xs leading-relaxed text-[#66716C]">
+                            Anda belum memiliki jadwal perjalanan yang sedang menunggu konfirmasi atau keberangkatan.
+                        </p>
+                        <div class="pt-2">
+                            <a
+                                href="{{ route('customer.trips.index') }}"
+                                class="inline-flex items-center px-4 py-2 text-xs font-bold rounded-lg border border-[#D9D5CA] bg-white text-[#21483C] hover:bg-[#F5F1E8] transition-colors"
+                            >
+                                Cari Perjalanan &rarr;
+                            </a>
+                        </div>
                     </div>
                 </div>
             @else
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="space-y-3">
                     @foreach ($activeOrders as $order)
-                        <div class="bg-white border border-slate-200 rounded-xl p-5 shadow-sm space-y-4 hover:border-slate-300 transition-colors">
-                            <div class="flex items-start justify-between">
-                                <div>
-                                    <span class="text-xs font-mono text-slate-500 block">Kode Pesanan</span>
-                                    <span class="text-base font-bold font-mono text-slate-900">{{ $order->order_code }}</span>
-                                </div>
-                                <div>
+                        <div class="bg-white border border-[#D9D5CA] rounded-xl p-5 flex flex-col md:flex-row md:items-center justify-between gap-4">
+                            <div class="space-y-1.5 flex-1">
+                                <div class="flex items-center gap-3">
+                                    <span class="font-mono font-bold text-sm text-[#1C2522]">{{ $order->order_code }}</span>
                                     @if ($order->status === 'pending')
-                                        <span class="text-xs font-semibold text-amber-800 bg-amber-50 px-2.5 py-1 rounded border border-amber-200">
+                                        <span class="inline-flex items-center text-[11px] font-bold px-2.5 py-0.5 rounded-full border bg-[#F5F1E8] text-[#A87935] border-[#A87935]/30">
                                             Menunggu Pembayaran
                                         </span>
                                     @else
-                                        <span class="text-xs font-semibold text-blue-800 bg-blue-50 px-2.5 py-1 rounded border border-blue-200">
+                                        <span class="inline-flex items-center text-[11px] font-bold px-2.5 py-0.5 rounded-full border bg-[#F5F1E8] text-[#357A62] border-[#357A62]/30">
                                             Dikonfirmasi
                                         </span>
                                     @endif
                                 </div>
-                            </div>
 
-                            <div class="pt-3 border-t border-slate-100 text-sm">
-                                <div class="font-semibold text-slate-900">
+                                <div class="text-base font-bold text-[#1C2522]">
                                     {{ $order->trip->route->origin }} &rarr; {{ $order->trip->route->destination }}
                                 </div>
-                                <div class="text-xs text-slate-500 mt-1">
-                                    Keberangkatan: {{ $order->trip->departure_at->translatedFormat('d M Y') }}, {{ $order->trip->departure_at->format('H.i') }} WIB
-                                </div>
-                                <div class="text-xs text-slate-500 mt-0.5">
-                                    Armada: {{ $order->trip->bus->name }} ({{ $order->trip->bus->code }})
+
+                                <div class="text-xs flex flex-wrap items-center gap-x-3 gap-y-1 text-[#66716C]">
+                                    <span>{{ $order->trip->departure_at->translatedFormat('d M Y') }}, {{ $order->trip->departure_at->format('H.i') }} WIB</span>
+                                    <span>&bull;</span>
+                                    <span>{{ $order->trip->bus->name }}</span>
+                                    <span>&bull;</span>
+                                    <span>{{ $order->orderItems->count() }} Penumpang</span>
                                 </div>
                             </div>
 
-                            <div class="pt-3 border-t border-slate-100 flex items-center justify-between">
-                                <div>
-                                    <span class="text-xs text-slate-400 block">Total</span>
-                                    <span class="text-base font-bold font-mono text-slate-900 tabular-nums">
+                            <div class="flex items-center justify-between md:flex-col md:items-end gap-2 pt-3 md:pt-0 border-t md:border-t-0 border-[#D9D5CA]">
+                                <div class="text-right">
+                                    <span class="text-[11px] block text-[#66716C]">Total Biaya</span>
+                                    <div class="font-mono font-bold text-base tabular-nums text-[#1C2522]">
                                         Rp{{ number_format($order->total_amount, 0, ',', '.') }}
-                                    </span>
+                                    </div>
                                 </div>
+
                                 <a
                                     href="{{ route('customer.orders.show', $order) }}"
-                                    class="inline-flex items-center px-3.5 py-1.5 bg-slate-900 hover:bg-slate-800 text-white text-xs font-medium rounded-lg transition-colors"
+                                    class="inline-flex items-center px-3.5 py-1.5 text-xs font-bold rounded-lg border border-[#D9D5CA] text-[#1C2522] bg-white hover:bg-[#F5F1E8] transition-colors"
                                 >
-                                    Lihat Tiket &rarr;
+                                    Buka Tiket &rarr;
                                 </a>
                             </div>
                         </div>
                     @endforeach
                 </div>
             @endif
-        </div>
+        </section>
 
-        <!-- 2. Pesanan Terbaru -->
-        <div>
-            <div class="flex items-center justify-between mb-4">
-                <h2 class="text-lg font-bold text-slate-900">
-                    Riwayat Pesanan Terbaru
-                </h2>
-                <a
-                    href="{{ route('customer.orders.index') }}"
-                    class="text-xs font-semibold text-blue-600 hover:text-blue-800 transition-colors"
-                >
+        {{-- 2. Riwayat Pesanan Terbaru --}}
+        <section aria-labelledby="recent-orders-heading" class="space-y-4">
+            <div class="flex items-baseline justify-between">
+                <div>
+                    <h2 id="recent-orders-heading" class="text-base font-bold text-[#1C2522]">
+                        Riwayat Transaksi Terakhir
+                    </h2>
+                    <p class="text-xs text-[#66716C]">Ringkasan 5 transaksi tiket terbaru</p>
+                </div>
+                <a href="{{ route('customer.orders.index') }}" class="text-xs font-bold text-[#21483C] hover:text-[#2F6252]">
                     Lihat Semua Riwayat &rarr;
                 </a>
             </div>
 
             @if ($recentOrders->isEmpty())
-                <div class="bg-white border border-slate-200 rounded-xl p-6 text-center text-sm text-slate-500">
-                    Belum ada riwayat pesanan yang tercatat di akun ini.
+                <div class="bg-white border border-[#D9D5CA] rounded-xl p-6 text-center text-xs text-[#66716C]">
+                    Belum ada riwayat pesanan yang tercatat.
                 </div>
             @else
-                <div class="bg-white border border-slate-200 rounded-xl overflow-hidden shadow-sm">
+                <div class="bg-white border border-[#D9D5CA] rounded-2xl overflow-hidden">
                     <div class="overflow-x-auto">
-                        <table class="w-full text-left text-sm">
-                            <thead class="bg-slate-50 border-b border-slate-200 text-slate-600 font-medium">
+                        <table class="w-full text-left text-xs">
+                            <thead class="border-b bg-[#F5F1E8] border-[#D9D5CA] text-[#66716C]">
                                 <tr>
-                                    <th scope="col" class="px-5 py-3">Kode</th>
-                                    <th scope="col" class="px-5 py-3">Rute</th>
-                                    <th scope="col" class="px-5 py-3">Keberangkatan</th>
-                                    <th scope="col" class="px-5 py-3">Total</th>
-                                    <th scope="col" class="px-5 py-3">Status</th>
-                                    <th scope="col" class="px-5 py-3 text-right">Aksi</th>
+                                    <th scope="col" class="px-5 py-3 font-bold">Kode</th>
+                                    <th scope="col" class="px-5 py-3 font-bold">Rute Perjalanan</th>
+                                    <th scope="col" class="px-5 py-3 font-bold">Keberangkatan</th>
+                                    <th scope="col" class="px-5 py-3 font-bold">Total</th>
+                                    <th scope="col" class="px-5 py-3 font-bold">Status</th>
+                                    <th scope="col" class="px-5 py-3 text-right font-bold">Aksi</th>
                                 </tr>
                             </thead>
-                            <tbody class="divide-y divide-slate-200 text-slate-800">
+                            <tbody class="divide-y divide-[#D9D5CA]/50">
                                 @foreach ($recentOrders as $order)
-                                    <tr class="hover:bg-slate-50/75 transition-colors">
-                                        <td class="px-5 py-3.5 font-mono font-semibold text-slate-900">
+                                    <tr class="hover:bg-[#F5F1E8]/50 transition-colors">
+                                        <td class="px-5 py-3.5 font-mono font-bold text-[#1C2522]">
                                             {{ $order->order_code }}
                                         </td>
-                                        <td class="px-5 py-3.5">
+                                        <td class="px-5 py-3.5 font-bold text-[#1C2522]">
                                             {{ $order->trip->route->origin }} &rarr; {{ $order->trip->route->destination }}
                                         </td>
-                                        <td class="px-5 py-3.5 text-xs text-slate-600">
+                                        <td class="px-5 py-3.5 text-[#66716C]">
                                             {{ $order->trip->departure_at->translatedFormat('d M Y') }}
                                         </td>
-                                        <td class="px-5 py-3.5 font-medium tabular-nums">
+                                        <td class="px-5 py-3.5 font-bold tabular-nums text-[#1C2522]">
                                             Rp{{ number_format($order->total_amount, 0, ',', '.') }}
                                         </td>
                                         <td class="px-5 py-3.5">
                                             @if ($order->status === 'pending')
-                                                <span class="text-xs font-medium text-amber-800 bg-amber-50 px-2 py-0.5 rounded border border-amber-200">
+                                                <span class="inline-flex text-[11px] font-bold px-2 py-0.5 rounded border bg-[#F5F1E8] text-[#A87935] border-[#A87935]/30">
                                                     Menunggu
                                                 </span>
                                             @elseif ($order->status === 'confirmed')
-                                                <span class="text-xs font-medium text-blue-800 bg-blue-50 px-2 py-0.5 rounded border border-blue-200">
+                                                <span class="inline-flex text-[11px] font-bold px-2 py-0.5 rounded border bg-[#F5F1E8] text-[#357A62] border-[#357A62]/30">
                                                     Dikonfirmasi
                                                 </span>
                                             @elseif ($order->status === 'completed')
-                                                <span class="text-xs font-medium text-emerald-800 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">
+                                                <span class="inline-flex text-[11px] font-bold px-2 py-0.5 rounded border bg-[#F5F1E8] text-[#21483C] border-[#21483C]/30">
                                                     Selesai
                                                 </span>
                                             @elseif ($order->status === 'cancelled')
-                                                <span class="text-xs font-medium text-rose-800 bg-rose-50 px-2 py-0.5 rounded border border-rose-200">
+                                                <span class="inline-flex text-[11px] font-bold px-2 py-0.5 rounded border bg-[#F5F1E8] text-[#B94A48] border-[#B94A48]/30">
                                                     Dibatalkan
                                                 </span>
                                             @endif
@@ -180,7 +190,7 @@
                                         <td class="px-5 py-3.5 text-right">
                                             <a
                                                 href="{{ route('customer.orders.show', $order) }}"
-                                                class="text-xs font-medium text-blue-600 hover:text-blue-800"
+                                                class="font-bold text-[#21483C] hover:underline"
                                             >
                                                 Rincian &rarr;
                                             </a>
@@ -192,64 +202,64 @@
                     </div>
                 </div>
             @endif
-        </div>
+        </section>
 
-        <!-- 3. Shortcut & 4. Informasi Akun -->
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <!-- Shortcut Layanan -->
-            <div class="bg-white border border-slate-200 rounded-xl p-6 flex flex-col justify-between shadow-sm">
+        {{-- 3. Akses Cepat & Profil Ringkas --}}
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 pt-2">
+            <div class="bg-white border border-[#D9D5CA] rounded-2xl p-6 flex flex-col justify-between">
                 <div>
-                    <h3 class="text-base font-semibold text-slate-900 mb-2">Akses Layanan Cepat</h3>
-                    <p class="text-sm text-slate-600 mb-4 leading-relaxed">
-                        Cari jadwal perjalanan bus antarkota atau periksa riwayat lengkap pesanan tiket yang pernah Anda buat.
+                    <h3 class="text-sm font-bold mb-1 text-[#1C2522]">Pintasan Layanan</h3>
+                    <p class="text-xs leading-relaxed text-[#66716C]">
+                        Navigasi cepat untuk mengecek jaringan rute, jadwal bus antarkota, atau panduan pemesanan.
                     </p>
                 </div>
-                <div class="flex flex-col sm:flex-row gap-3 pt-2">
+                <div class="flex flex-wrap gap-2 pt-4">
                     <a
                         href="{{ route('customer.trips.index') }}"
-                        class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-medium text-xs rounded-lg transition-colors text-center"
+                        class="px-3.5 py-2 text-xs font-bold rounded-lg border border-[#D9D5CA] text-[#1C2522] bg-white hover:bg-[#F5F1E8] transition-colors"
                     >
-                        Cari Jadwal Perjalanan
+                        Cari Tiket
                     </a>
                     <a
                         href="{{ route('customer.orders.index') }}"
-                        class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-800 font-medium text-xs rounded-lg transition-colors text-center"
+                        class="px-3.5 py-2 text-xs font-bold rounded-lg border border-[#D9D5CA] text-[#1C2522] bg-white hover:bg-[#F5F1E8] transition-colors"
                     >
                         Riwayat Pesanan
+                    </a>
+                    <a
+                        href="{{ route('routes.index') }}"
+                        class="px-3.5 py-2 text-xs font-bold rounded-lg border border-[#D9D5CA] text-[#1C2522] bg-white hover:bg-[#F5F1E8] transition-colors"
+                    >
+                        Daftar Rute
                     </a>
                 </div>
             </div>
 
-            <!-- Informasi Akun Pelanggan -->
-            <div class="bg-white border border-slate-200 rounded-xl p-6 shadow-sm">
-                <h3 class="text-base font-semibold text-slate-900 pb-3 border-b border-slate-100 mb-4">Informasi Akun</h3>
-                
-                <div class="grid grid-cols-2 gap-4 text-sm">
+            <div class="bg-white border border-[#D9D5CA] rounded-2xl p-6">
+                <h3 class="text-sm font-bold pb-2 border-b border-[#D9D5CA] mb-3 text-[#1C2522]">
+                    Profil Akun
+                </h3>
+                <dl class="grid grid-cols-2 gap-3 text-xs">
                     <div>
-                        <span class="block text-slate-500 text-xs mb-0.5">Nama</span>
-                        <span class="font-medium text-slate-900">{{ auth()->user()->name }}</span>
+                        <dt class="text-[#66716C]">Nama Lengkap</dt>
+                        <dd class="font-bold mt-0.5 truncate text-[#1C2522]">{{ auth()->user()->name }}</dd>
                     </div>
-
                     <div>
-                        <span class="block text-slate-500 text-xs mb-0.5">Email</span>
-                        <span class="font-medium font-mono text-slate-900 truncate block">{{ auth()->user()->email }}</span>
+                        <dt class="text-[#66716C]">Alamat Email</dt>
+                        <dd class="font-mono font-medium mt-0.5 truncate text-[#1C2522]">{{ auth()->user()->email }}</dd>
                     </div>
-
                     <div>
-                        <span class="block text-slate-500 text-xs mb-0.5">Tipe Akun</span>
-                        <span class="text-slate-800 capitalize">{{ auth()->user()->role === 'admin' ? 'Administrator' : 'Pelanggan' }}</span>
+                        <dt class="text-[#66716C]">Tipe Akun</dt>
+                        <dd class="mt-0.5 capitalize text-[#1C2522]">Pelanggan</dd>
                     </div>
-
                     <div>
-                        <span class="block text-slate-500 text-xs mb-0.5">Status Akun</span>
-                        <span class="inline-flex items-center gap-1.5 text-xs font-medium text-emerald-700">
-                            <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
-                            Aktif
-                        </span>
+                        <dt class="text-[#66716C]">Status Akun</dt>
+                        <dd class="mt-0.5 font-bold text-[#357A62]">Aktif &bull; Terverifikasi</dd>
                     </div>
-                </div>
+                </dl>
             </div>
         </div>
+
     </div>
 </div>
 @endsection
