@@ -56,7 +56,7 @@
                     <!-- Pill Badge -->
                     <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white border border-orange-200/80 text-xs font-semibold text-slate-700 shadow-2xs mb-5">
                         <span class="w-2 h-2 rounded-full bg-orange-500 animate-pulse"></span>
-                        <span class="text-sky-600 font-bold">Explore. Dream. Discover.</span>
+                        <span class="text-orange-600 font-bold">Layanan Bus Antarkota Resmi</span>
                         <span class="text-slate-300">&bull;</span>
                         <span class="font-heading font-bold text-slate-800">PO CAN TRAVEL</span>
                     </div>
@@ -70,138 +70,6 @@
                     <p class="mt-4 text-sm sm:text-base lg:text-lg text-slate-600 leading-relaxed font-normal max-w-xl">
                         Perjalanan antarkota, lebih mudah dipesan. Dapatkan kepastian nomor kursi real-time dari denah kabin bus, armada eksekutif berpendingin AC, dan tarif resmi tanpa biaya siluman.
                     </p>
-
-                    <!-- ═════════════════════════════════════════════════════
-                         FLOATING PILL SEARCH & BOOKING BAR
-                         ═════════════════════════════════════════════════════ -->
-                    <div id="search-booking-bar" class="w-full mt-8 sm:mt-10">
-                        <!-- Validation Alert Banner -->
-                        <div x-show="errorMessage" x-cloak class="mb-3 p-3.5 rounded-2xl bg-amber-50 border border-amber-200 text-amber-900 text-xs sm:text-sm flex items-center justify-between gap-3 shadow-xs transition-all">
-                            <div class="flex items-center gap-2.5">
-                                <svg class="w-4 h-4 text-amber-600 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
-                                <span x-text="errorMessage" class="font-heading font-semibold"></span>
-                            </div>
-                            <button type="button" @click="errorMessage = ''" class="text-amber-600 hover:text-amber-800 text-sm font-bold leading-none p-1 cursor-pointer">&times;</button>
-                        </div>
-                        @if($errors->any())
-                            <div class="mb-3 p-3.5 rounded-2xl bg-amber-50 border border-amber-200 text-amber-900 text-xs sm:text-sm flex items-center gap-2.5 shadow-xs">
-                                <svg class="w-4 h-4 text-amber-600 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
-                                <span class="font-heading font-semibold">{{ $errors->first() }}</span>
-                            </div>
-                        @endif
-
-                        <form
-                            action="{{ route('trips.index') }}"
-                            method="GET"
-                            @submit="validateSearch($event)"
-                            class="bg-white rounded-3xl lg:rounded-full p-3 sm:p-4 border border-slate-200/90 shadow-[0_16px_40px_-10px_rgba(249,115,22,0.12)] flex flex-col lg:flex-row items-stretch lg:items-center gap-3"
-                        >
-                            <!-- Kota Asal (Where to start?) -->
-                            <div class="flex-1 min-w-[150px] flex items-center gap-3 px-4 py-2 bg-slate-50/70 hover:bg-slate-50 rounded-2xl lg:rounded-full border border-slate-100 transition-colors">
-                                <div class="w-9 h-9 rounded-full bg-orange-50 text-orange-500 flex items-center justify-center shrink-0">
-                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
-                                        <path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
-                                    </svg>
-                                </div>
-                                <div class="flex-1 min-w-0">
-                                    <label for="origin_select" class="block text-[10px] uppercase font-bold text-slate-400 font-heading">Dari Mana?</label>
-                                    <select
-                                        id="origin_select"
-                                        name="origin"
-                                        x-model="origin"
-                                        class="w-full bg-transparent text-xs sm:text-sm font-heading font-bold text-slate-800 focus:outline-none cursor-pointer py-0.5"
-                                    >
-                                        <option value="">Pilih Kota Asal</option>
-                                        @foreach($origins as $org)
-                                            <option value="{{ $org }}">{{ $org }}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                            </div>
-
-                            <!-- Swap Button -->
-                            <button
-                                type="button"
-                                @click="swap()"
-                                class="hidden lg:flex w-9 h-9 rounded-full bg-slate-100 hover:bg-orange-100 text-slate-500 hover:text-orange-600 items-center justify-center transition-all shrink-0 cursor-pointer"
-                                aria-label="Tukar Asal dan Tujuan"
-                                title="Tukar Kota Asal & Tujuan"
-                            >
-                                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"/>
-                                </svg>
-                            </button>
-
-                            <!-- Kota Tujuan (Where to?) -->
-                            <div class="flex-1 min-w-[150px] flex items-center gap-3 px-4 py-2 bg-slate-50/70 hover:bg-slate-50 rounded-2xl lg:rounded-full border border-slate-100 transition-colors">
-                                <div class="w-9 h-9 rounded-full bg-sky-50 text-sky-500 flex items-center justify-center shrink-0">
-                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" d="M3 21v-4m0 0V5a2 2 0 012-2h6.5l1 1H21l-3 6 3 6h-8.5l-1-1H5a2 2 0 00-2 2zm9-13.5V9"/>
-                                    </svg>
-                                </div>
-                                <div class="flex-1 min-w-0">
-                                    <label for="destination_select" class="block text-[10px] uppercase font-bold text-slate-400 font-heading">Mau ke Mana?</label>
-                                    <select
-                                        id="destination_select"
-                                        name="destination"
-                                        x-model="destination"
-                                        class="w-full bg-transparent text-xs sm:text-sm font-heading font-bold text-slate-800 focus:outline-none cursor-pointer py-0.5"
-                                    >
-                                        <option value="">Pilih Kota Tujuan</option>
-                                        @foreach($destinations as $dest)
-                                            <option value="{{ $dest }}">{{ $dest }}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                            </div>
-
-                            <!-- Tanggal Berangkat (When?) -->
-                            <div class="flex-1 min-w-[140px] flex items-center gap-3 px-4 py-2 bg-slate-50/70 hover:bg-slate-50 rounded-2xl lg:rounded-full border border-slate-100 transition-colors">
-                                <div class="w-9 h-9 rounded-full bg-amber-50 text-amber-500 flex items-center justify-center shrink-0">
-                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
-                                    </svg>
-                                </div>
-                                <div class="flex-1 min-w-0">
-                                    <label for="departure_date_input" class="block text-[10px] uppercase font-bold text-slate-400 font-heading">Tanggal</label>
-                                    <input
-                                        type="date"
-                                        id="departure_date_input"
-                                        name="departure_date"
-                                        x-model="departureDate"
-                                        min="{{ date('Y-m-d') }}"
-                                        class="w-full bg-transparent text-xs sm:text-sm font-heading font-bold text-slate-800 focus:outline-none cursor-pointer"
-                                    >
-                                </div>
-                            </div>
-
-                            <!-- Explore Button -->
-                            <button
-                                type="submit"
-                                class="px-7 py-3.5 rounded-2xl lg:rounded-full bg-gradient-to-r from-orange-500 via-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 text-white font-heading font-bold text-sm shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-2 shrink-0 cursor-pointer"
-                            >
-                                <span>Cari Tiket</span>
-                                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
-                                </svg>
-                            </button>
-                        </form>
-
-                        <!-- Quick Route Suggestion Pills -->
-                        <div class="mt-4 flex flex-wrap items-center gap-2 text-xs">
-                            <span class="text-slate-400 font-medium">Paling Banyak Dicari:</span>
-                            @foreach($routes->take(3) as $r)
-                                <button
-                                    type="button"
-                                    @click="selectRoute('{{ $r->origin }}', '{{ $r->destination }}')"
-                                    class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white hover:bg-orange-50 text-slate-700 hover:text-orange-600 border border-slate-200 hover:border-orange-200 transition-all font-medium cursor-pointer shadow-2xs"
-                                >
-                                    <span>{{ $r->origin }} &rarr; {{ $r->destination }}</span>
-                                </button>
-                            @endforeach
-                        </div>
-                    </div>
 
                 </div>
 
@@ -256,6 +124,138 @@
                     </div>
                 </div>
 
+            </div>
+
+            <!-- ═════════════════════════════════════════════════════
+                 FLOATING PILL SEARCH & BOOKING BAR (FULL-WIDTH LUXURIOUS DESIGN)
+                 ═════════════════════════════════════════════════════ -->
+            <div id="search-booking-bar" class="w-full mt-10 lg:mt-12 max-w-5xl mx-auto">
+                <!-- Validation Alert Banner -->
+                <div x-show="errorMessage" x-cloak class="mb-3.5 p-3.5 rounded-2xl bg-amber-50 border border-amber-200 text-amber-900 text-xs sm:text-sm flex items-center justify-between gap-3 shadow-xs transition-all">
+                    <div class="flex items-center gap-2.5">
+                        <svg class="w-4 h-4 text-amber-600 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+                        <span x-text="errorMessage" class="font-heading font-semibold"></span>
+                    </div>
+                    <button type="button" @click="errorMessage = ''" class="text-amber-600 hover:text-amber-800 text-sm font-bold leading-none p-1 cursor-pointer">&times;</button>
+                </div>
+                @if($errors->any())
+                    <div class="mb-3.5 p-3.5 rounded-2xl bg-amber-50 border border-amber-200 text-amber-900 text-xs sm:text-sm flex items-center gap-2.5 shadow-xs">
+                        <svg class="w-4 h-4 text-amber-600 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+                        <span class="font-heading font-semibold">{{ $errors->first() }}</span>
+                    </div>
+                @endif
+
+                <form
+                    action="{{ route('trips.index') }}"
+                    method="GET"
+                    @submit="validateSearch($event)"
+                    class="bg-white rounded-3xl lg:rounded-full p-3 sm:p-4 border border-slate-200/90 shadow-[0_16px_40px_-10px_rgba(249,115,22,0.12)] flex flex-col lg:flex-row items-stretch lg:items-center gap-3"
+                >
+                    <!-- Kota Asal (Where to start?) -->
+                    <div class="flex-1 flex items-center gap-3 px-4 py-2.5 bg-slate-50/70 hover:bg-slate-50 rounded-2xl lg:rounded-full border border-slate-100 transition-colors">
+                        <div class="w-10 h-10 rounded-full bg-orange-50 text-orange-500 flex items-center justify-center shrink-0">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+                            </svg>
+                        </div>
+                        <div class="flex-1 min-w-0">
+                            <label for="origin_select" class="block text-[10px] uppercase font-bold text-slate-400 font-heading">Dari Mana?</label>
+                            <select
+                                id="origin_select"
+                                name="origin"
+                                x-model="origin"
+                                class="w-full bg-transparent text-xs sm:text-sm font-heading font-bold text-slate-800 focus:outline-none cursor-pointer py-0.5"
+                            >
+                                <option value="">Pilih Kota Asal</option>
+                                @foreach($origins as $org)
+                                    <option value="{{ $org }}">{{ $org }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Swap Button -->
+                    <button
+                        type="button"
+                        @click="swap()"
+                        class="hidden lg:flex w-10 h-10 rounded-full bg-slate-100 hover:bg-orange-100 text-slate-500 hover:text-orange-600 items-center justify-center transition-all shrink-0 cursor-pointer"
+                        aria-label="Tukar Asal dan Tujuan"
+                        title="Tukar Kota Asal & Tujuan"
+                    >
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"/>
+                        </svg>
+                    </button>
+
+                    <!-- Kota Tujuan (Where to?) -->
+                    <div class="flex-1 flex items-center gap-3 px-4 py-2.5 bg-slate-50/70 hover:bg-slate-50 rounded-2xl lg:rounded-full border border-slate-100 transition-colors">
+                        <div class="w-10 h-10 rounded-full bg-sky-50 text-sky-500 flex items-center justify-center shrink-0">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M3 21v-4m0 0V5a2 2 0 012-2h6.5l1 1H21l-3 6 3 6h-8.5l-1-1H5a2 2 0 00-2 2zm9-13.5V9"/>
+                            </svg>
+                        </div>
+                        <div class="flex-1 min-w-0">
+                            <label for="destination_select" class="block text-[10px] uppercase font-bold text-slate-400 font-heading">Mau ke Mana?</label>
+                            <select
+                                id="destination_select"
+                                name="destination"
+                                x-model="destination"
+                                class="w-full bg-transparent text-xs sm:text-sm font-heading font-bold text-slate-800 focus:outline-none cursor-pointer py-0.5"
+                            >
+                                <option value="">Pilih Kota Tujuan</option>
+                                @foreach($destinations as $dest)
+                                    <option value="{{ $dest }}">{{ $dest }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Tanggal Berangkat (When?) -->
+                    <div class="flex-1 flex items-center gap-3 px-4 py-2.5 bg-slate-50/70 hover:bg-slate-50 rounded-2xl lg:rounded-full border border-slate-100 transition-colors">
+                        <div class="w-10 h-10 rounded-full bg-amber-50 text-amber-500 flex items-center justify-center shrink-0">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                            </svg>
+                        </div>
+                        <div class="flex-1 min-w-0">
+                            <label for="departure_date_input" class="block text-[10px] uppercase font-bold text-slate-400 font-heading">Tanggal</label>
+                            <input
+                                type="date"
+                                id="departure_date_input"
+                                name="departure_date"
+                                x-model="departureDate"
+                                min="{{ date('Y-m-d') }}"
+                                class="w-full bg-transparent text-xs sm:text-sm font-heading font-bold text-slate-800 focus:outline-none cursor-pointer"
+                            >
+                        </div>
+                    </div>
+
+                    <!-- Explore Button -->
+                    <button
+                        type="submit"
+                        class="px-8 py-4 rounded-2xl lg:rounded-full bg-gradient-to-r from-orange-500 via-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 text-white font-heading font-bold text-sm shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-2 shrink-0 cursor-pointer"
+                    >
+                        <span>Cari Tiket</span>
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
+                        </svg>
+                    </button>
+                </form>
+
+                <!-- Quick Route Suggestion Pills -->
+                <div class="mt-4 flex flex-wrap items-center justify-center lg:justify-start gap-2 text-xs">
+                    <span class="text-slate-400 font-medium">Paling Banyak Dicari:</span>
+                    @foreach($routes->take(3) as $r)
+                        <button
+                            type="button"
+                            @click="selectRoute('{{ $r->origin }}', '{{ $r->destination }}')"
+                            class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white hover:bg-orange-50 text-slate-700 hover:text-orange-600 border border-slate-200 hover:border-orange-200 transition-all font-medium cursor-pointer shadow-2xs"
+                        >
+                            <span>{{ $r->origin }} &rarr; {{ $r->destination }}</span>
+                        </button>
+                    @endforeach
+                </div>
             </div>
         </div>
     </section>
@@ -366,7 +366,7 @@
                 <!-- Right: Editorial Content & 3 Stat Pills -->
                 <div class="lg:col-span-6 flex flex-col items-start">
                     <span class="text-xs font-heading font-bold uppercase tracking-wider text-orange-500 mb-2">
-                        Handpicked For You
+                        Rute Unggulan Antarkota
                     </span>
                     <h2 class="text-2xl sm:text-4xl font-heading font-black text-slate-900 tracking-tight leading-tight">
                         Rute Perjalanan Pilihan dengan Kenyamanan Maksimal
@@ -421,7 +421,7 @@
             <!-- Section Title -->
             <div class="text-center max-w-2xl mx-auto mb-10">
                 <span class="text-xs font-heading font-bold uppercase tracking-wider text-orange-500 block mb-2">
-                    Top Destinations
+                    Destinasi & Jadwal Populer
                 </span>
                 <h2 class="text-2xl sm:text-4xl font-heading font-black text-slate-900 tracking-tight">
                     Pilih Destinasi &amp; Rute Perjalanan Impian Anda
@@ -582,7 +582,7 @@
                             <span>Tiket Terverifikasi &bull; Penumpang Eksekutif</span>
                             <span class="text-emerald-600 font-bold flex items-center gap-1">
                                 <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
-                                Verified Order
+                                Pesanan Terverifikasi
                             </span>
                         </div>
                     </div>

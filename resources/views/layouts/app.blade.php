@@ -31,7 +31,7 @@
             <!-- LEFT: Brand Logo (PO CAN Travel) -->
             <div class="flex items-center shrink-0">
                 <a href="{{ route('home') }}" class="inline-flex items-center focus:outline-none focus:ring-2 focus:ring-[#F97316] rounded-xl py-1 group" aria-label="PO CAN Travel Beranda">
-                    <img src="{{ asset('images/logo.png') }}" alt="PO CAN Travel" class="h-8 sm:h-9 w-auto object-contain transition-transform group-hover:scale-[1.02]">
+                    <img src="{{ asset('images/logo.png') }}" alt="PO CAN Travel" class="h-9 sm:h-10 md:h-11 w-auto object-contain transition-transform group-hover:scale-[1.02]">
                 </a>
             </div>
 
@@ -203,7 +203,7 @@
                 <!-- Col 1: Brand & Tagline -->
                 <div class="lg:col-span-5 flex flex-col gap-4">
                     <div class="flex items-center gap-2.5">
-                        <img src="{{ asset('images/logo.png') }}" alt="PO CAN Travel" class="h-9 w-auto object-contain">
+                        <img src="{{ asset('images/logo.png') }}" alt="PO CAN Travel" class="h-10 sm:h-11 w-auto object-contain">
                     </div>
                     <p class="text-xs text-slate-500 leading-relaxed max-w-sm">
                         Perjalanan antarkota yang lebih mudah dipesan. Kepastian nomor kursi real-time, armada eksekutif modern, dan transparansi tarif tanpa biaya siluman.

@@ -43,33 +43,6 @@ class DatabaseSeeder extends Seeder
             ]
         );
 
-        $customerSiti = User::firstOrCreate(
-            ['email' => 'siti.rahmawati@gmail.com'],
-            [
-                'name' => 'Siti Rahmawati',
-                'password' => Hash::make('password123'),
-                'role' => 'customer',
-            ]
-        );
-
-        $customerAhmad = User::firstOrCreate(
-            ['email' => 'ahmad.fauzi@gmail.com'],
-            [
-                'name' => 'Ahmad Fauzi',
-                'password' => Hash::make('password123'),
-                'role' => 'customer',
-            ]
-        );
-
-        $customerDewi = User::firstOrCreate(
-            ['email' => 'dewi.lestari@gmail.com'],
-            [
-                'name' => 'Dewi Lestari',
-                'password' => Hash::make('password123'),
-                'role' => 'customer',
-            ]
-        );
-
         // ==========================================
         // 2. MASTER FACILITIES (Fasilitas Operasional)
         // ==========================================

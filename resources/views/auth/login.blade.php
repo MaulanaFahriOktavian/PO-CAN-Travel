@@ -14,7 +14,7 @@
         <!-- Top Brand Logo & Heading -->
         <div class="text-center mb-6">
             <a href="{{ route('home') }}" class="inline-block mb-4 focus:outline-none focus:ring-2 focus:ring-orange-500 rounded-xl">
-                <img src="{{ asset('images/logo.png') }}" alt="PO CAN Travel" class="h-10 w-auto mx-auto object-contain">
+                <img src="{{ asset('images/logo.png') }}" alt="PO CAN Travel" class="h-11 w-auto mx-auto object-contain">
             </a>
             <h1 class="font-heading font-extrabold text-2xl sm:text-3xl text-slate-900 tracking-tight">
                 Masuk ke Akun Anda
