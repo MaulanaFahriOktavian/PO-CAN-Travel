@@ -1,13 +1,14 @@
-@extends('layouts.app')
+@extends('layouts.admin')
 
 @section('title', 'Tambah Armada Bus - PO CAN Travel')
+@section('page_title', 'Tambah Armada Bus')
 
 @section('content')
     <div class="py-10 sm:py-12">
         <div class="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="mb-8">
                 <a href="{{ route('admin.buses.index') }}"
-                    class="text-sm font-medium text-blue-600 hover:text-blue-800 transition-colors">
+                    class="text-sm font-medium text-orange-600 hover:text-orange-800 transition-colors">
                     &larr; Kembali ke Daftar Armada
                 </a>
                 <h1 class="text-2xl font-bold text-slate-900 tracking-tight mt-2">Tambah Armada Bus</h1>
@@ -21,7 +22,7 @@
                     <div>
                         <label for="name" class="block text-sm font-medium text-slate-700 mb-1">Nama Armada</label>
                         <input type="text" id="name" name="name" value="{{ old('name') }}" required
-                            class="w-full px-3.5 py-2.5 rounded-lg border {{ $errors->has('name') ? 'border-red-300' : 'border-slate-300' }} text-slate-900 text-sm focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-blue-600"
+                            class="w-full px-3.5 py-2.5 rounded-lg border {{ $errors->has('name') ? 'border-red-300' : 'border-slate-300' }} text-slate-900 text-sm focus:outline-none focus:ring-2 focus:ring-orange-600 focus:border-orange-500"
                             placeholder="Contoh: CAN Executive 03">
                         @if ($errors->has('name'))
                             <p class="mt-1 text-xs text-red-600">{{ $errors->first('name') }}</p>
@@ -31,7 +32,7 @@
                     <div>
                         <label for="code" class="block text-sm font-medium text-slate-700 mb-1">Kode Armada</label>
                         <input type="text" id="code" name="code" value="{{ old('code') }}" required
-                            class="w-full px-3.5 py-2.5 rounded-lg border {{ $errors->has('code') ? 'border-red-300' : 'border-slate-300' }} text-slate-900 text-sm font-mono focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-blue-600"
+                            class="w-full px-3.5 py-2.5 rounded-lg border {{ $errors->has('code') ? 'border-red-300' : 'border-slate-300' }} text-slate-900 text-sm font-mono focus:outline-none focus:ring-2 focus:ring-orange-600 focus:border-orange-500"
                             placeholder="Contoh: CAN-EX03">
                         @if ($errors->has('code'))
                             <p class="mt-1 text-xs text-red-600">{{ $errors->first('code') }}</p>
@@ -43,7 +44,7 @@
                             Kursi</label>
                         <input type="number" id="total_seats" name="total_seats" value="{{ old('total_seats', 30) }}"
                             min="1" max="100" required
-                            class="w-full px-3.5 py-2.5 rounded-lg border {{ $errors->has('total_seats') ? 'border-red-300' : 'border-slate-300' }} text-slate-900 text-sm focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-blue-600">
+                            class="w-full px-3.5 py-2.5 rounded-lg border {{ $errors->has('total_seats') ? 'border-red-300' : 'border-slate-300' }} text-slate-900 text-sm focus:outline-none focus:ring-2 focus:ring-orange-600 focus:border-orange-500">
                         <p class="mt-1 text-xs text-slate-500">
                             Sistem akan secara otomatis menghasilkan daftar nomor kursi (1A, 1B, 1C, 1D, dst.) sesuai jumlah
                             kapasitas ini.
@@ -59,7 +60,7 @@
                             Batal
                         </a>
                         <button type="submit"
-                            class="px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-medium text-sm rounded-lg shadow-sm transition-colors">
+                            class="px-5 py-2.5 bg-orange-500 hover:bg-orange-600 text-white font-medium text-sm rounded-lg shadow-sm transition-colors">
                             Simpan Armada
                         </button>
                     </div>

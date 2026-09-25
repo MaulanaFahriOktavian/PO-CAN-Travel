@@ -1,6 +1,7 @@
-@extends('layouts.app')
+@extends('layouts.admin')
 
 @section('title', 'Kelola Jadwal Perjalanan - PO CAN Travel')
+@section('page_title', 'Jadwal Perjalanan')
 
 @section('content')
 <div class="py-10 sm:py-12">
@@ -14,7 +15,7 @@
             <div>
                 <a
                     href="{{ route('admin.trips.create') }}"
-                    class="inline-flex items-center justify-center px-4 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-medium text-sm rounded-lg shadow-sm transition-colors"
+                    class="inline-flex items-center justify-center px-4 py-2.5 bg-orange-500 hover:bg-orange-600 text-white font-medium text-sm rounded-lg shadow-sm transition-colors"
                 >
                     Tambah Perjalanan
                 </a>
@@ -83,7 +84,7 @@
                                             {{ $booked }} / {{ $totalSeats }} Kursi ({{ $occupancyRate }}%)
                                         </div>
                                         <div class="w-24 bg-slate-200 rounded-full h-1.5 mt-1.5 overflow-hidden">
-                                            <div class="bg-blue-600 h-1.5 rounded-full" style="width: {{ min(100, $occupancyRate) }}%"></div>
+                                            <div class="bg-orange-500 h-1.5 rounded-full" style="width: {{ min(100, $occupancyRate) }}%"></div>
                                         </div>
                                     </td>
                                     <td class="py-4 px-4 font-medium text-slate-900 tabular-nums">
@@ -91,7 +92,7 @@
                                     </td>
                                     <td class="py-4 px-4">
                                         @if ($trip->status === 'scheduled')
-                                            <span class="text-blue-700 font-medium">Scheduled</span>
+                                            <span class="text-orange-700 font-medium">Scheduled</span>
                                         @elseif ($trip->status === 'departed')
                                             <span class="text-amber-700 font-medium">Departed</span>
                                         @elseif ($trip->status === 'completed')
@@ -103,7 +104,7 @@
                                     <td class="py-4 px-4 sm:px-6 text-right space-x-2">
                                         <a
                                             href="{{ route('admin.trips.edit', $trip) }}"
-                                            class="text-blue-600 hover:text-blue-800 font-medium transition-colors"
+                                            class="text-orange-600 hover:text-orange-800 font-medium transition-colors"
                                         >
                                             Edit
                                         </a>

@@ -15,6 +15,18 @@ class PublicTripController extends Controller
      */
     public function index(Request $request): View
     {
+        $request->validate([
+            'origin' => ['nullable', 'string', 'max:100'],
+            'destination' => ['nullable', 'string', 'max:100', 'different:origin'],
+            'departure_date' => ['nullable', 'date'],
+            'date' => ['nullable', 'date'],
+            'sort' => ['nullable', 'string', 'in:departure_asc,departure_desc,price_asc,price_desc'],
+        ], [
+            'destination.different' => 'Kota tujuan tidak boleh sama dengan kota asal.',
+            'departure_date.date' => 'Format tanggal keberangkatan tidak valid.',
+            'date.date' => 'Format tanggal keberangkatan tidak valid.',
+        ]);
+
         $origins = Route::select('origin')->distinct()->orderBy('origin')->pluck('origin');
         $destinations = Route::select('destination')->distinct()->orderBy('destination')->pluck('destination');
 
@@ -41,8 +53,9 @@ class PublicTripController extends Controller
             });
         }
 
-        if ($request->filled('departure_date')) {
-            $query->whereDate('departure_at', $request->departure_date);
+        $departureDate = $request->input('departure_date', $request->input('date'));
+        if (!empty($departureDate)) {
+            $query->whereDate('departure_at', $departureDate);
         }
 
         // Sorting
@@ -73,7 +86,7 @@ class PublicTripController extends Controller
      */
     public function show(Trip $trip): View
     {
-        if ($trip->status !== 'scheduled') {
+        if ($trip->status !== 'scheduled' || $trip->departure_at < now()) {
             abort(404, 'Perjalanan tidak tersedia atau sudah tidak aktif.');
         }
 

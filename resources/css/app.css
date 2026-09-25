@@ -7,20 +7,30 @@
 }
 
 :root {
-    --color-primary:      #173D2E;       /* Deep Forest */
-    --color-primary-dark: #0F2A20;
-    --color-bg:           #FAF6EE;       /* Warm Ivory - dominan */
-    --color-surface:      #F1E9D8;       /* Soft Sand - section alternatif */
-    --color-accent:       #C1603D;       /* Terracotta - CTA utama SAJA */
-    --color-accent-dark:  #9C4B2F;
-    --color-text:         #1C231F;
-    --color-text-muted:   #5F6A62;
-    --color-border:       #DCD3C0;
-    --color-white:        #FFFFFF;
+    --color-primary:       #0F172A; /* Crisp Modern Slate */
+    --color-primary-dark:  #020617;
 
-    --color-success:      #2F6B4F;       /* kursi tersedia, sukses */
-    --color-warning:      #B8863B;       /* pending, kursi terkunci */
-    --color-danger:       #A3402F;       /* penuh, gagal, dibatalkan */
+    --color-brand:         #F97316; /* Vibrant Sunset Orange */
+    --color-brand-hover:   #EA580C;
+    --color-brand-soft:    #FFF7ED;
+
+    --color-accent-blue:   #0284C7; /* Sky / Cyan Blue */
+    --color-accent-blue-soft: #F0F9FF;
+
+    --color-bg:            #FAFBFD; /* Ultra Clean Fresh Canvas */
+    --color-surface:       #FFFFFF; /* Pure White */
+
+    --color-text:          #0F172A; /* Slate 900 */
+    --color-text-muted:    #64748B; /* Slate 500 */
+
+    --color-border:        #E2E8F0; /* Slate 200 hairline */
+    --color-border-subtle: #F1F5F9; /* Slate 100 hairline */
+    --color-white:         #FFFFFF;
+
+    --color-terracotta:    #EA580C;
+    --color-success:       #10B981;
+    --color-warning:       #F59E0B;
+    --color-danger:        #EF4444;
 }
 
 @layer base {
@@ -37,14 +47,24 @@
         font-feature-settings: "cv02", "cv03", "cv04", "cv11";
     }
 
-    /* Tabular numbers for price and time alignment */
+    h1, h2, h3, h4, h5, h6 {
+        font-family: 'Manrope', ui-sans-serif, sans-serif;
+        font-weight: 700;
+        letter-spacing: -0.025em;
+        color: var(--color-text);
+    }
+
+    /* Tabular numbers for clean numeric & currency alignment */
     .tabular-nums {
         font-variant-numeric: tabular-nums;
     }
 
-    /* Display Heading font (Fraunces serif) */
+    .font-heading {
+        font-family: 'Manrope', ui-sans-serif, sans-serif;
+    }
+
     .font-display {
-        font-family: 'Fraunces', Georgia, serif;
+        font-family: 'Manrope', ui-sans-serif, sans-serif;
     }
 }
 
@@ -53,91 +73,73 @@
     /* NAVBAR LINKS                                                    */
     /* ═══════════════════════════════════════════════════════════════ */
     .nav-link {
-        color: var(--color-text-muted);
-        font-size: 0.875rem;
+        color: #667085;
+        font-size: 0.9375rem; /* 15px */
         font-weight: 500;
         transition: color 0.15s ease;
         position: relative;
-        padding-bottom: 4px;
+        padding-top: 0.5rem;
+        padding-bottom: 0.5rem;
         text-decoration: none;
+        display: inline-flex;
+        align-items: center;
     }
     .nav-link:hover {
-        color: var(--color-primary);
+        color: #F97316;
     }
     .nav-link.active {
-        color: var(--color-primary);
-        font-weight: 600;
+        color: #0F172A;
+        font-weight: 700;
     }
     .nav-link.active::after {
         content: '';
         position: absolute;
-        bottom: -2px;
+        bottom: 0;
         left: 0;
         right: 0;
-        height: 2px;
-        background-color: var(--color-primary);
-        border-radius: 1px;
+        height: 2.5px;
+        background: linear-gradient(90deg, #F97316, #FB923C);
+        border-radius: 9999px;
     }
 
     /* ═══════════════════════════════════════════════════════════════ */
     /* BUTTON SYSTEM                                                   */
     /* ═══════════════════════════════════════════════════════════════ */
-    /* Primary Action Button (Deep Forest) */
     .btn-primary {
-        @apply inline-flex items-center justify-center font-medium text-white transition-colors select-none text-sm px-4 py-2.5;
-        background-color: var(--color-primary);
+        @apply inline-flex items-center justify-center font-heading font-bold text-white transition-all select-none text-sm px-6 py-2.5 rounded-full shadow-xs hover:shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2;
+        background: linear-gradient(135deg, #F97316 0%, #EA580C 100%);
+        border: 1px solid transparent;
+        --tw-ring-color: #F97316;
+        min-height: 44px;
     }
     .btn-primary:hover {
-        background-color: var(--color-primary-dark);
+        background: linear-gradient(135deg, #EA580C 0%, #C2410C 100%);
+    }
+    .btn-primary:active {
+        transform: translateY(1px);
     }
 
-    /* Primary Accent Button (Terracotta - ONLY for main Hero CTA) */
-    .btn-accent {
-        @apply inline-flex items-center justify-center font-semibold text-white transition-colors select-none text-sm px-6 py-3;
-        background-color: var(--color-accent);
-    }
-    .btn-accent:hover {
-        background-color: var(--color-accent-dark);
-    }
-
-    /* Secondary Button (Bordered Ivory/Sand) */
     .btn-secondary {
-        @apply inline-flex items-center justify-center font-medium transition-colors select-none text-sm px-4 py-2.5;
-        background-color: var(--color-white);
-        color: var(--color-text);
-        border: 1px solid var(--color-border);
+        @apply inline-flex items-center justify-center font-medium transition-all select-none text-sm px-4 py-2 rounded-lg border focus:outline-none focus:ring-2 focus:ring-offset-1;
+        background-color: #FFFFFF;
+        color: #15202B;
+        border-color: #E5EAF0;
+        --tw-ring-color: #2563EB;
+        min-height: 40px;
     }
     .btn-secondary:hover {
-        background-color: var(--color-bg);
-        border-color: var(--color-primary);
-        color: var(--color-primary);
+        background-color: #F8FAFC;
+        border-color: #D0D5DD;
+        color: #0F2740;
     }
 
-    /* Outline Button */
-    .btn-outline {
-        @apply inline-flex items-center justify-center font-medium transition-colors select-none text-sm px-4 py-2.5;
-        border: 1px solid var(--color-primary);
-        color: var(--color-primary);
-        background-color: transparent;
+    .btn-accent {
+        @apply inline-flex items-center justify-center font-heading font-semibold text-white transition-all select-none text-sm px-5 py-2.5 rounded-lg shadow-sm focus:outline-none;
+        background-color: #2563EB;
+        min-height: 44px;
     }
-    .btn-outline:hover {
-        background-color: var(--color-primary);
-        color: #ffffff;
-    }
-
-    /* ═══════════════════════════════════════════════════════════════ */
-    /* SEARCH FIELD INPUT                                              */
-    /* ═══════════════════════════════════════════════════════════════ */
-    .search-field {
-        background-color: var(--color-white);
-        border: 1px solid var(--color-border);
-        color: var(--color-text);
-        transition: border-color 0.15s ease, box-shadow 0.15s ease;
-    }
-    .search-field:focus {
-        outline: none;
-        border-color: var(--color-primary);
-        box-shadow: 0 0 0 1px var(--color-primary);
+    .btn-accent:hover {
+        background-color: #1D4ED8;
     }
 }
 

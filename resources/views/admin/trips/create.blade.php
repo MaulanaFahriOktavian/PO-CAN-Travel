@@ -1,13 +1,14 @@
-@extends('layouts.app')
+@extends('layouts.admin')
 
 @section('title', 'Tambah Jadwal Perjalanan - PO CAN Travel')
+@section('page_title', 'Tambah Jadwal Perjalanan')
 
 @section('content')
     <div class="py-10 sm:py-12">
         <div class="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="mb-8">
                 <a href="{{ route('admin.trips.index') }}"
-                    class="text-sm font-medium text-blue-600 hover:text-blue-800 transition-colors">
+                    class="text-sm font-medium text-orange-600 hover:text-orange-800 transition-colors">
                     &larr; Kembali ke Daftar Jadwal
                 </a>
                 <h1 class="text-2xl font-bold text-slate-900 tracking-tight mt-2">Tambah Jadwal Perjalanan</h1>
@@ -22,7 +23,7 @@
                     <div>
                         <label for="route_id" class="block text-sm font-medium text-slate-700 mb-1">Rute Perjalanan</label>
                         <select id="route_id" name="route_id" required
-                            class="w-full px-3.5 py-2.5 rounded-lg border {{ $errors->has('route_id') ? 'border-red-300' : 'border-slate-300' }} text-slate-900 text-sm focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-blue-600">
+                            class="w-full px-3.5 py-2.5 rounded-lg border {{ $errors->has('route_id') ? 'border-red-300' : 'border-slate-300' }} text-slate-900 text-sm focus:outline-none focus:ring-2 focus:ring-orange-600 focus:border-orange-500">
                             <option value="">-- Pilih Rute --</option>
                             @foreach ($routes as $route)
                                 <option value="{{ $route->id }}" {{ old('route_id') == $route->id ? 'selected' : '' }}>
@@ -38,7 +39,7 @@
                     <div>
                         <label for="bus_id" class="block text-sm font-medium text-slate-700 mb-1">Armada Bus</label>
                         <select id="bus_id" name="bus_id" required
-                            class="w-full px-3.5 py-2.5 rounded-lg border {{ $errors->has('bus_id') ? 'border-red-300' : 'border-slate-300' }} text-slate-900 text-sm focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-blue-600">
+                            class="w-full px-3.5 py-2.5 rounded-lg border {{ $errors->has('bus_id') ? 'border-red-300' : 'border-slate-300' }} text-slate-900 text-sm focus:outline-none focus:ring-2 focus:ring-orange-600 focus:border-orange-500">
                             <option value="">-- Pilih Armada --</option>
                             @foreach ($buses as $bus)
                                 <option value="{{ $bus->id }}" {{ old('bus_id') == $bus->id ? 'selected' : '' }}>
@@ -57,7 +58,7 @@
                                 Keberangkatan</label>
                             <input type="datetime-local" id="departure_at" name="departure_at"
                                 value="{{ old('departure_at') }}" required
-                                class="w-full px-3.5 py-2.5 rounded-lg border {{ $errors->has('departure_at') ? 'border-red-300' : 'border-slate-300' }} text-slate-900 text-sm focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-blue-600">
+                                class="w-full px-3.5 py-2.5 rounded-lg border {{ $errors->has('departure_at') ? 'border-red-300' : 'border-slate-300' }} text-slate-900 text-sm focus:outline-none focus:ring-2 focus:ring-orange-600 focus:border-orange-500">
                             @if ($errors->has('departure_at'))
                                 <p class="mt-1 text-xs text-red-600">{{ $errors->first('departure_at') }}</p>
                             @endif
@@ -68,7 +69,7 @@
                                 Kedatangan</label>
                             <input type="datetime-local" id="arrival_at" name="arrival_at" value="{{ old('arrival_at') }}"
                                 required
-                                class="w-full px-3.5 py-2.5 rounded-lg border {{ $errors->has('arrival_at') ? 'border-red-300' : 'border-slate-300' }} text-slate-900 text-sm focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-blue-600">
+                                class="w-full px-3.5 py-2.5 rounded-lg border {{ $errors->has('arrival_at') ? 'border-red-300' : 'border-slate-300' }} text-slate-900 text-sm focus:outline-none focus:ring-2 focus:ring-orange-600 focus:border-orange-500">
                             @if ($errors->has('arrival_at'))
                                 <p class="mt-1 text-xs text-red-600">{{ $errors->first('arrival_at') }}</p>
                             @endif
@@ -80,7 +81,7 @@
                             (Rupiah)</label>
                         <input type="number" id="price" name="price" value="{{ old('price', 250000) }}" min="0" step="1000"
                             required
-                            class="w-full px-3.5 py-2.5 rounded-lg border {{ $errors->has('price') ? 'border-red-300' : 'border-slate-300' }} text-slate-900 text-sm focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-blue-600"
+                            class="w-full px-3.5 py-2.5 rounded-lg border {{ $errors->has('price') ? 'border-red-300' : 'border-slate-300' }} text-slate-900 text-sm focus:outline-none focus:ring-2 focus:ring-orange-600 focus:border-orange-500"
                             placeholder="Contoh: 250000">
                         <p class="mt-1 text-xs text-slate-500">Masukkan harga dalam rupiah.</p>
                         @if ($errors->has('price'))
@@ -91,7 +92,7 @@
                     <div>
                         <label for="status" class="block text-sm font-medium text-slate-700 mb-1">Status Perjalanan</label>
                         <select id="status" name="status" required
-                            class="w-full px-3.5 py-2.5 rounded-lg border {{ $errors->has('status') ? 'border-red-300' : 'border-slate-300' }} text-slate-900 text-sm focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-blue-600">
+                            class="w-full px-3.5 py-2.5 rounded-lg border {{ $errors->has('status') ? 'border-red-300' : 'border-slate-300' }} text-slate-900 text-sm focus:outline-none focus:ring-2 focus:ring-orange-600 focus:border-orange-500">
                             <option value="scheduled" {{ old('status', 'scheduled') === 'scheduled' ? 'selected' : '' }}>
                                 Scheduled</option>
                             <option value="departed" {{ old('status') === 'departed' ? 'selected' : '' }}>Departed</option>
@@ -109,7 +110,7 @@
                             Batal
                         </a>
                         <button type="submit"
-                            class="px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-medium text-sm rounded-lg shadow-sm transition-colors">
+                            class="px-5 py-2.5 bg-orange-500 hover:bg-orange-600 text-white font-medium text-sm rounded-lg shadow-sm transition-colors">
                             Simpan Jadwal
                         </button>
                     </div>

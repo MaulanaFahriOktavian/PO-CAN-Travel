@@ -8,53 +8,69 @@
     modifyOpen: false,
     origin: '{{ request('origin', '') }}',
     destination: '{{ request('destination', '') }}',
-    departureDate: '{{ request('departure_date', '') }}',
+    departureDate: '{{ request('departure_date', request('date', '')) }}',
     sort: '{{ request('sort', 'departure_asc') }}',
+    swap() {
+        let temp = this.origin;
+        this.origin = this.destination;
+        this.destination = temp;
+    },
     applySort(val) {
         let url = new URL(window.location.href);
         url.searchParams.set('sort', val);
         window.location.href = url.toString();
     }
-}">
+}" class="min-h-screen bg-[#FAFBFD]">
 
-    <!-- Top Search Sticky Summary Bar -->
-    <section class="w-full bg-[#FBFAF6] border-b border-[#D9D5CA] sticky top-16 z-30">
+    <!-- ═════════════════════════════════════════════════════════════════
+         01. TOP SEARCH SUMMARY & MODIFICATION BAR (STICKY)
+         ═════════════════════════════════════════════════════════════════ -->
+    <section class="w-full bg-white border-b border-slate-200/80 sticky top-[76px] z-30 shadow-2xs">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3">
             <div class="flex flex-wrap items-center justify-between gap-3">
+
+                <!-- Left: Route & Date Summary Pills -->
                 <div class="flex flex-wrap items-center gap-2 sm:gap-3 text-xs sm:text-sm">
-                    <div class="inline-flex items-center gap-2 bg-[#F5F1E8] border border-[#D9D5CA] px-3.5 py-1.5 rounded-full font-bold text-[#1C2522]">
-                        <span>{{ request('origin') ?: 'Semua Asal' }}</span>
-                        <span class="text-[#21483C] font-mono">→</span>
+                    <div class="inline-flex items-center gap-2 bg-orange-50/60 border border-orange-200/80 px-4 py-1.5 rounded-full font-heading font-bold text-slate-800">
+                        <span>{{ request('origin') ?: 'Semua Kota Asal' }}</span>
+                        <svg class="w-3.5 h-3.5 text-orange-500" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
+                        </svg>
                         <span>{{ request('destination') ?: 'Semua Tujuan' }}</span>
                     </div>
 
-                    <span class="text-[#D9D5CA] font-medium hidden sm:inline-block">•</span>
+                    <span class="text-slate-300 font-medium hidden sm:inline-block">•</span>
 
-                    <div class="inline-flex items-center gap-1.5 text-[#66716C] font-medium">
-                        <span class="material-symbols-outlined text-[16px] text-[#21483C]">calendar_today</span>
+                    <div class="inline-flex items-center gap-1.5 text-slate-500 text-xs sm:text-sm font-medium">
+                        <svg class="w-4 h-4 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                        </svg>
                         <span>
-                            @if(request('departure_date'))
-                                {{ \Carbon\Carbon::parse(request('departure_date'))->translatedFormat('D, d M Y') }}
+                            @if(request('departure_date') || request('date'))
+                                {{ \Carbon\Carbon::parse(request('departure_date', request('date')))->translatedFormat('l, d M Y') }}
                             @else
-                                Hari Ini &amp; Mendatang
+                                Seluruh Jadwal Keberangkatan
                             @endif
                         </span>
                     </div>
                 </div>
 
+                <!-- Right: Toggle Modify Search Button -->
                 <div class="flex items-center gap-2">
                     <button 
                         @click="modifyOpen = !modifyOpen"
                         type="button"
-                        class="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full bg-[#F5F1E8] hover:bg-[#D9D5CA] text-[#21483C] border border-[#D9D5CA] font-semibold text-xs transition-colors cursor-pointer"
+                        class="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-slate-50 hover:bg-orange-50 text-slate-700 hover:text-orange-600 border border-slate-200 hover:border-orange-300 font-heading font-semibold text-xs transition-all cursor-pointer focus:outline-none focus:ring-2 focus:ring-orange-500"
                     >
-                        <span class="material-symbols-outlined text-[16px]">tune</span>
-                        <span x-text="modifyOpen ? 'Tutup Filter' : 'Ubah Pencarian'">Ubah Pencarian</span>
+                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"/>
+                        </svg>
+                        <span x-text="modifyOpen ? 'Tutup Form' : 'Ubah Pencarian'">Ubah Pencarian</span>
                     </button>
                 </div>
             </div>
 
-            <!-- Expandable Search Modification Panel -->
+            <!-- Expandable Search Form Modification Panel -->
             <div 
                 x-show="modifyOpen" 
                 x-transition:enter="transition ease-out duration-200"
@@ -63,76 +79,94 @@
                 x-transition:leave="transition ease-in duration-150"
                 x-transition:leave-start="opacity-100 translate-y-0"
                 x-transition:leave-end="opacity-0 -translate-y-2"
-                class="pt-4 mt-3 pb-2 border-t border-[#D9D5CA]"
+                class="pt-4 mt-3 pb-2 border-t border-slate-100"
                 style="display: none;"
             >
-                <form method="GET" action="{{ route('customer.trips.index') }}" class="p-4 sm:p-5 bg-white border border-[#D9D5CA] rounded-xl grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 items-end">
-                    <!-- Kota Asal -->
-                    <div class="flex flex-col gap-1.5">
-                        <label for="filter_origin_customer" class="text-xs font-bold text-[#1C2522]">Kota Asal</label>
-                        <div class="flex items-center gap-2 bg-[#FBFAF6] border border-[#D9D5CA] px-3 py-2 rounded-xl">
-                            <span class="material-symbols-outlined text-[#21483C] text-[18px]">trip_origin</span>
-                            <select id="filter_origin_customer" name="origin" class="bg-transparent w-full text-[#1C2522] text-xs sm:text-sm font-semibold focus:outline-none">
+                <form method="GET" action="{{ route('customer.trips.index') }}" class="p-5 bg-white border border-slate-200/80 rounded-2xl shadow-xs">
+                    <input type="hidden" name="sort" :value="sort">
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 gap-3 sm:gap-4 items-center">
+                        <!-- Kota Asal -->
+                        <div class="lg:col-span-3 flex flex-col justify-center bg-slate-50 hover:bg-slate-100/70 focus-within:bg-white focus-within:ring-2 focus-within:ring-orange-500 rounded-2xl p-3 border border-slate-200 transition-all">
+                            <label for="filter_origin_customer" class="text-[11px] font-bold uppercase tracking-wider text-slate-500 mb-0.5 block cursor-pointer">Kota Asal</label>
+                            <select id="filter_origin_customer" name="origin" x-model="origin" class="bg-transparent w-full font-heading font-bold text-sm text-slate-800 focus:outline-none cursor-pointer py-0.5 truncate">
                                 <option value="">Semua Kota Asal</option>
                                 @foreach($origins as $o)
                                     <option value="{{ $o }}" {{ request('origin') === $o ? 'selected' : '' }}>{{ $o }}</option>
                                 @endforeach
                             </select>
                         </div>
-                    </div>
 
-                    <!-- Kota Tujuan -->
-                    <div class="flex flex-col gap-1.5">
-                        <label for="filter_destination_customer" class="text-xs font-bold text-[#1C2522]">Kota Tujuan</label>
-                        <div class="flex items-center gap-2 bg-[#FBFAF6] border border-[#D9D5CA] px-3 py-2 rounded-xl">
-                            <span class="material-symbols-outlined text-[#B96545] text-[18px]">location_on</span>
-                            <select id="filter_destination_customer" name="destination" class="bg-transparent w-full text-[#1C2522] text-xs sm:text-sm font-semibold focus:outline-none">
+                        <!-- Swap Button -->
+                        <div class="hidden lg:flex lg:col-span-1 items-center justify-center">
+                            <button
+                                type="button"
+                                @click="swap()"
+                                title="Tukar Kota Asal dan Tujuan"
+                                class="w-9 h-9 rounded-full border border-slate-200 bg-white hover:bg-orange-50 text-slate-500 hover:text-orange-500 hover:border-orange-300 flex items-center justify-center transition-all cursor-pointer shadow-xs"
+                            >
+                                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"/>
+                                </svg>
+                            </button>
+                        </div>
+
+                        <!-- Kota Tujuan -->
+                        <div class="lg:col-span-3 flex flex-col justify-center bg-slate-50 hover:bg-slate-100/70 focus-within:bg-white focus-within:ring-2 focus-within:ring-orange-500 rounded-2xl p-3 border border-slate-200 transition-all">
+                            <label for="filter_destination_customer" class="text-[11px] font-bold uppercase tracking-wider text-slate-500 mb-0.5 block cursor-pointer">Kota Tujuan</label>
+                            <select id="filter_destination_customer" name="destination" x-model="destination" class="bg-transparent w-full font-heading font-bold text-sm text-slate-800 focus:outline-none cursor-pointer py-0.5 truncate">
                                 <option value="">Semua Kota Tujuan</option>
                                 @foreach($destinations as $d)
                                     <option value="{{ $d }}" {{ request('destination') === $d ? 'selected' : '' }}>{{ $d }}</option>
                                 @endforeach
                             </select>
                         </div>
-                    </div>
 
-                    <!-- Tanggal Keberangkatan -->
-                    <div class="flex flex-col gap-1.5">
-                        <label for="filter_date_customer" class="text-xs font-bold text-[#1C2522]">Tanggal Keberangkatan</label>
-                        <div class="flex items-center gap-2 bg-[#FBFAF6] border border-[#D9D5CA] px-3 py-2 rounded-xl">
-                            <span class="material-symbols-outlined text-[#21483C] text-[18px]">calendar_month</span>
+                        <!-- Tanggal Keberangkatan -->
+                        <div class="lg:col-span-3 flex flex-col justify-center bg-slate-50 hover:bg-slate-100/70 focus-within:bg-white focus-within:ring-2 focus-within:ring-orange-500 rounded-2xl p-3 border border-slate-200 transition-all">
+                            <label for="filter_date_customer" class="text-[11px] font-bold uppercase tracking-wider text-slate-500 mb-0.5 block cursor-pointer">Tanggal Keberangkatan</label>
                             <input 
                                 id="filter_date_customer"
                                 type="date" 
                                 name="departure_date" 
-                                value="{{ request('departure_date') }}" 
-                                class="bg-transparent w-full text-[#1C2522] text-xs sm:text-sm font-semibold focus:outline-none"
+                                x-model="departureDate"
+                                class="bg-transparent w-full font-heading font-bold text-sm text-slate-800 focus:outline-none cursor-pointer py-0.5"
                             />
                         </div>
-                    </div>
 
-                    <!-- Submit & Reset -->
-                    <div class="flex gap-2">
-                        <button type="submit" class="flex-1 bg-[#21483C] hover:bg-[#2F6252] text-[#F5F1E8] py-2.5 px-4 rounded-xl font-bold text-xs sm:text-sm transition-colors flex items-center justify-center gap-1.5 cursor-pointer">
-                            <span class="material-symbols-outlined text-[18px]">search</span>
-                            <span>Cari Jadwal</span>
-                        </button>
-                        @if(request()->hasAny(['origin', 'destination', 'departure_date', 'sort']))
-                            <a href="{{ route('customer.trips.index') }}" class="py-2.5 px-3 bg-white hover:bg-[#F5F1E8] text-[#66716C] font-bold text-xs rounded-xl border border-[#D9D5CA] flex items-center justify-center transition-colors">
-                                Reset
-                            </a>
-                        @endif
+                        <!-- Submit & Reset Actions -->
+                        <div class="lg:col-span-2 flex items-center gap-2">
+                            <button 
+                                type="submit" 
+                                class="flex-1 min-h-[46px] bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 text-white py-2.5 px-4 rounded-full font-heading font-bold text-xs sm:text-sm transition-all shadow-md shadow-orange-500/20 flex items-center justify-center gap-1.5 cursor-pointer focus:ring-2 focus:ring-orange-500"
+                            >
+                                <span>Cari Jadwal</span>
+                            </button>
+                            @if(request()->hasAny(['origin', 'destination', 'departure_date', 'date', 'sort']))
+                                <a 
+                                    href="{{ route('customer.trips.index') }}" 
+                                    class="min-h-[46px] px-3.5 bg-slate-50 hover:bg-slate-100 text-slate-500 hover:text-slate-800 font-semibold text-xs rounded-full border border-slate-200 flex items-center justify-center transition-colors"
+                                    title="Reset Filter"
+                                >
+                                    Reset
+                                </a>
+                            @endif
+                        </div>
                     </div>
                 </form>
             </div>
         </div>
     </section>
 
-    <!-- Horizontal Date Ribbon Strip -->
-    <section class="w-full bg-[#F5F1E8] border-b border-[#D9D5CA]">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2.5">
-            <div class="flex items-center gap-2 overflow-x-auto no-scrollbar py-0.5">
+    <!-- ═════════════════════════════════════════════════════════════════
+         02. HORIZONTAL DATE RIBBON STRIP (QUICK DATE SELECTION)
+         ═════════════════════════════════════════════════════════════════ -->
+    <section class="w-full bg-slate-50/60 border-b border-slate-200/80">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3">
+            <div class="flex items-center gap-2.5 overflow-x-auto no-scrollbar py-0.5">
                 @php
-                    $baseDate = request('departure_date') ? \Carbon\Carbon::parse(request('departure_date')) : now();
+                    $activeDateParam = request('departure_date', request('date'));
+                    $baseDate = $activeDateParam ? \Carbon\Carbon::parse($activeDateParam) : now();
                     $dates = [
                         $baseDate->copy()->subDays(2),
                         $baseDate->copy()->subDay(),
@@ -149,89 +183,105 @@
                     @endphp
                     <a 
                         href="{{ request()->fullUrlWithQuery(['departure_date' => $dateStr]) }}" 
-                        class="flex-1 min-w-[130px] px-3.5 py-2.5 rounded-xl text-left transition-all {{ $isCurrent ? 'bg-[#21483C] text-[#F5F1E8]' : 'bg-white hover:bg-[#FBFAF6] border border-[#D9D5CA] text-[#1C2522]' }}"
+                        class="flex-1 min-w-[140px] px-4 py-2.5 rounded-2xl text-left transition-all border {{ $isCurrent ? 'bg-gradient-to-r from-orange-500 to-amber-500 border-orange-500 text-white shadow-sm shadow-orange-500/20' : 'bg-white hover:bg-orange-50/40 border-slate-200/80 text-slate-800' }}"
                     >
                         <div class="flex items-center justify-between">
-                            <span class="text-[11px] font-semibold block {{ $isCurrent ? 'text-[#F5F1E8]/70' : 'text-[#66716C]' }}">
+                            <span class="text-[11px] font-semibold block {{ $isCurrent ? 'text-white/80' : 'text-slate-500' }}">
                                 {{ $d->translatedFormat('D, d M') }}
                             </span>
                             @if($isCurrent)
-                                <span class="inline-block w-2 h-2 rounded-full bg-[#B96545]"></span>
+                                <span class="inline-block w-2 h-2 rounded-full bg-white"></span>
                             @endif
                         </div>
-                        <span class="text-xs sm:text-sm font-bold block mt-1 {{ $isCurrent ? 'text-white' : 'text-[#1C2522]' }}">
+                        <span class="text-xs sm:text-sm font-heading font-bold block mt-1 {{ $isCurrent ? 'text-white' : 'text-slate-800' }}">
                             {{ $isCurrent ? 'Tanggal Dipilih' : 'Pilih Tanggal' }}
                         </span>
-                        <span class="text-[10px] block mt-0.5 {{ $isCurrent ? 'text-[#F5F1E8]/60' : 'text-[#66716C]' }}">
+                        <span class="text-[10px] block mt-0.5 {{ $isCurrent ? 'text-white/70' : 'text-slate-400' }}">
                             Jadwal Keberangkatan
                         </span>
                     </a>
                 @endforeach
             </div>
         </div>
-    </section>
-
-    <!-- Main Catalog Grid Area -->
+    <!-- ═════════════════════════════════════════════════════════════════
+         03. MAIN CATALOG GRID AREA
+         ═════════════════════════════════════════════════════════════════ -->
     <main class="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 lg:py-10">
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
             
-            <!-- LEFT SIDEBAR: SORTING & INFO -->
+            <!-- LEFT SIDEBAR: SORTING & OPERATIONAL INFO -->
             <aside class="lg:col-span-3 flex flex-col gap-4 sticky top-36">
-                <div class="bg-white rounded-xl p-5 border border-[#D9D5CA] flex flex-col gap-4">
-                    <div class="flex items-center justify-between pb-2 border-b border-[#D9D5CA]">
-                        <span class="text-sm font-bold text-[#1C2522]">Urutkan Jadwal</span>
-                        <a href="{{ route('customer.trips.index') }}" class="text-xs text-[#21483C] hover:text-[#2F6252] font-semibold transition-colors">Reset</a>
+                <!-- Sorting Box -->
+                <div class="bg-white rounded-3xl p-5 sm:p-6 border border-slate-200/80 shadow-[0_16px_40px_-15px_rgba(15,23,42,0.04)] flex flex-col gap-4">
+                    <div class="flex items-center justify-between pb-3 border-b border-slate-100">
+                        <span class="text-sm font-heading font-bold text-slate-900">Urutkan Jadwal</span>
+                        @if(request()->hasAny(['sort']))
+                            <a href="{{ request()->fullUrlWithQuery(['sort' => null]) }}" class="text-xs text-orange-500 hover:underline font-semibold transition-colors">Reset</a>
+                        @endif
                     </div>
 
                     <!-- Sorting Options -->
-                    <div class="flex flex-col gap-1 text-xs">
-                        <label class="flex items-center justify-between py-1.5 px-2 rounded-lg hover:bg-[#F5F1E8] cursor-pointer transition-colors">
-                            <span class="font-medium text-[#1C2522]">Tarif Terendah</span>
-                            <input 
-                                type="radio" 
-                                name="sortOption" 
-                                value="price_asc"
-                                :checked="sort === 'price_asc'"
-                                @change="applySort('price_asc')"
-                                class="accent-[#21483C] w-4 h-4"
-                            />
-                        </label>
-                        <label class="flex items-center justify-between py-1.5 px-2 rounded-lg hover:bg-[#F5F1E8] cursor-pointer transition-colors">
-                            <span class="font-medium text-[#1C2522]">Keberangkatan Terawal</span>
+                    <div class="flex flex-col gap-1.5 text-xs">
+                        <label class="flex items-center justify-between py-2 px-3 rounded-xl hover:bg-slate-50 cursor-pointer transition-colors {{ request('sort', 'departure_asc') === 'departure_asc' ? 'bg-orange-50 font-bold text-orange-600' : 'text-slate-700' }}">
+                            <span class="font-medium">Keberangkatan Terawal</span>
                             <input 
                                 type="radio" 
                                 name="sortOption" 
                                 value="departure_asc"
                                 :checked="sort === 'departure_asc'"
                                 @change="applySort('departure_asc')"
-                                class="accent-[#21483C] w-4 h-4"
+                                class="accent-orange-500 w-4 h-4 cursor-pointer"
                             />
                         </label>
-                        <label class="flex items-center justify-between py-1.5 px-2 rounded-lg hover:bg-[#F5F1E8] cursor-pointer transition-colors">
-                            <span class="font-medium text-[#1C2522]">Keberangkatan Terakhir</span>
+                        <label class="flex items-center justify-between py-2 px-3 rounded-xl hover:bg-slate-50 cursor-pointer transition-colors {{ request('sort') === 'departure_desc' ? 'bg-orange-50 font-bold text-orange-600' : 'text-slate-700' }}">
+                            <span class="font-medium">Keberangkatan Terakhir</span>
                             <input 
                                 type="radio" 
                                 name="sortOption" 
                                 value="departure_desc"
                                 :checked="sort === 'departure_desc'"
                                 @change="applySort('departure_desc')"
-                                class="accent-[#21483C] w-4 h-4"
+                                class="accent-orange-500 w-4 h-4 cursor-pointer"
+                            />
+                        </label>
+                        <label class="flex items-center justify-between py-2 px-3 rounded-xl hover:bg-slate-50 cursor-pointer transition-colors {{ request('sort') === 'price_asc' ? 'bg-orange-50 font-bold text-orange-600' : 'text-slate-700' }}">
+                            <span class="font-medium">Tarif Terendah</span>
+                            <input 
+                                type="radio" 
+                                name="sortOption" 
+                                value="price_asc"
+                                :checked="sort === 'price_asc'"
+                                @change="applySort('price_asc')"
+                                class="accent-orange-500 w-4 h-4 cursor-pointer"
+                            />
+                        </label>
+                        <label class="flex items-center justify-between py-2 px-3 rounded-xl hover:bg-slate-50 cursor-pointer transition-colors {{ request('sort') === 'price_desc' ? 'bg-orange-50 font-bold text-orange-600' : 'text-slate-700' }}">
+                            <span class="font-medium">Tarif Tertinggi</span>
+                            <input 
+                                type="radio" 
+                                name="sortOption" 
+                                value="price_desc"
+                                :checked="sort === 'price_desc'"
+                                @change="applySort('price_desc')"
+                                class="accent-orange-500 w-4 h-4 cursor-pointer"
                             />
                         </label>
                     </div>
 
-                    <div class="pt-3 border-t border-[#D9D5CA] text-xs text-[#66716C] leading-relaxed">
+                    <div class="pt-3 border-t border-slate-100 text-xs text-slate-500 leading-relaxed">
                         <p>Harga dan ketersediaan kursi diperbarui secara langsung sesuai data sistem operasional.</p>
                     </div>
                 </div>
 
                 <!-- Bantuan Layanan Card -->
-                <div class="bg-[#F5F1E8] rounded-xl p-4 border border-[#D9D5CA] flex flex-col gap-2">
-                    <span class="text-xs font-bold text-[#1C2522]">Perlu Bantuan?</span>
-                    <p class="text-xs text-[#66716C] leading-relaxed">Informasi mengenai tata cara pemesanan dan syarat tiket tersedia di pusat bantuan.</p>
-                    <a href="{{ route('faq') }}" class="text-xs font-semibold text-[#21483C] hover:text-[#2F6252] mt-1 inline-flex items-center gap-1">
+                <div class="bg-white rounded-3xl p-5 sm:p-6 border border-slate-200/80 shadow-[0_16px_40px_-15px_rgba(15,23,42,0.04)] flex flex-col gap-2">
+                    <span class="text-xs font-heading font-bold text-slate-900">Pusat Bantuan &amp; Panduan</span>
+                    <p class="text-xs text-slate-500 leading-relaxed">Ketentuan tiket, tata cara reservasi mandiri, dan bagasi penumpang tersedia lengkap.</p>
+                    <a href="{{ route('faq') }}" class="text-xs font-semibold text-orange-500 hover:text-orange-600 hover:underline mt-1 inline-flex items-center gap-1">
                         <span>Pusat Bantuan &amp; FAQ</span>
-                        <span class="material-symbols-outlined text-[14px]">arrow_forward</span>
+                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                        </svg>
                     </a>
                 </div>
             </aside>
@@ -240,28 +290,35 @@
             <section class="lg:col-span-9 flex flex-col gap-4">
                 <!-- Header Summary Count -->
                 <div class="flex flex-wrap items-center justify-between gap-2 pb-1">
-                    <div class="flex items-center gap-2">
-                        <h1 class="text-lg font-bold text-[#1C2522]">Cari Jadwal Perjalanan</h1>
-                        <span class="px-2.5 py-0.5 rounded-full bg-[#F5F1E8] text-[#21483C] font-bold border border-[#D9D5CA] text-xs">
+                    <div class="flex items-center gap-2.5">
+                        <h1 class="text-lg sm:text-xl font-heading font-bold text-slate-900">Cari Jadwal Perjalanan</h1>
+                        <span class="px-3 py-1 rounded-full bg-orange-50 text-orange-600 font-heading font-bold border border-orange-200/80 text-xs">
                             {{ count($trips) }} Bus Ditemukan
                         </span>
                     </div>
-                    <span class="text-xs text-[#66716C] font-medium">Jadwal Keberangkatan Terjadwal</span>
+                    <span class="text-xs text-slate-500 font-medium">Jadwal Keberangkatan Terjadwal</span>
                 </div>
 
                 @if($trips->isEmpty())
-                    <div class="text-center py-16 px-4 bg-white rounded-xl border border-[#D9D5CA]">
-                        <div class="w-14 h-14 rounded-full bg-[#F5F1E8] text-[#66716C] flex items-center justify-center mx-auto mb-4">
-                            <span class="material-symbols-outlined text-[28px]">directions_bus</span>
+                    <!-- EMPTY STATE -->
+                    <div class="text-center py-16 px-6 bg-white rounded-3xl border border-slate-200/80 shadow-xs">
+                        <div class="w-16 h-16 rounded-2xl bg-orange-50 border border-orange-200/80 text-orange-500 flex items-center justify-center mx-auto mb-4">
+                            <svg class="w-8 h-8 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"/>
+                            </svg>
                         </div>
-                        <h3 class="text-base font-bold text-[#1C2522]">Belum ada perjalanan yang sesuai dengan pencarian.</h3>
-                        <p class="text-xs text-[#66716C] mt-1 max-w-sm mx-auto">
+                        <h3 class="text-base sm:text-lg font-heading font-bold text-slate-900">Belum ada perjalanan yang sesuai dengan pencarian.</h3>
+                        <p class="text-xs sm:text-sm text-slate-500 mt-2 max-w-md mx-auto leading-relaxed">
                             Tidak ada jadwal perjalanan yang ditemukan. Silakan coba ganti tanggal atau pilih kota asal dan tujuan yang lain untuk melihat armada PO CAN Travel yang tersedia.
                         </p>
-                        <a href="{{ route('customer.trips.index') }}" class="inline-flex items-center gap-2 mt-5 px-5 py-2.5 bg-[#21483C] text-[#F5F1E8] text-xs font-bold rounded-xl hover:bg-[#2F6252] transition-colors">
-                            <span class="material-symbols-outlined text-[16px]">refresh</span>
-                            <span>Lihat Semua Jadwal</span>
-                        </a>
+                        <div class="mt-6 flex flex-wrap items-center justify-center gap-3">
+                            <a href="{{ route('customer.trips.index') }}" class="inline-flex items-center gap-2 px-6 py-2.5 bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 text-white text-xs font-heading font-bold rounded-full transition-all shadow-md shadow-orange-500/20">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+                                </svg>
+                                <span>Lihat Semua Jadwal</span>
+                            </a>
+                        </div>
                     </div>
                 @else
                     @foreach($trips as $trip)
@@ -272,131 +329,152 @@
                             $isNextDay = $trip->arrival_at->day > $trip->departure_at->day;
                         @endphp
 
-                        <article class="bg-white rounded-xl p-5 sm:p-6 border border-[#D9D5CA] hover:border-[#21483C] transition-colors flex flex-col gap-4">
-                            <!-- Card Header: Bus Info -->
-                            <div class="flex flex-wrap items-center justify-between gap-2 pb-2.5 border-b border-[#D9D5CA]">
-                                <div class="flex items-center gap-2">
-                                    <span class="px-2.5 py-1 rounded-md bg-[#F5F1E8] text-[#21483C] text-xs font-bold border border-[#D9D5CA]">
+                        <article class="bg-white rounded-3xl p-5 sm:p-6 border border-slate-200/80 hover:border-orange-300 hover:shadow-md transition-all flex flex-col gap-4 shadow-[0_16px_40px_-15px_rgba(15,23,42,0.04)]">
+                            <!-- Card Header: Bus Info & Status -->
+                            <div class="flex flex-wrap items-center justify-between gap-2 pb-3 border-b border-slate-100">
+                                <div class="flex items-center gap-2.5">
+                                    <span class="px-3 py-1 rounded-full bg-orange-50 text-orange-600 text-xs font-heading font-bold border border-orange-200/80">
                                         {{ $trip->bus->name }}
                                     </span>
-                                    <span class="font-mono text-[#66716C] text-xs font-semibold">
+                                    <span class="font-mono text-slate-500 text-xs font-semibold">
                                         {{ $trip->bus->code }}
                                     </span>
+                                    <span class="hidden sm:inline-block text-slate-300">•</span>
+                                    <span class="hidden sm:inline-block text-xs text-slate-500 font-medium">
+                                        {{ $trip->bus->bus_type ?? 'Bus Antarkota' }}
+                                    </span>
                                 </div>
-                                <div class="text-xs text-[#66716C] font-medium">
+                                <div class="text-xs text-slate-500 font-medium">
                                     Kapasitas {{ $trip->bus->total_seats }} Kursi
                                 </div>
                             </div>
 
-                            <!-- Timeline Grid -->
+                            <!-- Timeline & Route Details Grid -->
                             <div class="grid grid-cols-1 md:grid-cols-12 gap-4 items-center">
                                 <!-- Origin Departure -->
                                 <div class="md:col-span-3 flex flex-col">
                                     <div class="flex items-baseline gap-1.5">
-                                        <span class="text-2xl sm:text-3xl font-extrabold text-[#1C2522] tracking-tight leading-tight">
+                                        <span class="text-2xl sm:text-3xl font-heading font-black text-slate-900 tracking-tight leading-tight">
                                             {{ $trip->departure_at->format('H:i') }}
                                         </span>
-                                        <span class="w-2 h-2 rounded-full bg-[#B96545] inline-block mb-1" title="Waktu Keberangkatan"></span>
+                                        <span class="text-xs text-slate-400 font-medium">WIB</span>
                                     </div>
-                                    <span class="text-sm font-bold text-[#1C2522] mt-1">
+                                    <span class="text-sm font-heading font-bold text-slate-900 mt-1">
                                         {{ $trip->route->origin }}
                                     </span>
-                                    <span class="text-xs text-[#66716C]">
-                                        Titik Keberangkatan
+                                    <span class="text-xs text-slate-500">
+                                        Terminal {{ $trip->route->origin }}
                                     </span>
                                 </div>
 
-                                <!-- Progress Track -->
-                                <div class="md:col-span-6 flex flex-col items-center justify-center px-2">
-                                    <div class="flex items-center justify-between w-full text-[#66716C] text-xs mb-1.5">
-                                        <span class="text-[#66716C] font-medium text-xs">
-                                            Estimasi Perjalanan
+                                <!-- Progress Graphic -->
+                                <div class="md:col-span-6 flex flex-col items-center justify-center px-2 py-1">
+                                    <div class="flex items-center justify-between w-full text-slate-500 text-xs mb-1.5">
+                                        <span class="text-slate-400 font-medium text-xs">
+                                            Estimasi Durasi
                                         </span>
-                                        <span class="font-bold text-[#1C2522] text-xs">
+                                        <span class="font-heading font-bold text-slate-800 text-xs">
                                             {{ $durationHours }}j {{ $durationMinutes > 0 ? $durationMinutes . 'm' : '' }}
                                         </span>
                                     </div>
 
                                     <div class="relative w-full flex items-center my-1">
-                                        <div class="w-2.5 h-2.5 rounded-full bg-[#1C2522] shrink-0"></div>
-                                        <div class="flex-1 h-[2px] bg-[#D9D5CA]"></div>
-                                        <div class="w-2 h-2 rounded-full bg-[#21483C] shrink-0"></div>
-                                        <div class="flex-1 h-[2px] bg-[#D9D5CA]"></div>
-                                        <div class="w-2.5 h-2.5 rounded-full bg-[#21483C] shrink-0"></div>
+                                        <div class="w-2.5 h-2.5 rounded-full bg-slate-900 shrink-0"></div>
+                                        <div class="flex-1 h-[2px] bg-slate-200"></div>
+                                        <div class="w-2 h-2 rounded-full bg-orange-500 shrink-0"></div>
+                                        <div class="flex-1 h-[2px] bg-slate-200"></div>
+                                        <div class="w-2.5 h-2.5 rounded-full bg-orange-500 shrink-0"></div>
                                     </div>
 
-                                    <span class="text-[10px] text-[#66716C] mt-1 text-center font-medium">
-                                        Jalur antarkota langsung
+                                    <span class="text-[10px] text-slate-400 mt-1 text-center font-medium">
+                                        Jalur antarkota langsung &bull; Tol Trans Jawa
                                     </span>
                                 </div>
 
                                 <!-- Destination Arrival -->
                                 <div class="md:col-span-3 flex flex-col md:text-right">
                                     <div class="flex items-center md:justify-end gap-1.5">
-                                        <span class="text-2xl sm:text-3xl font-extrabold text-[#1C2522] tracking-tight leading-tight">
+                                        <span class="text-2xl sm:text-3xl font-heading font-black text-slate-900 tracking-tight leading-tight">
                                             {{ $trip->arrival_at->format('H:i') }}
                                         </span>
+                                        <span class="text-xs text-slate-400 font-medium">WIB</span>
                                         @if($isNextDay)
-                                            <span class="text-[10px] px-1.5 py-0.5 rounded bg-[#F5F1E8] text-[#B96545] font-bold border border-[#D9D5CA]">
+                                            <span class="text-[10px] px-2 py-0.5 rounded-full bg-amber-50 text-amber-700 font-bold border border-amber-200">
                                                 +1 Hari
                                             </span>
                                         @endif
                                     </div>
-                                    <span class="text-sm font-bold text-[#1C2522] mt-1">
+                                    <span class="text-sm font-heading font-bold text-slate-900 mt-1">
                                         {{ $trip->route->destination }}
                                     </span>
-                                    <span class="text-xs text-[#66716C]">
-                                        Titik Kedatangan
+                                    <span class="text-xs text-slate-500">
+                                        Terminal {{ $trip->route->destination }}
                                     </span>
                                 </div>
                             </div>
 
-                            <!-- Amenities Strip from Database -->
-                            <div class="flex flex-wrap items-center justify-between gap-2 bg-[#F5F1E8] p-2.5 sm:p-3 rounded-xl border border-[#D9D5CA]">
-                                <div class="flex flex-wrap items-center gap-1.5 text-xs text-[#66716C]">
-                                    <span class="font-bold text-[#1C2522] bg-white px-2 py-0.5 rounded border border-[#D9D5CA] text-xs">
+                            <!-- Amenities & Detail Link Strip -->
+                            <div class="flex flex-wrap items-center justify-between gap-2 bg-slate-50/60 p-2.5 sm:p-3 rounded-2xl border border-slate-200/80">
+                                <div class="flex flex-wrap items-center gap-2 text-xs text-slate-600">
+                                    <span class="font-heading font-bold text-slate-800 bg-white px-2.5 py-0.5 rounded-full border border-slate-200 text-xs">
                                         {{ $trip->bus->bus_type ?? 'Bus Antarkota' }}
                                     </span>
                                     @if($trip->bus->facilities && $trip->bus->facilities->isNotEmpty())
                                         @foreach($trip->bus->facilities->take(3) as $fac)
-                                            <span class="inline-flex items-center gap-1 bg-white px-2 py-0.5 rounded border border-[#D9D5CA] text-xs text-[#1C2522]">
-                                                <span class="material-symbols-outlined text-[13px] text-[#21483C]">check</span> {{ $fac->name }}
+                                            <span class="inline-flex items-center gap-1 bg-white px-2.5 py-0.5 rounded-full border border-slate-200 text-xs text-slate-700">
+                                                <svg class="w-3 h-3 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/>
+                                                </svg>
+                                                <span>{{ $fac->name }}</span>
                                             </span>
                                         @endforeach
                                     @endif
                                 </div>
 
-                                <a href="{{ route('customer.trips.show', $trip) }}" class="text-[#21483C] font-semibold text-xs hover:underline flex items-center gap-0.5">
+                                <a href="{{ route('customer.trips.show', $trip) }}" class="text-orange-500 hover:text-orange-600 font-heading font-bold text-xs hover:underline flex items-center gap-1">
                                     <span>Detail Perjalanan</span>
-                                    <span class="material-symbols-outlined text-[16px]">chevron_right</span>
+                                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                                    </svg>
                                 </a>
                             </div>
 
-                            <!-- Price & CTA -->
+                            <!-- Price & Seat Selection CTA -->
                             <div class="flex flex-wrap items-center justify-between gap-4 pt-1">
                                 <div class="flex items-center gap-2.5">
-                                    <span class="text-xs font-bold {{ $availableSeats > 5 ? 'text-[#357A62] bg-[#F5F1E8] border-[#357A62]/30' : 'text-[#A87935] bg-[#F5F1E8] border-[#A87935]/30' }} border px-2.5 py-1 rounded-full">
+                                    <span class="text-xs font-heading font-bold {{ $availableSeats > 5 ? 'text-emerald-700 bg-emerald-50 border-emerald-200' : ($availableSeats > 0 ? 'text-amber-700 bg-amber-50 border-amber-200' : 'text-rose-700 bg-rose-50 border-rose-200') }} border px-3 py-1 rounded-full">
                                         Sisa {{ $availableSeats }} kursi
                                     </span>
                                 </div>
 
                                 <div class="flex items-center gap-3 sm:gap-4">
                                     <div class="flex flex-col text-right">
-                                        <span class="text-[10px] text-[#66716C]">Tarif per penumpang</span>
+                                        <span class="text-[10px] text-slate-400 font-medium">Tarif per penumpang</span>
                                         <div class="flex items-baseline gap-1">
-                                            <span class="text-xl sm:text-2xl text-[#1C2522] font-black">
+                                            <span class="text-xl sm:text-2xl text-orange-600 font-heading font-black">
                                                 Rp{{ number_format($trip->price, 0, ',', '.') }}
                                             </span>
                                         </div>
                                     </div>
 
-                                    <a 
-                                        href="{{ route('customer.trips.seats', $trip) }}" 
-                                        class="px-5 py-2.5 rounded-xl bg-[#21483C] hover:bg-[#2F6252] text-[#F5F1E8] font-bold text-xs sm:text-sm transition-colors flex items-center gap-1.5"
-                                    >
-                                        <span>Pilih Kursi</span>
-                                        <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
-                                    </a>
+                                    @if($availableSeats > 0)
+                                        <a 
+                                            href="{{ route('customer.trips.seats', $trip) }}" 
+                                            class="px-6 py-2.5 rounded-full bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 text-white font-heading font-bold text-xs sm:text-sm transition-all shadow-md shadow-orange-500/20 flex items-center gap-1.5 cursor-pointer"
+                                        >
+                                            <span>Pilih Kursi</span>
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
+                                            </svg>
+                                        </a>
+                                    @else
+                                        <button 
+                                            disabled 
+                                            class="px-6 py-2.5 rounded-full bg-gray-200 text-gray-500 font-heading font-bold text-xs sm:text-sm cursor-not-allowed"
+                                        >
+                                            Kursi Penuh
+                                        </button>
+                                    @endif
                                 </div>
                             </div>
                         </article>
@@ -404,17 +482,19 @@
                 @endif
 
                 <!-- Travel Information Guidance -->
-                <div class="bg-[#F5F1E8] rounded-xl p-4 sm:p-5 border border-[#D9D5CA] flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mt-2">
-                    <div class="flex items-center gap-3">
-                        <div class="w-10 h-10 rounded-xl bg-[#21483C] text-[#F5F1E8] flex items-center justify-center shrink-0">
-                            <span class="material-symbols-outlined text-[22px]">info</span>
+                <div class="bg-gradient-to-r from-orange-50/40 via-white to-amber-50/20 rounded-3xl p-5 sm:p-6 border border-orange-200/80 shadow-xs flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mt-2">
+                    <div class="flex items-center gap-3.5">
+                        <div class="w-10 h-10 rounded-2xl bg-orange-50 text-orange-600 flex items-center justify-center shrink-0 border border-orange-200/80 shadow-2xs">
+                            <svg class="w-5 h-5 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                            </svg>
                         </div>
                         <div>
-                            <h4 class="text-xs sm:text-sm font-bold text-[#1C2522]">Informasi Keberangkatan PO CAN Travel</h4>
-                            <p class="text-xs text-[#66716C] mt-0.5">Harap hadir di titik keberangkatan selambat-lambatnya 30 menit sebelum jadwal keberangkatan bus.</p>
+                            <h4 class="text-xs sm:text-sm font-heading font-bold text-slate-900">Informasi Keberangkatan PO CAN Travel</h4>
+                            <p class="text-xs text-slate-500 mt-0.5">Harap hadir di titik keberangkatan selambat-lambatnya 30 menit sebelum jadwal keberangkatan bus.</p>
                         </div>
                     </div>
-                    <a href="{{ route('how-to-order') }}" class="shrink-0 px-4 py-2 rounded-xl bg-white hover:bg-[#FBFAF6] border border-[#D9D5CA] text-[#1C2522] text-xs font-bold transition-colors">
+                    <a href="{{ route('how-to-order') }}" class="shrink-0 px-5 py-2.5 rounded-full bg-white hover:bg-orange-50/50 border border-slate-200 text-slate-800 hover:text-orange-600 text-xs font-heading font-bold transition-colors">
                         Panduan Perjalanan
                     </a>
                 </div>

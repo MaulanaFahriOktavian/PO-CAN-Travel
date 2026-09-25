@@ -17,7 +17,7 @@
 
             <div class="mt-8 flex flex-col sm:flex-row items-center justify-center gap-3">
                 <a href="{{ route('home') }}"
-                    class="w-full sm:w-auto px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-medium text-sm rounded-lg shadow-sm transition-colors text-center">
+                    class="w-full sm:w-auto px-5 py-2.5 bg-orange-500 hover:bg-orange-600 text-white font-medium text-sm rounded-lg shadow-sm transition-colors text-center">
                     Kembali ke Beranda
                 </a>
                 @auth

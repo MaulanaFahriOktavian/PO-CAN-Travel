@@ -1,6 +1,7 @@
-@extends('layouts.app')
+@extends('layouts.admin')
 
 @section('title', 'Detail Pesanan ' . $order->order_code . ' - Admin PO CAN Travel')
+@section('page_title', 'Detail Pesanan')
 
 @section('content')
     <div class="py-10 sm:py-12">
@@ -50,7 +51,7 @@
                         </span>
                     @elseif ($order->status === 'confirmed')
                         <span
-                            class="inline-block text-xs font-medium text-blue-800 bg-blue-50 px-3 py-1.5 rounded border border-blue-200">
+                            class="inline-block text-xs font-medium text-orange-800 bg-orange-50 px-3 py-1.5 rounded border border-orange-200">
                             Dikonfirmasi
                         </span>
                     @elseif ($order->status === 'completed')
@@ -152,7 +153,7 @@
                                 @foreach ($order->orderItems as $item)
                                     <tr>
                                         <td class="px-4 py-3.5 text-center text-slate-500 text-xs">{{ $loop->iteration }}</td>
-                                        <td class="px-4 py-3.5 font-mono font-semibold text-blue-700">
+                                        <td class="px-4 py-3.5 font-mono font-semibold text-orange-700">
                                             {{ $item->seat->seat_number }}</td>
                                         <td class="px-4 py-3.5 font-medium text-slate-900">{{ $item->passenger_name }}</td>
                                         <td class="px-4 py-3.5 text-slate-600 font-mono text-xs">{{ $item->passenger_identity }}
@@ -190,7 +191,7 @@
                                 </span>
                             @elseif ($order->status === 'confirmed')
                                 <span
-                                    class="inline-block text-xs font-medium text-blue-800 bg-blue-50 px-3 py-1 rounded border border-blue-200">
+                                    class="inline-block text-xs font-medium text-orange-800 bg-orange-50 px-3 py-1 rounded border border-orange-200">
                                     Dikonfirmasi (confirmed)
                                 </span>
                             @elseif ($order->status === 'completed')
@@ -217,7 +218,7 @@
                                     @method('PATCH')
                                     <input type="hidden" name="status" value="confirmed">
                                     <button type="submit"
-                                        class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-medium text-sm rounded-lg shadow-sm transition-colors">
+                                        class="px-4 py-2 bg-orange-500 hover:bg-orange-600 text-white font-medium text-sm rounded-lg shadow-sm transition-colors">
                                         Konfirmasi Pesanan
                                     </button>
                                 </form>

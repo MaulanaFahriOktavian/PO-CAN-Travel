@@ -1,13 +1,14 @@
-@extends('layouts.app')
+@extends('layouts.admin')
 
 @section('title', 'Edit Armada Bus - PO CAN Travel')
+@section('page_title', 'Edit Armada Bus')
 
 @section('content')
     <div class="py-10 sm:py-12">
         <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="mb-8">
                 <a href="{{ route('admin.buses.index') }}"
-                    class="text-sm font-medium text-blue-600 hover:text-blue-800 transition-colors">
+                    class="text-sm font-medium text-orange-600 hover:text-orange-800 transition-colors">
                     &larr; Kembali ke Daftar Armada
                 </a>
                 <h1 class="text-2xl font-bold text-slate-900 tracking-tight mt-2">Edit Armada Bus</h1>
@@ -32,7 +33,7 @@
                         <div>
                             <label for="name" class="block text-sm font-medium text-slate-700 mb-1">Nama Armada</label>
                             <input type="text" id="name" name="name" value="{{ old('name', $bus->name) }}" required
-                                class="w-full px-3.5 py-2.5 rounded-lg border {{ $errors->has('name') ? 'border-red-300' : 'border-slate-300' }} text-slate-900 text-sm focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-blue-600">
+                                class="w-full px-3.5 py-2.5 rounded-lg border {{ $errors->has('name') ? 'border-red-300' : 'border-slate-300' }} text-slate-900 text-sm focus:outline-none focus:ring-2 focus:ring-orange-600 focus:border-orange-500">
                             @if ($errors->has('name'))
                                 <p class="mt-1 text-xs text-red-600">{{ $errors->first('name') }}</p>
                             @endif
@@ -41,7 +42,7 @@
                         <div>
                             <label for="code" class="block text-sm font-medium text-slate-700 mb-1">Kode Armada</label>
                             <input type="text" id="code" name="code" value="{{ old('code', $bus->code) }}" required
-                                class="w-full px-3.5 py-2.5 rounded-lg border {{ $errors->has('code') ? 'border-red-300' : 'border-slate-300' }} text-slate-900 text-sm font-mono focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-blue-600">
+                                class="w-full px-3.5 py-2.5 rounded-lg border {{ $errors->has('code') ? 'border-red-300' : 'border-slate-300' }} text-slate-900 text-sm font-mono focus:outline-none focus:ring-2 focus:ring-orange-600 focus:border-orange-500">
                             @if ($errors->has('code'))
                                 <p class="mt-1 text-xs text-red-600">{{ $errors->first('code') }}</p>
                             @endif
@@ -52,7 +53,7 @@
                                 Kursi</label>
                             <input type="number" id="total_seats" name="total_seats"
                                 value="{{ old('total_seats', $bus->total_seats) }}" min="1" max="100" required
-                                class="w-full px-3.5 py-2.5 rounded-lg border {{ $errors->has('total_seats') ? 'border-red-300' : 'border-slate-300' }} text-slate-900 text-sm focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-blue-600">
+                                class="w-full px-3.5 py-2.5 rounded-lg border {{ $errors->has('total_seats') ? 'border-red-300' : 'border-slate-300' }} text-slate-900 text-sm focus:outline-none focus:ring-2 focus:ring-orange-600 focus:border-orange-500">
                             <p class="mt-1 text-xs text-slate-500">
                                 Menambah kapasitas akan membuat nomor kursi baru secara berurutan. Mengurangi kapasitas
                                 hanya akan menghapus kursi paling akhir yang belum memiliki histori pesanan.
@@ -68,7 +69,7 @@
                                 Batal
                             </a>
                             <button type="submit"
-                                class="px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-medium text-sm rounded-lg shadow-sm transition-colors">
+                                class="px-5 py-2.5 bg-orange-500 hover:bg-orange-600 text-white font-medium text-sm rounded-lg shadow-sm transition-colors">
                                 Simpan Perubahan
                             </button>
                         </div>

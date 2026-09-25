@@ -1,6 +1,7 @@
-@extends('layouts.app')
+@extends('layouts.admin')
 
 @section('title', 'Kelola Pesanan - Admin PO CAN Travel')
+@section('page_title', 'Kelola Pesanan')
 
 @section('content')
     <div class="py-10 sm:py-12">
@@ -29,7 +30,7 @@
                         <div class="relative flex-1 max-w-md">
                             <input type="text" name="search" value="{{ $search }}"
                                 placeholder="Cari kode pesanan, nama, atau email..."
-                                class="w-full pl-3.5 pr-10 py-2 border border-slate-300 rounded-lg text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-blue-600 placeholder-slate-400">
+                                class="w-full pl-3.5 pr-10 py-2 border border-slate-300 rounded-lg text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-orange-600 focus:border-orange-500 placeholder-slate-400">
                         </div>
                         <button type="submit"
                             class="px-4 py-2 bg-slate-900 hover:bg-slate-800 text-white font-medium text-sm rounded-lg transition-colors">
@@ -54,7 +55,7 @@
                             Menunggu Pembayaran
                         </a>
                         <a href="{{ route('admin.orders.index', array_filter(['status' => 'confirmed', 'search' => $search])) }}"
-                            class="px-3 py-1.5 rounded-lg transition-colors {{ $selectedStatus === 'confirmed' ? 'bg-blue-600 text-white' : 'text-slate-600 hover:bg-slate-100' }}">
+                            class="px-3 py-1.5 rounded-lg transition-colors {{ $selectedStatus === 'confirmed' ? 'bg-orange-500 text-white' : 'text-slate-600 hover:bg-slate-100' }}">
                             Dikonfirmasi
                         </a>
                         <a href="{{ route('admin.orders.index', array_filter(['status' => 'completed', 'search' => $search])) }}"
@@ -136,7 +137,7 @@
                                             </span>
                                         @elseif ($order->status === 'confirmed')
                                             <span
-                                                class="inline-block text-xs font-medium text-blue-800 bg-blue-50 px-2.5 py-1 rounded border border-blue-200">
+                                                class="inline-block text-xs font-medium text-orange-800 bg-orange-50 px-2.5 py-1 rounded border border-orange-200">
                                                 Dikonfirmasi
                                             </span>
                                         @elseif ($order->status === 'completed')

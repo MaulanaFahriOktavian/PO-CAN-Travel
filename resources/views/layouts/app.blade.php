@@ -4,42 +4,39 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>@yield('title', 'PO CAN Travel — Tiket Bus Antarkota')</title>
-    <meta name="description" content="@yield('meta_description', 'Cari jadwal, pilih kursi, dan pesan tiket bus antarkota PO CAN Travel. Sederhana, langsung, tanpa biaya tersembunyi.')">
+    <title>@yield('title', 'PO CAN Travel — Platform Pemesanan Tiket Bus Antarkota')</title>
+    <meta name="description" content="@yield('meta_description', 'Platform pemesanan tiket bus antarkota resmi PO CAN Travel. Cari rute, pilih jadwal, tentukan nomor kursi mandiri di denah kabin bus, dan pesan tiket langsung.')">
     <link rel="canonical" href="{{ url()->current() }}">
 
-    <!-- Fonts: Inter (UI) + Fraunces (Display Headings) -->
+    <link rel="icon" type="image/png" href="{{ asset('favicon.png') }}">
+    <link rel="shortcut icon" href="{{ asset('favicon.ico') }}">
+
+    <!-- Google Fonts: Manrope (Headlines, Numbers, Navigation) + Inter (Body, UI, Metadata) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,500;1,9..144,600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
-<body class="min-h-full flex flex-col antialiased bg-[var(--color-bg)] text-[var(--color-text)]" x-data="{ mobileMenuOpen: false }">
+<body class="min-h-full flex flex-col antialiased bg-[#F7F8F6] text-[#15202B] overflow-x-hidden w-full font-sans" x-data="{ mobileMenuOpen: false }">
 
     <!-- ═════════════════════════════════════════════════════════════════
-         NAVBAR — Logo left | Links center (true dead-center) | Auth right
+         GLOBAL EXECUTIVE NAVBAR (DESKTOP + MOBILE DRAWER)
+         Layout: [LOGO]               [CENTER NAVIGATION]            [AUTH]
+         Height: 74px, Background: White/95 with backdrop blur, Border: Slate 200
          ═════════════════════════════════════════════════════════════════ -->
-    <header class="sticky top-0 z-50 bg-[var(--color-bg)] border-b border-[var(--color-border)]">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 grid grid-cols-[auto_1fr_auto] lg:grid-cols-[220px_1fr_220px] items-center">
+    <header class="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-slate-200/80 w-full transition-all">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-[74px] flex items-center justify-between gap-4">
 
-            <!-- LEFT: Brand Logo -->
-            <div class="flex items-center justify-start">
-                <a href="{{ route('home') }}" class="flex items-center gap-2.5 shrink-0 focus:outline-none text-[var(--color-primary)]">
-                    <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                        <rect width="28" height="28" rx="6" fill="#173D2E"/>
-                        <path d="M6 18V11C6 9.895 6.895 9 8 9h12c1.105 0 2 .895 2 2v7M6 18h16M8 18v2M20 18v2M7 14h14" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
-                        <circle cx="10" cy="16" r="1" fill="white"/>
-                        <circle cx="18" cy="16" r="1" fill="white"/>
-                    </svg>
-                    <span class="font-bold text-base tracking-tight text-[var(--color-text)]">
-                        PO CAN <span class="text-[var(--color-primary)] font-semibold">Travel</span>
-                    </span>
+            <!-- LEFT: Brand Logo (PO CAN Travel) -->
+            <div class="flex items-center shrink-0">
+                <a href="{{ route('home') }}" class="inline-flex items-center focus:outline-none focus:ring-2 focus:ring-[#F97316] rounded-xl py-1 group" aria-label="PO CAN Travel Beranda">
+                    <img src="{{ asset('images/logo.png') }}" alt="PO CAN Travel" class="h-8 sm:h-9 w-auto object-contain transition-transform group-hover:scale-[1.02]">
                 </a>
             </div>
 
-            <!-- CENTER: Mathematically Centered Navigation Links -->
-            <nav class="hidden lg:flex items-center justify-center gap-8" aria-label="Navigasi Utama">
+            <!-- CENTER: Centered Navigation Links (Desktop) -->
+            <nav class="hidden md:flex items-center justify-center gap-8 flex-1 px-4" aria-label="Navigasi Utama">
                 <a href="{{ route('home') }}" class="nav-link {{ request()->routeIs('home') ? 'active' : '' }}">
                     Beranda
                 </a>
@@ -52,25 +49,25 @@
                 <a href="{{ route('facilities.index') }}" class="nav-link {{ request()->routeIs('facilities.*') ? 'active' : '' }}">
                     Fasilitas
                 </a>
-                <a href="{{ route('faq') }}" class="nav-link {{ request()->routeIs(['faq', 'how-to-order', 'departure-info']) ? 'active' : '' }}">
+                <a href="{{ route('faq') }}" class="nav-link {{ request()->routeIs(['faq', 'how-to-order', 'departure-info', 'about']) ? 'active' : '' }}">
                     Bantuan
                 </a>
             </nav>
 
-            <!-- RIGHT: Actions by User Role -->
-            <div class="flex items-center justify-end gap-4">
+            <!-- RIGHT: Actions by User Role & Mobile Hamburger Button -->
+            <div class="flex items-center gap-3 shrink-0">
                 @guest
-                    <div class="hidden sm:flex items-center gap-4 text-sm font-medium">
-                        <a href="{{ route('login') }}" class="nav-link text-xs">
+                    <div class="hidden sm:flex items-center gap-2">
+                        <a href="{{ route('login') }}" class="px-4 py-2 text-xs font-heading font-bold text-slate-700 hover:text-orange-600 rounded-full hover:bg-orange-50/60 transition-colors focus:outline-none focus:ring-2 focus:ring-orange-500">
                             Masuk
                         </a>
-                        <a href="{{ route('register') }}" class="px-3 py-1.5 text-xs font-semibold border border-[var(--color-primary)] text-[var(--color-primary)] hover:bg-[var(--color-primary)] hover:text-white transition-colors">
+                        <a href="{{ route('register') }}" class="px-5 py-2 text-xs font-heading font-bold rounded-full bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 text-white transition-all shadow-xs hover:shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-orange-500">
                             Daftar
                         </a>
                     </div>
                 @else
                     @if(auth()->user()->role === 'admin')
-                        <div class="hidden sm:flex items-center gap-4 text-xs font-medium">
+                        <div class="hidden sm:flex items-center gap-3 text-xs font-semibold">
                             <a href="{{ route('admin.dashboard') }}" class="nav-link {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">
                                 Dasbor Admin
                             </a>
@@ -79,22 +76,23 @@
                             </a>
                             <form method="POST" action="{{ route('logout') }}" class="inline">
                                 @csrf
-                                <button type="submit" class="text-xs text-[var(--color-text-muted)] hover:text-[var(--color-danger)] transition-colors cursor-pointer">
+                                <button type="submit" class="px-2.5 py-1.5 text-xs text-slate-500 hover:text-red-600 transition-colors cursor-pointer rounded-full hover:bg-red-50 focus:outline-none">
                                     Keluar
                                 </button>
                             </form>
                         </div>
                     @else
-                        <div class="hidden sm:flex items-center gap-4 text-xs font-medium">
-                            <a href="{{ route('customer.orders.index') }}" class="nav-link {{ request()->routeIs('customer.orders.*') ? 'active' : '' }}">
-                                Tiket Saya <span class="sr-only">Riwayat Pesanan</span>
+                        <div class="hidden sm:flex items-center gap-3 text-xs font-semibold">
+                            <a href="{{ route('customer.orders.index') }}" class="nav-link text-slate-800 {{ request()->routeIs('customer.orders.*') ? 'active' : '' }}">
+                                Riwayat Pesanan
                             </a>
-                            <a href="{{ route('customer.dashboard') }}" class="nav-link font-semibold {{ request()->routeIs('customer.dashboard') ? 'active' : '' }}">
-                                {{ Str::words(auth()->user()->name, 1, '') }}
+                            <a href="{{ route('customer.dashboard') }}" class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-orange-50 text-orange-600 border border-orange-200/80 font-bold hover:bg-orange-100 transition-colors">
+                                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
+                                <span>{{ Str::words(auth()->user()->name, 1, '') }}</span>
                             </a>
                             <form method="POST" action="{{ route('logout') }}" class="inline">
                                 @csrf
-                                <button type="submit" class="text-xs text-[var(--color-text-muted)] hover:text-[var(--color-danger)] transition-colors cursor-pointer">
+                                <button type="submit" class="px-2.5 py-1.5 text-xs text-slate-500 hover:text-red-600 transition-colors cursor-pointer rounded-full hover:bg-red-50 focus:outline-none">
                                     Keluar
                                 </button>
                             </form>
@@ -102,83 +100,86 @@
                     @endif
                 @endguest
 
-                <!-- Mobile Hamburger Button -->
+                <!-- Mobile Hamburger Button (min 44x44px target) -->
                 <button
                     @click="mobileMenuOpen = !mobileMenuOpen"
                     type="button"
-                    class="lg:hidden p-2 text-[var(--color-text)] hover:text-[var(--color-primary)] transition-colors"
-                    aria-label="Buka Menu"
+                    class="md:hidden w-11 h-11 inline-flex items-center justify-center text-slate-700 hover:text-orange-600 hover:bg-orange-50 rounded-xl transition-colors focus:outline-none focus:ring-2 focus:ring-orange-500 cursor-pointer"
+                    aria-label="Buka Menu Navigasi"
+                    :aria-expanded="mobileMenuOpen"
                 >
-                    <svg x-show="!mobileMenuOpen" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"/></svg>
-                    <svg x-show="mobileMenuOpen" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" style="display:none;"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"/>
+                    </svg>
                 </button>
             </div>
         </div>
 
-        <!-- Mobile Menu Drawer -->
+        <!-- Mobile Drawer Navigation -->
         <div
             x-show="mobileMenuOpen"
             x-transition:enter="transition ease-out duration-200"
-            x-transition:enter-start="opacity-0 -translate-y-1"
+            x-transition:enter-start="opacity-0 -translate-y-2"
             x-transition:enter-end="opacity-100 translate-y-0"
             x-transition:leave="transition ease-in duration-150"
             x-transition:leave-start="opacity-100 translate-y-0"
-            x-transition:leave-end="opacity-0 -translate-y-1"
-            class="lg:hidden border-t border-[var(--color-border)] bg-[var(--color-bg)]"
+            x-transition:leave-end="opacity-0 -translate-y-2"
+            class="md:hidden border-t border-slate-100 bg-white w-full shadow-lg"
             style="display: none;"
         >
-            <nav class="max-w-7xl mx-auto px-5 py-4 flex flex-col gap-1 text-sm font-medium">
-                <a href="{{ route('home') }}" @click="mobileMenuOpen = false" class="px-3 py-2 text-[var(--color-text)] hover:bg-[var(--color-surface)] {{ request()->routeIs('home') ? 'font-bold text-[var(--color-primary)]' : '' }}">
+            <nav class="max-w-7xl mx-auto px-4 py-4 flex flex-col gap-1 text-sm font-semibold">
+                <a href="{{ route('home') }}" @click="mobileMenuOpen = false" class="px-3.5 py-2.5 rounded-xl min-h-[44px] flex items-center text-slate-700 hover:bg-orange-50 hover:text-orange-600 {{ request()->routeIs('home') ? 'bg-orange-50 text-orange-600 font-bold' : '' }}">
                     Beranda
                 </a>
-                <a href="{{ route('trips.index') }}" @click="mobileMenuOpen = false" class="px-3 py-2 text-[var(--color-text)] hover:bg-[var(--color-surface)] {{ request()->routeIs('trips.*') ? 'font-bold text-[var(--color-primary)]' : '' }}">
+                <a href="{{ route('trips.index') }}" @click="mobileMenuOpen = false" class="px-3.5 py-2.5 rounded-xl min-h-[44px] flex items-center text-slate-700 hover:bg-orange-50 hover:text-orange-600 {{ request()->routeIs('trips.*') ? 'bg-orange-50 text-orange-600 font-bold' : '' }}">
                     Tiket
                 </a>
-                <a href="{{ route('buses.index') }}" @click="mobileMenuOpen = false" class="px-3 py-2 text-[var(--color-text)] hover:bg-[var(--color-surface)] {{ request()->routeIs('buses.*') ? 'font-bold text-[var(--color-primary)]' : '' }}">
+                <a href="{{ route('buses.index') }}" @click="mobileMenuOpen = false" class="px-3.5 py-2.5 rounded-xl min-h-[44px] flex items-center text-slate-700 hover:bg-orange-50 hover:text-orange-600 {{ request()->routeIs('buses.*') ? 'bg-orange-50 text-orange-600 font-bold' : '' }}">
                     Armada
                 </a>
-                <a href="{{ route('facilities.index') }}" @click="mobileMenuOpen = false" class="px-3 py-2 text-[var(--color-text)] hover:bg-[var(--color-surface)] {{ request()->routeIs('facilities.*') ? 'font-bold text-[var(--color-primary)]' : '' }}">
+                <a href="{{ route('facilities.index') }}" @click="mobileMenuOpen = false" class="px-3.5 py-2.5 rounded-xl min-h-[44px] flex items-center text-slate-700 hover:bg-orange-50 hover:text-orange-600 {{ request()->routeIs('facilities.*') ? 'bg-orange-50 text-orange-600 font-bold' : '' }}">
                     Fasilitas
                 </a>
-                <a href="{{ route('faq') }}" @click="mobileMenuOpen = false" class="px-3 py-2 text-[var(--color-text)] hover:bg-[var(--color-surface)] {{ request()->routeIs('faq') ? 'font-bold text-[var(--color-primary)]' : '' }}">
+                <a href="{{ route('faq') }}" @click="mobileMenuOpen = false" class="px-3.5 py-2.5 rounded-xl min-h-[44px] flex items-center text-slate-700 hover:bg-orange-50 hover:text-orange-600 {{ request()->routeIs(['faq', 'how-to-order', 'departure-info', 'about']) ? 'bg-orange-50 text-orange-600 font-bold' : '' }}">
                     Bantuan
                 </a>
 
                 @auth
-                    <div class="my-2 pt-2 border-t border-[var(--color-border)]">
+                    <div class="my-3 pt-3 border-t border-slate-100">
+                        <span class="px-3.5 text-xs uppercase font-bold text-slate-400 tracking-wider block mb-1">Akun Saya</span>
                         @if(auth()->user()->role === 'admin')
-                            <a href="{{ route('admin.dashboard') }}" @click="mobileMenuOpen = false" class="block px-3 py-2 text-[var(--color-text)] hover:bg-[var(--color-surface)]">
+                            <a href="{{ route('admin.dashboard') }}" @click="mobileMenuOpen = false" class="px-3.5 py-2.5 rounded-xl min-h-[44px] flex items-center text-slate-700 hover:bg-orange-50 hover:text-orange-600">
                                 Dasbor Admin
                             </a>
-                            <a href="{{ route('admin.orders.index') }}" @click="mobileMenuOpen = false" class="block px-3 py-2 text-[var(--color-text)] hover:bg-[var(--color-surface)]">
+                            <a href="{{ route('admin.orders.index') }}" @click="mobileMenuOpen = false" class="px-3.5 py-2.5 rounded-xl min-h-[44px] flex items-center text-slate-700 hover:bg-orange-50 hover:text-orange-600">
                                 Kelola Pesanan
                             </a>
                         @else
-                            <a href="{{ route('customer.orders.index') }}" @click="mobileMenuOpen = false" class="block px-3 py-2 text-[var(--color-text)] hover:bg-[var(--color-surface)]">
-                                Tiket Saya <span class="sr-only">Riwayat Pesanan</span>
+                            <a href="{{ route('customer.orders.index') }}" @click="mobileMenuOpen = false" class="px-3.5 py-2.5 rounded-xl min-h-[44px] flex items-center text-slate-700 hover:bg-orange-50 hover:text-orange-600">
+                                Riwayat Pesanan
                             </a>
-                            <a href="{{ route('customer.dashboard') }}" @click="mobileMenuOpen = false" class="block px-3 py-2 text-[var(--color-text)] hover:bg-[var(--color-surface)]">
-                                Dasbor ({{ auth()->user()->name }})
+                            <a href="{{ route('customer.dashboard') }}" @click="mobileMenuOpen = false" class="px-3.5 py-2.5 rounded-xl min-h-[44px] flex items-center text-slate-700 hover:bg-orange-50 hover:text-orange-600">
+                                Dasbor Pelanggan ({{ auth()->user()->name }})
                             </a>
                         @endif
                     </div>
                 @endauth
 
-                <div class="pt-3 mt-2 border-t border-[var(--color-border)]">
+                <div class="pt-3 mt-2 border-t border-slate-100">
                     @guest
-                        <div class="grid grid-cols-2 gap-2">
-                            <a href="{{ route('login') }}" class="py-2 text-center text-xs font-semibold border border-[var(--color-border)] text-[var(--color-text)] hover:bg-[var(--color-surface)] transition-colors">
+                        <div class="grid grid-cols-2 gap-3">
+                            <a href="{{ route('login') }}" class="py-2.5 min-h-[44px] flex items-center justify-center text-center text-xs font-heading font-bold rounded-full border border-slate-200 text-slate-700 hover:bg-slate-50 transition-colors">
                                 Masuk
                             </a>
-                            <a href="{{ route('register') }}" class="py-2 text-center text-xs font-semibold bg-[var(--color-primary)] text-white hover:bg-[var(--color-primary-dark)] transition-colors">
+                            <a href="{{ route('register') }}" class="py-2.5 min-h-[44px] flex items-center justify-center text-center text-xs font-heading font-bold rounded-full bg-gradient-to-r from-orange-500 to-amber-500 text-white hover:from-orange-600 hover:to-amber-600 shadow-xs transition-colors">
                                 Daftar
                             </a>
                         </div>
                     @else
                         <form method="POST" action="{{ route('logout') }}">
                             @csrf
-                            <button type="submit" class="w-full py-2 text-center text-xs font-semibold border border-[var(--color-border)] text-[var(--color-text-muted)] hover:text-[var(--color-danger)] transition-colors cursor-pointer">
-                                Keluar
+                            <button type="submit" class="w-full py-2.5 min-h-[44px] flex items-center justify-center text-center text-xs font-bold uppercase tracking-wider rounded-full border border-rose-200 text-rose-600 hover:bg-rose-50 transition-colors cursor-pointer">
+                                Keluar dari Akun
                             </button>
                         </form>
                     @endguest
@@ -188,78 +189,68 @@
     </header>
 
     <!-- Main Content Canvas -->
-    <main class="flex-grow">
+    <main class="flex-grow w-full">
         @yield('content')
     </main>
 
     <!-- ═════════════════════════════════════════════════════════════════
-         FOOTER — Deep Forest (#173D2E) with Warm Ivory text
+         GLOBAL CLEAN MODERN LIGHT FOOTER
          ═════════════════════════════════════════════════════════════════ -->
-    <footer class="w-full bg-[var(--color-primary)] text-[#FAF6EE] mt-auto">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-12 pb-8">
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12">
+    <footer class="w-full bg-white text-slate-800 mt-auto border-t border-slate-200/80">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-14 pb-10">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-8 lg:gap-12">
 
-                <!-- Col 1: Brand & Identity -->
-                <div class="flex flex-col gap-3">
+                <!-- Col 1: Brand & Tagline -->
+                <div class="lg:col-span-5 flex flex-col gap-4">
                     <div class="flex items-center gap-2.5">
-                        <svg width="26" height="26" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                            <rect width="28" height="28" rx="6" fill="#0F2A20"/>
-                            <path d="M6 18V11C6 9.895 6.895 9 8 9h12c1.105 0 2 .895 2 2v7M6 18h16M8 18v2M20 18v2M7 14h14" stroke="#9DC9B5" stroke-width="1.5" stroke-linecap="round"/>
-                            <circle cx="10" cy="16" r="1" fill="#9DC9B5"/>
-                            <circle cx="18" cy="16" r="1" fill="#9DC9B5"/>
-                        </svg>
-                        <span class="font-bold text-base text-white tracking-tight">PO CAN Travel</span>
+                        <img src="{{ asset('images/logo.png') }}" alt="PO CAN Travel" class="h-9 w-auto object-contain">
                     </div>
-                    <p class="text-xs text-[#C8DDD5] leading-relaxed max-w-sm">
-                        Layanan bus antarkota dengan jadwal terencana, pemilihan nomor kursi mandiri di denah kabin, dan konfirmasi pesanan transparan.
+                    <p class="text-xs text-slate-500 leading-relaxed max-w-sm">
+                        Perjalanan antarkota yang lebih mudah dipesan. Kepastian nomor kursi real-time, armada eksekutif modern, dan transparansi tarif tanpa biaya siluman.
                     </p>
+                    <div class="flex items-center gap-3 pt-1">
+                        <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-orange-50 border border-orange-200/80 text-[11px] font-heading font-bold text-orange-600">
+                            <span class="w-1.5 h-1.5 rounded-full bg-orange-500 animate-pulse"></span>
+                            Layanan 24/7 Siaga
+                        </span>
+                        <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-sky-50 border border-sky-200/80 text-[11px] font-heading font-bold text-sky-600">
+                            Tiket Resmi Terverifikasi
+                        </span>
+                    </div>
                 </div>
 
                 <!-- Col 2: Navigasi -->
-                <div class="flex flex-col gap-2.5">
-                    <span class="text-xs font-bold text-white uppercase tracking-wider">Navigasi</span>
-                    <ul class="flex flex-col gap-2 text-xs text-[#C8DDD5]">
-                        <li><a href="{{ route('home') }}" class="hover:text-white transition-colors">Beranda</a></li>
-                        <li><a href="{{ route('trips.index') }}" class="hover:text-white transition-colors">Cari Tiket</a></li>
-                        <li><a href="{{ route('buses.index') }}" class="hover:text-white transition-colors">Armada Bus</a></li>
-                        <li><a href="{{ route('facilities.index') }}" class="hover:text-white transition-colors">Fasilitas Bus</a></li>
-                        <li><a href="{{ route('routes.index') }}" class="hover:text-white transition-colors">Daftar Rute</a></li>
+                <div class="lg:col-span-3 flex flex-col gap-3">
+                    <span class="text-xs font-bold text-slate-900 uppercase tracking-wider font-heading">Navigasi Utama</span>
+                    <ul class="flex flex-col gap-2.5 text-xs text-slate-500">
+                        <li><a href="{{ route('home') }}" class="hover:text-orange-600 transition-colors">Beranda</a></li>
+                        <li><a href="{{ route('trips.index') }}" class="hover:text-orange-600 transition-colors">Cari Tiket</a></li>
+                        <li><a href="{{ route('buses.index') }}" class="hover:text-orange-600 transition-colors">Pilihan Armada</a></li>
+                        <li><a href="{{ route('facilities.index') }}" class="hover:text-orange-600 transition-colors">Fasilitas Kabin</a></li>
+                        <li><a href="{{ route('faq') }}" class="hover:text-orange-600 transition-colors">Pusat Bantuan</a></li>
                     </ul>
                 </div>
 
-                <!-- Col 3: Layanan & Informasi -->
-                <div class="flex flex-col gap-2.5">
-                    <span class="text-xs font-bold text-white uppercase tracking-wider">Informasi</span>
-                    <ul class="flex flex-col gap-2 text-xs text-[#C8DDD5]">
-                        <li><a href="{{ route('how-to-order') }}" class="hover:text-white transition-colors">Cara Memesan Tiket</a></li>
-                        <li><a href="{{ route('departure-info') }}" class="hover:text-white transition-colors">Info Keberangkatan</a></li>
-                        <li><a href="{{ route('faq') }}" class="hover:text-white transition-colors">Pertanyaan Umum</a></li>
-                        <li><a href="{{ route('about') }}" class="hover:text-white transition-colors">Tentang Kami</a></li>
+                <!-- Col 3: Informasi & Panduan -->
+                <div class="lg:col-span-4 flex flex-col gap-3">
+                    <span class="text-xs font-bold text-slate-900 uppercase tracking-wider font-heading">Panduan Perjalanan</span>
+                    <ul class="flex flex-col gap-2.5 text-xs text-slate-500">
+                        <li><a href="{{ route('how-to-order') }}" class="hover:text-orange-600 transition-colors">Cara Memesan Tiket</a></li>
+                        <li><a href="{{ route('departure-info') }}" class="hover:text-orange-600 transition-colors">Informasi Keberangkatan</a></li>
+                        <li><a href="{{ route('faq') }}" class="hover:text-orange-600 transition-colors">Pertanyaan Umum (FAQ)</a></li>
+                        <li><a href="{{ route('about') }}" class="hover:text-orange-600 transition-colors">Tentang PO CAN Travel</a></li>
                     </ul>
-                </div>
-
-                <!-- Col 4: Metode Pembayaran -->
-                <div class="flex flex-col gap-2.5">
-                    <span class="text-xs font-bold text-white uppercase tracking-wider">Metode Pembayaran</span>
-                    <p class="text-xs text-[#9DC9B5]">Dukungan pembayaran resmi:</p>
-                    <div class="flex flex-wrap gap-1.5 pt-1">
-                        <span class="px-2 py-0.5 bg-[#0F2A20] text-xs font-mono font-medium text-[#FAF6EE] border border-[#2F6252]">BCA</span>
-                        <span class="px-2 py-0.5 bg-[#0F2A20] text-xs font-mono font-medium text-[#FAF6EE] border border-[#2F6252]">Mandiri</span>
-                        <span class="px-2 py-0.5 bg-[#0F2A20] text-xs font-mono font-medium text-[#FAF6EE] border border-[#2F6252]">BNI</span>
-                        <span class="px-2 py-0.5 bg-[#0F2A20] text-xs font-mono font-medium text-[#FAF6EE] border border-[#2F6252]">BRI</span>
-                        <span class="px-2 py-0.5 bg-[#0F2A20] text-xs font-mono font-medium text-[#FAF6EE] border border-[#2F6252]">QRIS</span>
-                    </div>
                 </div>
 
             </div>
 
             <!-- Bottom Legal Bar -->
-            <div class="mt-10 pt-6 border-t border-[#0F2A20] flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-[#6A9080]">
+            <div class="mt-12 pt-6 border-t border-slate-100 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-slate-400">
                 <p>&copy; {{ date('Y') }} PO CAN Travel. Seluruh hak cipta dilindungi.</p>
-                <div class="flex items-center gap-4">
-                    <a href="{{ route('how-to-order') }}" class="hover:text-white transition-colors">Ketentuan Pemesanan</a>
-                    <a href="{{ route('about') }}" class="hover:text-white transition-colors">Tentang PO CAN Travel</a>
-                    <a href="{{ route('faq') }}" class="hover:text-white transition-colors">Pusat Bantuan</a>
+                <div class="flex items-center gap-5">
+                    <a href="{{ route('how-to-order') }}" class="hover:text-orange-600 transition-colors">Cara Memesan</a>
+                    <a href="{{ route('faq') }}" class="hover:text-orange-600 transition-colors">FAQ</a>
+                    <a href="{{ route('about') }}" class="hover:text-orange-600 transition-colors">Tentang</a>
                 </div>
             </div>
         </div>

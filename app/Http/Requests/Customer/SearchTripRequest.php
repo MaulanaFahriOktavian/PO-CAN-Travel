@@ -15,6 +15,16 @@ class SearchTripRequest extends FormRequest
     }
 
     /**
+     * Prepare inputs before validation.
+     */
+    protected function prepareForValidation(): void
+    {
+        if ($this->has('date') && !$this->has('departure_date')) {
+            $this->merge(['departure_date' => $this->input('date')]);
+        }
+    }
+
+    /**
      * Get the validation rules that apply to the request.
      *
      * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
@@ -23,8 +33,9 @@ class SearchTripRequest extends FormRequest
     {
         return [
             'origin' => ['nullable', 'string', 'max:100'],
-            'destination' => ['nullable', 'string', 'max:100'],
+            'destination' => ['nullable', 'string', 'max:100', 'different:origin'],
             'departure_date' => ['nullable', 'date'],
+            'date' => ['nullable', 'date'],
             'sort' => ['nullable', 'string', 'in:departure_asc,departure_desc,price_asc,price_desc'],
         ];
     }
@@ -40,6 +51,7 @@ class SearchTripRequest extends FormRequest
             'origin' => 'kota asal',
             'destination' => 'kota tujuan',
             'departure_date' => 'tanggal keberangkatan',
+            'date' => 'tanggal keberangkatan',
         ];
     }
 
@@ -55,7 +67,9 @@ class SearchTripRequest extends FormRequest
             'origin.max' => 'Kota asal maksimal 100 karakter.',
             'destination.string' => 'Kota tujuan harus berupa teks.',
             'destination.max' => 'Kota tujuan maksimal 100 karakter.',
+            'destination.different' => 'Kota tujuan tidak boleh sama dengan kota asal.',
             'departure_date.date' => 'Format tanggal keberangkatan tidak valid.',
+            'date.date' => 'Format tanggal keberangkatan tidak valid.',
         ];
     }
 }

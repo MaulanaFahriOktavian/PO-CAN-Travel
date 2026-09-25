@@ -1,6 +1,7 @@
-@extends('layouts.app')
+@extends('layouts.admin')
 
 @section('title', 'Kelola Rute Perjalanan - PO CAN Travel')
+@section('page_title', 'Rute Perjalanan')
 
 @section('content')
     <div class="py-10 sm:py-12">
@@ -15,7 +16,7 @@
                 </div>
                 <div>
                     <a href="{{ route('admin.routes.create') }}"
-                        class="inline-flex items-center justify-center px-4 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-medium text-sm rounded-lg shadow-sm transition-colors">
+                        class="inline-flex items-center justify-center px-4 py-2.5 bg-orange-500 hover:bg-orange-600 text-white font-medium text-sm rounded-lg shadow-sm transition-colors">
                         Tambah Rute
                     </a>
                 </div>
@@ -71,7 +72,7 @@
                                         </td>
                                         <td class="py-4 px-4 sm:px-6 text-right space-x-2">
                                             <a href="{{ route('admin.routes.edit', $route) }}"
-                                                class="text-blue-600 hover:text-blue-800 font-medium transition-colors">
+                                                class="text-orange-600 hover:text-orange-800 font-medium transition-colors">
                                                 Edit
                                             </a>
                                             <form method="POST" action="{{ route('admin.routes.destroy', $route) }}" class="inline"
